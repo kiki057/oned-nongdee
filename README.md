@@ -21,6 +21,28 @@ FAQ page (assets.oned.net)  --POST /chat-->  API Gateway  -->  Lambda  -->  Clau
 | `web/faq-th-beta.html` | The new FAQ page with the widget included |
 | `web/support-index.html` | The new support form (reads `?issue=` from น้องดี's handoff) |
 | `test/local-test.mjs` | Local tests with a fake Claude API (`npm test`) |
+| `index.html`, `preview/`, `scripts/build-preview.mjs` | GitHub Pages preview (see below) |
+
+## Try it on GitHub Pages
+
+GitHub Pages serves this repo from `main` at **https://kiki057.github.io/oned-nongdee/**:
+
+| Page | What it is |
+| --- | --- |
+| `/` (`index.html`) | Start page with links |
+| `/preview/faq.html` | The new FAQ. "ติดต่อเรา" links go to the preview form, not the live site |
+| `/preview/support.html` | The new support form. It checks the form but sends nothing |
+
+The preview pages are generated from `web/`. After changing anything in `web/`, rebuild them and commit:
+
+```bash
+node scripts/build-preview.mjs
+```
+
+น้องดี stays hidden on the preview until the AWS API is deployed. To show her there:
+
+1. Add `https://kiki057.github.io` to the stack's `AllowedOrigins` (e.g. `sam deploy --parameter-overrides AllowedOrigins=https://assets.oned.net,https://kiki057.github.io`).
+2. Rebuild with the API address: `NONGDEE_ENDPOINT=<ApiUrl> node scripts/build-preview.mjs`, then commit and push.
 
 ## Before you start
 
