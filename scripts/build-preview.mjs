@@ -4,11 +4,14 @@
 // Optional: NONGDEE_ENDPOINT=https://xxxx.execute-api.ap-southeast-1.amazonaws.com node scripts/build-preview.mjs
 //   (also add https://kiki057.github.io to AllowedOrigins in the AWS stack, or the browser will block the calls)
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 
 const root = new URL('../', import.meta.url);
 const read = (p) => readFile(new URL(p, root), 'utf8');
 // Without NONGDEE_ENDPOINT the preview runs น้องดี in demo mode (FAQ text matching, no AI, no server).
 const endpoint = process.env.NONGDEE_ENDPOINT || 'demo';
+// Version the widget URL by its content, so phones and the app's web view never keep an old copy
+const widgetVersion = createHash('sha1').update(await read('web/nongdee.js')).digest('hex').slice(0, 8);
 
 let faq = await read('web/faq-th-beta.html');
 let support = await read('web/support-index.html');
@@ -21,7 +24,7 @@ const banner = (text) =>
 faq = faq
   .replaceAll('https://support.oned.net/?lang=en', 'support.html?lang=en')
   .replaceAll('https://support.oned.net/', 'support.html')
-  .replace('src="nongdee.js"', 'src="../web/nongdee.js"')
+  .replace('src="nongdee.js"', `src="../web/nongdee.js?v=${widgetVersion}"`)
   .replace(/data-support-url="[^"]*"/, 'data-support-url="support.html"')
   .replace(/<body>/, '<body>\n' + banner('ตัวอย่างสำหรับทดสอบ · Preview only — not the live oneD FAQ'));
 faq = faq.replace(/data-endpoint="[^"]*"/, `data-endpoint="${endpoint}"`);
@@ -30,7 +33,7 @@ faq = faq.replace(/data-endpoint="[^"]*"/, `data-endpoint="${endpoint}"`);
 faqEn = faqEn
   .replaceAll('https://support.oned.net/?lang=en', 'support.html?lang=en')
   .replaceAll('https://support.oned.net/', 'support.html')
-  .replace('src="nongdee.js"', 'src="../web/nongdee.js"')
+  .replace('src="nongdee.js"', `src="../web/nongdee.js?v=${widgetVersion}"`)
   .replace(/data-support-url="[^"]*"/, 'data-support-url="support.html"')
   .replace(/data-endpoint="[^"]*"/, `data-endpoint="${endpoint}"`)
   .replace(/<body>/, '<body>\n' + banner('ตัวอย่างสำหรับทดสอบ · Preview only — not the live oneD FAQ'));

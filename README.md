@@ -147,6 +147,7 @@ sam logs --stack-name nongdee-chat --tail
    aws s3 cp web/faq-th-beta.html  s3://<assets-bucket>/doc/faq-th-beta.html  --content-type "text/html; charset=utf-8"
    ```
 3. If CloudFront sits in front of the bucket, invalidate `/doc/faq-th-beta.html` and `/doc/nongdee.js`.
+   Whenever `nongdee.js` changes, also change its address in the page, e.g. `nongdee.js?v=2`, so phones and the app's web view don't keep using an old copy.
 4. Open the beta page on your phone and tap **ถามน้องดี**.
 
 To try it inside the oneD app, point a test build's FAQ link at `faq-th-beta.html`.
