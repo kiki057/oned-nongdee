@@ -25,6 +25,15 @@ FAQ page (assets.oned.net)  --POST /chat-->  API Gateway  -->  Lambda  -->  Clau
 | `test/local-test.mjs` | Local tests with a fake Claude API (`npm test`) |
 | `index.html`, `preview/`, `scripts/build-preview.mjs` | GitHub Pages preview (see below) |
 
+## Languages
+
+น้องดี speaks Thai and English:
+
+- **Her screen** (button, title, hints, greeting, suggestions) follows the page's language, i.e. `<html lang>`. On the FAQ page that's the TH | EN switch, and she follows it live.
+- **Her replies** follow the language the user writes in. In English she's "Nong Dee" and uses the app's English button names.
+- **The FAQ she answers from** stays the Thai questions (the source of truth). The AI translates the steps for English questions and the guardrail still checks every fact against the Thai entries. The fixed refusals have English versions.
+- **Handoff** opens the support form in English when the page is in English.
+
 ## FAQ-only guardrail
 
 น้องดี may only say what the FAQ says. Her instructions ask for that, but instructions alone aren't a guarantee, so every reply is also checked **in code** before it reaches the user:

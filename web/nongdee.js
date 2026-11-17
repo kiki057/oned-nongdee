@@ -15,21 +15,49 @@
   var DEMO = ENDPOINT === 'demo';
 
   var OTHER = 'อื่นๆ (โปรดระบุ)';
-  var SUGGEST = ['แลกโค้ดในแอปได้ไหม', 'ยกเลิก PREMIUM ยังไง', 'จ่ายเงินแล้วแต่ยังเห็นโฆษณา', 'ดูบนทีวี Samsung ได้ไหม'];
-  var T = {
-    fab: 'ถามน้องดี', title: 'น้องดี', sub: 'ผู้ช่วย oneD · ตอบจากคำถามที่พบบ่อย',
-    hello: 'สวัสดีค่ะ น้องดีเองค่ะ ถามเรื่องการใช้งาน oneD ได้เลยนะคะ เช่น สมัคร PREMIUM แลกโค้ด ดูบนทีวี หรือยกเลิกแพ็กเกจ',
-    placeholder: 'พิมพ์คำถามถึงน้องดี...', note: 'ห้ามพิมพ์รหัสผ่าน OTP หรือเลขบัตร · บทสนทนาถูกบันทึกเพื่อปรับปรุงบริการ',
-    contact: 'ติดต่อทีมงาน', handoff: 'ให้ทีมงานช่วยต่อได้นะคะ น้องดีเลือกหัวข้อในแบบฟอร์มไว้ให้แล้วค่ะ',
-    handoffBtn: 'ส่งเรื่องให้ทีมงาน', sorry: 'ขออภัยที่ยังช่วยไม่ได้นะคะ ให้ทีมงานช่วยต่อไหมคะ?',
-    busy: 'ตอนนี้มีคนถามเยอะอยู่ ลองใหม่อีกสักครู่นะคะ', error: 'ขออภัยค่ะ ตอนนี้น้องดีตอบไม่ได้',
-    offline: 'ดูเหมือนอินเทอร์เน็ตจะหลุดอยู่นะคะ ลองใหม่อีกครั้งค่ะ', askInstead: 'ถามน้องดีแทน'
+  // Interface text follows the page language (<html lang>, e.g. the FAQ's TH | EN switch).
+  // Replies follow the language the user writes in.
+  var I18N = {
+    th: {
+      fab: 'ถามน้องดี', title: 'น้องดี', sub: 'ผู้ช่วย oneD · ตอบจากคำถามที่พบบ่อย',
+      hello: 'สวัสดีค่ะ น้องดีเองค่ะ ถามเรื่องการใช้งาน oneD ได้เลยนะคะ เช่น สมัคร PREMIUM แลกโค้ด ดูบนทีวี หรือยกเลิกแพ็กเกจ',
+      suggest: ['แลกโค้ดในแอปได้ไหม', 'ยกเลิก PREMIUM ยังไง', 'จ่ายเงินแล้วแต่ยังเห็นโฆษณา', 'ดูบนทีวี Samsung ได้ไหม'],
+      placeholder: 'พิมพ์คำถามถึงน้องดี...', note: 'ห้ามพิมพ์รหัสผ่าน OTP หรือเลขบัตร · บทสนทนาถูกบันทึกเพื่อปรับปรุงบริการ',
+      contact: 'ติดต่อทีมงาน', handoff: 'ให้ทีมงานช่วยต่อได้นะคะ น้องดีเลือกหัวข้อในแบบฟอร์มไว้ให้แล้วค่ะ',
+      handoffBtn: 'ส่งเรื่องให้ทีมงาน', sorry: 'ขออภัยที่ยังช่วยไม่ได้นะคะ ให้ทีมงานช่วยต่อไหมคะ?',
+      busy: 'ตอนนี้มีคนถามเยอะอยู่ ลองใหม่อีกสักครู่นะคะ', error: 'ขออภัยค่ะ ตอนนี้น้องดีตอบไม่ได้',
+      offline: 'ดูเหมือนอินเทอร์เน็ตจะหลุดอยู่นะคะ ลองใหม่อีกครั้งค่ะ', askInstead: 'ถามน้องดีแทน',
+      close: 'ปิด', send: 'ส่ง', up: 'มีประโยชน์', down: 'ไม่มีประโยชน์',
+      demoSub: 'โหมดสาธิต · ค้นจาก FAQ ยังไม่ใช่ AI',
+      demoNote: 'โหมดสาธิต: ข้อความไม่ถูกส่งหรือบันทึกที่ไหน · ห้ามพิมพ์รหัสผ่าน OTP หรือเลขบัตร',
+      demoHello: 'สวัสดีค่ะ น้องดีเองค่ะ ตอนนี้เป็นโหมดสาธิต น้องดีจะค้นคำตอบที่ใกล้ที่สุดจาก FAQ ให้นะคะ (เวอร์ชัน AI จะตอบได้เป็นธรรมชาติกว่านี้ค่ะ)',
+      dFound: 'น้องดีเจอคำตอบนี้ใน FAQ ค่ะ', dNone: 'ขออภัยค่ะ น้องดียังหาคำตอบเรื่องนี้ใน FAQ ไม่เจอ ลองถามด้วยคำอื่น หรือให้ทีมงานช่วยต่อได้นะคะ',
+      dRefund: 'เรื่องคืนเงิน น้องดีช่วยเองไม่ได้ค่ะ ถ้าสมัครผ่าน App Store หรือ Google Play การคืนเงินเป็นของ Apple หรือ Google นะคะ ให้ทีมงานช่วยดูให้ได้ค่ะ',
+      dCancel: 'คุณสมัครผ่านช่องทางไหนคะ? กดหัวข้อด้านล่างเพื่อดูวิธียกเลิกได้เลยค่ะ',
+      dPrivate: 'ไม่ต้องพิมพ์ข้อมูลส่วนตัวในแชตนะคะ น้องดีซ่อนไว้ให้แล้วค่ะ ถามต่อได้เลยนะคะ'
+    },
+    en: {
+      fab: 'Ask Nong Dee', title: 'Nong Dee', sub: 'oneD assistant · answers from the FAQ',
+      hello: "Hi, I'm Nong Dee! Ask me anything about using oneD, like subscribing to PREMIUM, redeeming a code, watching on TV or cancelling a package.",
+      suggest: ['Can I redeem a code in the app?', 'How do I cancel PREMIUM?', "I paid but still see ads", 'Can I watch on a Samsung TV?'],
+      placeholder: 'Ask Nong Dee a question...', note: "Don't type passwords, OTPs or card numbers · Chats are recorded to improve the service",
+      contact: 'Contact us', handoff: "Our support team can take it from here. I've picked the topic in the form for you.",
+      handoffBtn: 'Contact support', sorry: "Sorry I couldn't help. Would you like our support team to help?",
+      busy: "Lots of people are asking right now. Please try again in a moment.", error: "Sorry, I can't answer right now.",
+      offline: 'You seem to be offline. Please try again.', askInstead: 'Ask Nong Dee instead',
+      close: 'Close', send: 'Send', up: 'Helpful', down: 'Not helpful',
+      demoSub: 'Demo mode · searches the FAQ, not AI yet',
+      demoNote: "Demo mode: nothing you type is sent or saved · Don't type passwords, OTPs or card numbers",
+      demoHello: "Hi, I'm Nong Dee! This is a demo: I'll find the closest answer in the FAQ for you. (The AI version answers more naturally.)",
+      dFound: "Here's what the FAQ says:", dNone: "Sorry, I couldn't find this in the FAQ. Try asking another way, or our support team can help.",
+      dRefund: "I can't handle refunds myself. If you subscribed through the App Store or Google Play, refunds are handled by Apple or Google. Our support team can look into it for you.",
+      dCancel: 'How did you subscribe? Tap your option below to see how to cancel.',
+      dPrivate: "No need to share personal details in the chat. I've hidden them for you. Feel free to keep asking."
+    }
   };
-  if (DEMO) {
-    T.sub = 'โหมดสาธิต · ค้นจาก FAQ ยังไม่ใช่ AI';
-    T.note = 'โหมดสาธิต: ข้อความไม่ถูกส่งหรือบันทึกที่ไหน · ห้ามพิมพ์รหัสผ่าน OTP หรือเลขบัตร';
-    T.hello = 'สวัสดีค่ะ น้องดีเองค่ะ ตอนนี้เป็นโหมดสาธิต น้องดีจะค้นคำตอบที่ใกล้ที่สุดจาก FAQ ให้นะคะ (เวอร์ชัน AI จะตอบได้เป็นธรรมชาติกว่านี้ค่ะ)';
-  }
+  function uiLang() { return /^en/i.test(document.documentElement.lang || '') ? 'en' : 'th'; }
+  function textLang(s) { return /[\u0E00-\u0E7F]/.test(s || '') ? 'th' : 'en'; }
+  var OTHER = 'อื่นๆ (โปรดระบุ)';
 
   // ---------- Styles (uses the FAQ page's colours, with fallbacks) ----------
   var css = [
@@ -78,20 +106,20 @@
   function init() {
     var style = el('style'); style.textContent = css; document.head.appendChild(style);
 
-    var fab = el('button', 'nd-fab'); fab.type = 'button'; fab.setAttribute('aria-label', T.fab);
-    fab.innerHTML = ICON + '<span>' + esc(T.fab) + '</span>';
+    var fab = el('button', 'nd-fab'); fab.type = 'button';
+    fab.innerHTML = ICON + '<span class="nd-fab-text"></span>';
 
     var sheet = el('div', 'nd-sheet');
-    sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-modal', 'true'); sheet.setAttribute('aria-label', T.title);
+    sheet.setAttribute('role', 'dialog'); sheet.setAttribute('aria-modal', 'true');
     sheet.innerHTML =
       '<div class="nd-head"><div class="nd-avatar">' + ICON + '</div>' +
-      '<div class="nd-title"><b>' + esc(T.title) + '</b><span>' + esc(T.sub) + '</span></div>' +
-      '<button class="nd-x" type="button" aria-label="ปิด">×</button></div>' +
+      '<div class="nd-title"><b class="nd-name"></b><span class="nd-sub"></span></div>' +
+      '<button class="nd-x" type="button">×</button></div>' +
       '<div class="nd-log" aria-live="polite"></div>' +
       '<div class="nd-foot"><form class="nd-form">' +
-      '<textarea rows="1" enterkeyhint="send" placeholder="' + esc(T.placeholder) + '" aria-label="' + esc(T.placeholder) + '"></textarea>' +
-      '<button class="nd-send" type="submit" aria-label="ส่ง" disabled><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>' +
-      '</form><p class="nd-note">' + esc(T.note) + ' · <a href="' + esc(SUPPORT_URL) + '">' + esc(T.contact) + '</a></p></div>';
+      '<textarea rows="1" enterkeyhint="send"></textarea>' +
+      '<button class="nd-send" type="submit" disabled><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>' +
+      '</form><p class="nd-note"><span class="nd-note-text"></span> · <a class="nd-contact"></a></p></div>';
 
     document.body.appendChild(fab); document.body.appendChild(sheet); document.body.classList.add('nd-ready');
 
@@ -101,6 +129,7 @@
     var send = sheet.querySelector('.nd-send');
     var form = sheet.querySelector('form');
     var history = [], chatId = null, busy = false, started = false, turn = 0;
+    var T = I18N.th, convLang = 'th'; // T: interface text; convLang: language of the user's last message
     try { chatId = sessionStorage.getItem('nd-chat') || null; } catch (e) {}
 
     // Titles shown on source chips: whatever language the page shows right now
@@ -118,8 +147,8 @@
         [].forEach.call(c.querySelectorAll('p, h4, br'), function (x) { x.parentNode.insertBefore(document.createTextNode('\n'), x); });
         [].forEach.call(c.querySelectorAll('img[alt]'), function (i) { i.replaceWith(document.createTextNode(i.alt)); });
         var answer = c.textContent.split('\n').map(function (l) { return l.replace(/\s+/g, ' ').trim(); }).filter(Boolean).join('\n');
-        var s = q.querySelector('summary span');
-        return { id: q.id, cat: q.dataset.cat, q: s ? s.textContent.trim() : '', a: answer };
+        var s = q.querySelector('summary span'), qt = s ? s.textContent.trim() : '';
+        return { id: q.id, cat: q.dataset.cat, q: qt, a: answer, lang: textLang(qt + answer.slice(0, 40)) };
       });
     }
     var FAQ = [], seenKey = {};
@@ -148,24 +177,24 @@
         return { f: f, s: (2 * overlap(qg, f.gq) + overlap(qg, f.ga)) / size };
       }).sort(function (x, y) { return y.s - x.s; });
       var best = ranked[0];
-      var r;
+      var r, D = I18N[textLang(text)];
       var lower = text.toLowerCase();
       if (/[\[](อีเมล|เบอร์โทร|ตัวเลข)[\]]/.test(text)) {
-        r = { answer: 'ไม่ต้องพิมพ์ข้อมูลส่วนตัวในแชตนะคะ น้องดีซ่อนไว้ให้แล้วค่ะ ถามต่อได้เลยนะคะ', sources: [], status: 'partial', handoff_issue: null, suggestions: [] };
+        r = { answer: D.dPrivate, sources: [], status: 'partial', handoff_issue: null, suggestions: [] };
       } else if (/คืนเงิน|เงินคืน|refund/.test(lower)) {
-        r = { answer: 'เรื่องคืนเงิน น้องดีช่วยเองไม่ได้ค่ะ ถ้าสมัครผ่าน App Store หรือ Google Play การคืนเงินเป็นของ Apple หรือ Google นะคะ ให้ทีมงานช่วยดูให้ได้ค่ะ',
-              sources: [], status: 'not_in_faq', handoff_issue: OTHER, suggestions: [] };
+        r = { answer: D.dRefund, sources: [], status: 'not_in_faq', handoff_issue: OTHER, suggestions: [] };
       } else if (/ยกเลิก|cancel|unsubscribe/.test(lower) && !/เติมวัน|โค้ด|code/.test(lower)) {
-        r = { answer: 'คุณสมัครผ่านช่องทางไหนคะ? กดหัวข้อด้านล่างเพื่อดูวิธียกเลิกได้เลยค่ะ', sources: ['unsubscribe', 'unsubscribeandroid', 'unsubscribeais'],
+        r = { answer: D.dCancel, sources: ['unsubscribe', 'unsubscribeandroid', 'unsubscribeais'],
               status: 'partial', handoff_issue: null, suggestions: [] };
       } else if (!best || best.s < 0.85) {
-        r = { answer: 'ขออภัยค่ะ น้องดียังหาคำตอบเรื่องนี้ใน FAQ ไม่เจอ ลองถามด้วยคำอื่น หรือให้ทีมงานช่วยต่อได้นะคะ', sources: [], status: 'not_in_faq',
+        r = { answer: D.dNone, sources: [], status: 'not_in_faq',
               handoff_issue: OTHER, suggestions: [] };
       } else {
-        var lines = best.f.a.split('\n'), body = lines.slice(0, 7).join('\n') + (lines.length > 7 ? '\n…' : '');
+        var want = textLang(text), same = FAQ.filter(function (f) { return f.id === best.f.id && f.lang === want; })[0] || best.f;
+        var lines = same.a.split('\n'), body = lines.slice(0, 7).join('\n') + (lines.length > 7 ? '\n…' : '');
         var more = [], ids = {}; ids[best.f.id] = 1;
         ranked.slice(1).forEach(function (x) { if (more.length < 2 && x.s >= 0.85 && !ids[x.f.id]) { ids[x.f.id] = 1; more.push(title(x.f.id) || x.f.q); } });
-        r = { answer: 'น้องดีเจอคำตอบนี้ใน FAQ ค่ะ\n\n' + body, sources: [best.f.id], status: 'answered', handoff_issue: null, suggestions: more };
+        r = { answer: D.dFound + '\n\n' + body, sources: [best.f.id], status: 'answered', handoff_issue: null, suggestions: more };
         r.demoIssue = ISSUE_BY_ID[best.f.id] || OTHER;
       }
       r.chatId = 'c_demo';
@@ -180,11 +209,13 @@
     function down() { log.scrollTop = log.scrollHeight; }
     function supportLink(issue) {
       var u = SUPPORT_URL + (SUPPORT_URL.indexOf('?') > -1 ? '&' : '?') + 'issue=' + encodeURIComponent(issue || OTHER);
+      if (uiLang() === 'en' && !/[?&]lang=/.test(u)) u += '&lang=en';
       return chatId ? u + '&chat=' + encodeURIComponent(chatId) : u;
     }
     function handoffCard(issue, text) {
-      var h = el('div', 'nd-handoff'); h.appendChild(el('div', null, text || T.handoff));
-      var a = el('a', null, T.handoffBtn); a.href = supportLink(issue); h.appendChild(a); return h;
+      var C = I18N[convLang];
+      var h = el('div', 'nd-handoff'); h.appendChild(el('div', null, text || C.handoff));
+      var a = el('a', null, C.handoffBtn); a.href = supportLink(issue); h.appendChild(a); return h;
     }
     function chipsRow(list) {
       var row = el('div', 'nd-chips');
@@ -214,11 +245,11 @@
       if (r.handoff_issue) w.appendChild(handoffCard(r.handoff_issue));
       if (r.status === 'answered' || r.status === 'partial') {
         var rate = el('div', 'nd-rate'), up = el('button', null, '👍'), dn = el('button', null, '👎');
-        up.type = dn.type = 'button'; up.setAttribute('aria-label', 'มีประโยชน์'); dn.setAttribute('aria-label', 'ไม่มีประโยชน์');
+        up.type = dn.type = 'button'; up.setAttribute('aria-label', I18N[convLang].up); dn.setAttribute('aria-label', I18N[convLang].down);
         up.onclick = function () { up.setAttribute('aria-pressed', 'true'); dn.setAttribute('aria-pressed', 'false'); feedback(n, 'up'); };
         dn.onclick = function () {
           dn.setAttribute('aria-pressed', 'true'); up.setAttribute('aria-pressed', 'false'); feedback(n, 'down');
-          if (!w.querySelector('.nd-handoff')) { w.appendChild(handoffCard(r.handoff_issue || r.demoIssue || OTHER, T.sorry)); down(); }
+          if (!w.querySelector('.nd-handoff')) { w.appendChild(handoffCard(r.handoff_issue || r.demoIssue || OTHER, I18N[convLang].sorry)); down(); }
         };
         rate.appendChild(up); rate.appendChild(dn); w.appendChild(rate);
       }
@@ -239,6 +270,7 @@
       [].forEach.call(log.querySelectorAll('.nd-chips'), function (c) { c.remove(); });
       var me = el('div', 'nd-msg nd-me'); me.appendChild(el('div', 'nd-bubble', safe)); log.appendChild(me);
       history.push({ role: 'user', content: safe });
+      convLang = textLang(safe);
       busy = true; send.disabled = true;
       var t = el('div', 'nd-msg nd-bot'), tb = el('div', 'nd-bubble nd-typing'); tb.innerHTML = '<span></span><span></span><span></span>';
       t.appendChild(tb); log.appendChild(t); down();
@@ -256,10 +288,10 @@
           history.push({ role: 'assistant', content: r.data.answer });
         } else {
           history.pop();
-          addError(r.status === 429 || r.status === 503 ? T.busy : T.error);
+          addError(r.status === 429 || r.status === 503 ? I18N[convLang].busy : I18N[convLang].error);
         }
       }).catch(function () {
-        t.remove(); history.pop(); addError(navigator.onLine === false ? T.offline : T.error);
+        t.remove(); history.pop(); addError(navigator.onLine === false ? I18N[convLang].offline : I18N[convLang].error);
       }).then(function () { busy = false; send.disabled = !input.value.trim(); });
     }
 
@@ -267,8 +299,9 @@
       root.classList.add('nd-open');
       if (!started) {
         started = true;
-        var m = el('div', 'nd-msg nd-bot'); m.appendChild(el('div', 'nd-bubble', T.hello));
-        log.appendChild(m); log.appendChild(chipsRow(SUGGEST));
+        convLang = uiLang();
+        var m = el('div', 'nd-msg nd-bot'); m.appendChild(el('div', 'nd-bubble', DEMO ? T.demoHello : T.hello));
+        log.appendChild(m); log.appendChild(chipsRow(T.suggest));
       }
       if (prefill) { input.value = prefill; send.disabled = false; }
       setTimeout(function () { input.focus(); }, 50);
@@ -292,10 +325,30 @@
     // "Ask น้องดี instead" when the FAQ search finds nothing
     var empty = document.getElementById('empty'), search = document.getElementById('search');
     if (empty) {
-      var b = el('button', 'nd-ask-empty', T.askInstead); b.type = 'button';
-      b.onclick = function () { open(search ? search.value : ''); };
-      empty.appendChild(document.createElement('br')); empty.appendChild(b);
+      var askBtn = el('button', 'nd-ask-empty'); askBtn.type = 'button';
+      askBtn.onclick = function () { open(search ? search.value : ''); };
+      empty.appendChild(document.createElement('br')); empty.appendChild(askBtn);
     }
+
+    // ---------- Interface language: set now, and again whenever the page switches TH | EN ----------
+    function applyLang() {
+      T = I18N[uiLang()];
+      fab.setAttribute('aria-label', T.fab); fab.querySelector('.nd-fab-text').textContent = T.fab;
+      sheet.setAttribute('aria-label', T.title);
+      sheet.querySelector('.nd-name').textContent = T.title;
+      sheet.querySelector('.nd-sub').textContent = DEMO ? T.demoSub : T.sub;
+      sheet.querySelector('.nd-x').setAttribute('aria-label', T.close);
+      send.setAttribute('aria-label', T.send);
+      input.placeholder = T.placeholder; input.setAttribute('aria-label', T.placeholder);
+      sheet.querySelector('.nd-note-text').textContent = DEMO ? T.demoNote : T.note;
+      var c = sheet.querySelector('.nd-contact'); c.textContent = T.contact;
+      c.href = uiLang() === 'en' && !/[?&]lang=/.test(SUPPORT_URL) ? SUPPORT_URL + (SUPPORT_URL.indexOf('?') > -1 ? '&' : '?') + 'lang=en' : SUPPORT_URL;
+      if (typeof askBtn !== 'undefined') askBtn.textContent = T.askInstead;
+      // Before the first message, swap the greeting and suggestions too
+      if (started && !history.length) { log.innerHTML = ''; started = false; if (root.classList.contains('nd-open')) open(); }
+    }
+    applyLang();
+    if (window.MutationObserver) new MutationObserver(applyLang).observe(root, { attributes: true, attributeFilter: ['lang'] });
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();

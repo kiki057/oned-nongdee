@@ -585,7 +585,7 @@
       </details>
     </template>
 
-    <div class="empty" id="empty">ไม่พบคำถามที่ตรงกับคำค้นหา</div>
+    <div class="empty" id="empty"><span id="emptyText">ไม่พบคำถามที่ตรงกับคำค้นหา</span></div>
 
     <a class="contact" id="contact" href="support.html">
       <div><b id="still">ยังไม่เจอคำตอบ?</b><span id="hours">จ.–ศ. 10:00–19:00 · support@oned.net</span></div>
@@ -679,7 +679,7 @@
         document.querySelector('.tabs').setAttribute('aria-label', t.cats);
         tabs.forEach(function (b) { b.textContent = t.tabs[b.dataset.cat]; });
         langBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lang === l)); });
-        empty.textContent = t.empty;
+        document.getElementById('emptyText').textContent = t.empty;
         document.getElementById('still').textContent = t.still;
         document.getElementById('hours').textContent = t.hours;
         document.getElementById('contactGo').textContent = t.contact;
