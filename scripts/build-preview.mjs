@@ -12,6 +12,7 @@ const endpoint = process.env.NONGDEE_ENDPOINT || 'demo';
 
 let faq = await read('web/faq-th-beta.html');
 let support = await read('web/support-index.html');
+let faqEn = await read('web/faq-en-beta.html');
 
 const banner = (text) =>
   `<div style="background:#ffb020;color:#1a1a1a;font:500 13px/1.4 system-ui,sans-serif;text-align:center;padding:6px 12px">${text}</div>`;
@@ -24,10 +25,15 @@ faq = faq
   .replace(/<body>/, '<body>\n' + banner('ตัวอย่างสำหรับทดสอบ · Preview only — not the live oneD FAQ'));
 faq = faq.replace(/data-endpoint="[^"]*"/, `data-endpoint="${endpoint}"`);
 
+// English FAQ preview (no assistant yet: น้องดี speaks Thai first)
+faqEn = faqEn
+  .replaceAll('https://support.oned.net/?lang=en', 'support.html?lang=en')
+  .replace(/<body>/, '<body>\n' + banner('Preview only — not the live oneD FAQ'));
+
 // Support preview: FAQ links go to the preview FAQ; the form must not reach the real /submit
 support = support
   .replaceAll('https://assets.oned.net/doc/faq-th.html', 'faq.html')
-  .replaceAll('https://assets.oned.net/doc/faq-en.html', 'faq.html')
+  .replaceAll('https://assets.oned.net/doc/faq-en.html', 'faq-en.html')
   .replace('action="/submit"', 'action="#"')
   .replace(/<body>/, '<body>\n' + banner('ตัวอย่างสำหรับทดสอบ · Preview only — the form is not sent'));
 const stub = `
@@ -44,4 +50,5 @@ support = support.replace(before, stub + "\n        btn.disabled = true; btn.cla
 await mkdir(new URL('preview/', root), { recursive: true });
 await writeFile(new URL('preview/faq.html', root), faq);
 await writeFile(new URL('preview/support.html', root), support);
-console.log(`preview/faq.html and preview/support.html written (น้องดี: ${endpoint === 'demo' ? 'demo mode, no AI' : endpoint})`);
+await writeFile(new URL('preview/faq-en.html', root), faqEn);
+console.log(`preview/faq.html, preview/faq-en.html and preview/support.html written (น้องดี: ${endpoint === 'demo' ? 'demo mode, no AI' : endpoint})`);

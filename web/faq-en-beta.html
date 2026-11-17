@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ | oneD</title>
+  <meta name="robots" content="noindex">
+  <meta name="description" content="Frequently asked questions about using oneD">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink: #f20b7e;
+      --pink-soft: rgba(242, 11, 126, .14);
+      --bg: #0a0a0c;
+      --surface: #16161a;
+      --surface-2: #202027;
+      --line: #26262e;
+      --text: #f4f4f6;
+      --text-2: #b9b9c3;
+      --text-3: #80808c;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: 'Prompt', system-ui, sans-serif; font-weight: 300; font-size: 16px; line-height: 1.65;
+    }
+    a { color: var(--pink); text-decoration: none; font-weight: 400; }
+    b { font-weight: 500; color: var(--text); }
+    .page { max-width: 640px; margin: 0 auto; padding: 0 16px 32px; }
+
+    /* Sticky search + tabs */
+    .top {
+      position: sticky; top: 0; z-index: 10; margin: 0 -16px; padding: 12px 16px 0;
+      background: var(--bg); border-bottom: 1px solid var(--line);
+    }
+    h1 { font-size: 20px; font-weight: 500; margin: 4px 0 10px; }
+    .search { position: relative; }
+    .search svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-3); pointer-events: none; }
+    .search input {
+      width: 100%; height: 46px; font: inherit; font-size: 16px; color: var(--text);
+      background: var(--surface); border: 1px solid var(--line); border-radius: 12px;
+      padding: 0 44px 0 42px; outline: none; -webkit-appearance: none; appearance: none;
+    }
+    .search input::-webkit-search-cancel-button { display: none; -webkit-appearance: none; }
+    .search input::placeholder { color: var(--text-3); }
+    .search input:focus { border-color: var(--pink); }
+    .clear {
+      position: absolute; right: 5px; top: 50%; transform: translateY(-50%); display: none;
+      width: 36px; height: 36px; border: 0; border-radius: 50%; background: none; color: var(--text-2); font-size: 22px; cursor: pointer;
+    }
+    .searching .clear { display: block; }
+
+    .tabs { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 10px 16px 12px; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab {
+      flex: none; height: 36px; padding: 0 14px; border-radius: 99px; cursor: pointer;
+      font: inherit; font-size: 14px; font-weight: 400; white-space: nowrap;
+      color: var(--text-2); background: var(--surface); border: 1px solid var(--line);
+    }
+    .tab[aria-selected="true"] { color: #fff; background: var(--pink); border-color: var(--pink); }
+    .searching .tab[aria-selected="true"] { color: var(--text-2); background: var(--surface); border-color: var(--line); }
+
+    /* Question list */
+    .status { font-size: 13px; color: var(--text-3); margin: 14px 2px 8px; }
+    .list { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; }
+    .q + .q { border-top: 1px solid var(--line); }
+    .q > summary {
+      list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px;
+      min-height: 54px; padding: 12px 14px; font-weight: 400; line-height: 1.45;
+    }
+    .q > summary::-webkit-details-marker { display: none; }
+    .q > summary:active { background: var(--surface-2); }
+    .q > summary span { flex: 1; }
+    .q > summary svg { flex: none; color: var(--text-3); transition: transform .2s; }
+    .q[open] > summary { color: var(--pink); }
+    .q[open] > summary svg { transform: rotate(90deg); color: var(--pink); }
+
+    .a { padding: 0 14px 16px; color: var(--text-2); font-size: 15px; }
+    .a p { margin: 0 0 8px; }
+    .a p:last-child { margin-bottom: 0; }
+    .a ol, .a ul { margin: 0 0 8px; padding-left: 22px; }
+    .a li { margin: 3px 0; padding-left: 2px; }
+    .a li::marker { color: var(--pink); font-weight: 500; }
+    .a h4 { margin: 12px 0 4px; font-size: 15px; font-weight: 500; color: var(--text); }
+    .a h4:first-child { margin-top: 0; }
+    .ui { color: var(--text); font-weight: 400; }
+    .note { margin: 8px 0 0; padding: 8px 12px; border-radius: 8px; background: var(--surface-2); font-size: 14px; }
+    .note.warn { background: rgba(255, 176, 32, .1); color: #ffd28a; }
+    .ico { width: 18px; height: 18px; vertical-align: -3px; }
+
+    .empty { display: none; text-align: center; color: var(--text-2); padding: 28px 12px; }
+    .empty.show { display: block; }
+
+    /* Contact row */
+    .contact {
+      display: flex; align-items: center; gap: 12px; margin-top: 20px; padding: 14px;
+      background: var(--surface); border: 1px solid var(--line); border-radius: 14px; color: var(--text);
+    }
+    .contact div { flex: 1; font-size: 14px; color: var(--text-2); line-height: 1.5; }
+    .contact div b { display: block; font-size: 15px; }
+    .contact .go { flex: none; height: 40px; padding: 0 16px; border-radius: 99px; background: var(--pink); color: #fff; display: inline-flex; align-items: center; font-size: 14px; }
+
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="top" id="top">
+      <h1>Frequently asked questions</h1>
+      <div class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="search" type="search" enterkeyhint="search" placeholder="Search, e.g. code, cancel, TV" autocomplete="off" aria-label="Search questions">
+        <button class="clear" id="clear" type="button" aria-label="Clear">×</button>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Categories">
+        <button class="tab" role="tab" data-cat="popular" aria-selected="true">Popular</button>
+        <button class="tab" role="tab" data-cat="account" aria-selected="false">Account</button>
+        <button class="tab" role="tab" data-cat="premium" aria-selected="false">PREMIUM</button>
+        <button class="tab" role="tab" data-cat="code" aria-selected="false">Top-up codes</button>
+        <button class="tab" role="tab" data-cat="help" aria-selected="false">Troubleshooting</button>
+        <button class="tab" role="tab" data-cat="cancel" aria-selected="false">Cancel</button>
+        <button class="tab" role="tab" data-cat="general" aria-selected="false">General</button>
+      </div>
+    </div>
+
+    <p class="status" id="status"></p>
+
+    <div class="list" id="list">
+
+      <!-- ===== Account ===== -->
+      <details class="q" id="Register" data-cat="account">
+        <summary><span>How do I create a oneD account?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ol>
+            <li>Open the oneD app or website, tap <span class="ui">Log In</span>, then tap <span class="ui">Create Account</span></li>
+            <li>Sign up with your email (set a password of at least 8 characters) or your phone number (enter the OTP code)</li>
+            <li>Tap <span class="ui">Confirm</span>. You can start watching right away</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="q" id="Signin" data-cat="account">
+        <summary><span>How do I log in?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p>Tap <span class="ui">Log In</span> and use the same method you signed up with: email, phone number, Facebook, Google, Apple or an AIS number.</p>
+          <p class="note">If you log in with a different method from the one you signed up with, it counts as a different account, and you won't see the package you subscribed to.</p>
+        </div>
+      </details>
+
+      <details class="q" id="editprofile" data-cat="account">
+        <summary><span>How do I edit my personal information?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a"><p>Log in, then tap <span class="ui">Profile</span> (top right) › <span class="ui">Edit</span></p></div>
+      </details>
+
+      <details class="q" id="signout" data-cat="account">
+        <summary><span>How do I log out?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a"><p>Tap <span class="ui">Profile</span> (top right) › <span class="ui">Log Out</span>. On the website, tap <span class="ui">OK</span> to confirm.</p></div>
+      </details>
+
+      <!-- ===== PREMIUM ===== -->
+      <details class="q" id="checksubscription" data-cat="premium">
+        <summary><span>How do I check if I have oneD PREMIUM?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p>Tap <span class="ui">Profile</span></p>
+          <ul>
+            <li>You see a <span class="ui">Subscription</span> menu = you have PREMIUM (tap it to see your package)</li>
+            <li>You see a <span class="ui">Subscribe</span> button = you don't have PREMIUM yet</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="q" id="subscription" data-cat="premium">
+        <summary><span>How do I subscribe to oneD PREMIUM?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ol>
+            <li>Log in, then tap <span class="ui">oneD PREMIUM</span> in the top menu</li>
+            <li>Choose a package and tap <span class="ui">Subscribe Now</span></li>
+            <li>Confirm the payment through the App Store or Google Play. PREMIUM starts right away</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="q" id="privilegeonedpremium" data-cat="premium">
+        <summary><span>What do I get with oneD PREMIUM?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ul>
+            <li>No ad breaks, and every episode</li>
+            <li>Full HD 1080p, on up to 2 devices at the same time</li>
+            <li>Cast to your TV with Chromecast and AirPlay</li>
+            <li>oneD Shorts vertical dramas (phones and tablets)</li>
+            <li>Picture in Picture and playback speed control</li>
+          </ul>
+          <p style="font-size:13px;color:var(--text-3)">Terms and conditions as set by the company apply.</p>
+        </div>
+      </details>
+
+      <details class="q" id="watchontv" data-cat="premium" data-popular>
+        <summary><span>How do I watch oneD on TV?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p>You need oneD PREMIUM.</p>
+          <ol>
+            <li>Search for "oneD" in your TV's app store and install it:
+              <ul>
+                <li><b>Android TV / Google TV</b> (Android 9+): Play Store</li>
+                <li><b>Samsung</b> (2019 or newer, Tizen 5.0+): Home › APPS</li>
+                <li><b>LG</b> (webOS 5.0+): LG Content Store</li>
+                <li><b>Apple TV</b> (tvOS 17.6+): App Store</li>
+              </ul>
+            </li>
+            <li>Open the app and scan the QR code on the TV screen with your phone</li>
+            <li>Log in with your PREMIUM account and start watching</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="q" id="ChromecastAirplay" data-cat="premium">
+        <summary><span>How do I cast to my TV with Chromecast or AirPlay?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ol>
+            <li>Connect your phone and TV to the same Wi-Fi, and update the oneD app to the latest version</li>
+            <li>Log in with your PREMIUM account and open what you want to watch</li>
+            <li>Tap <img class="ico" src="https://assets.oned.net/imgs/ic_round-cast.png" alt="Chromecast"> or <img class="ico" src="https://assets.oned.net/imgs/ic_round-airplay.png" alt="AirPlay"> and choose your TV</li>
+          </ol>
+        </div>
+      </details>
+
+      <!-- ===== Top-up codes ===== -->
+      <details class="q" id="Activateonetimecode" data-cat="code" data-popular>
+        <summary><span>How do I redeem a PREMIUM top-up code?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p>Codes can only be redeemed <b>in a web browser</b> (not in the app).</p>
+          <ol>
+            <li>Go to <a href="https://redeem.oned.net">redeem.oned.net</a> and log in<br><span style="color:var(--text-3);font-size:14px">or go to www.oned.net › Profile › Redeem Code</span></li>
+            <li>Enter the code (in capital letters), accept the Terms and Conditions, and tap <span class="ui">Redeem Code</span></li>
+            <li>Once it's redeemed, PREMIUM works on all your devices, including the app</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="q" id="manageonetimecode" data-cat="code">
+        <summary><span>Can I add more codes, or mix codes of different lengths?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p><b>Yes.</b> You can add a code right away, even if you still have days left, and mix 1-, 7- and 30-day codes. The extra days are added to your expiry date.</p>
+          <p class="note warn">You can redeem up to 10 codes per week.</p>
+        </div>
+      </details>
+
+      <details class="q" id="codeexpiry" data-cat="code">
+        <summary><span>Where can I see when my package expires?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a"><p><span class="ui">Profile</span> › <span class="ui">Subscription</span> › see <span class="ui">Renewal Date</span></p></div>
+      </details>
+
+      <details class="q" id="codefailed" data-cat="code" data-popular>
+        <summary><span>My code won't redeem</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ul>
+            <li>The account must <b>not</b> have a monthly/yearly package</li>
+            <li>Enter the code in capital letters only</li>
+            <li>The code hasn't expired, and you haven't redeemed more than 10 codes this week</li>
+          </ul>
+          <p>Still not working? <a href="https://support.oned.net/?lang=en">Contact our team</a> and tell us where you got the code.</p>
+        </div>
+      </details>
+
+      <details class="q" id="codewithrecurring" data-cat="code">
+        <summary><span>I have a monthly/yearly package. Can I redeem a top-up code?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a"><p><b>Not yet.</b> Create a new account for top-up codes, or wait until your current package expires.</p></div>
+      </details>
+
+      <details class="q" id="codetorecurring" data-cat="code">
+        <summary><span>I'm on top-up days. Can I subscribe monthly/yearly?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p>Yes, but we recommend <b>waiting until your top-up days run out</b>.</p>
+          <p class="note warn">If you subscribe while you still have days left, you're charged right away and the remaining days are lost, with no compensation.</p>
+        </div>
+      </details>
+
+      <!-- ===== Troubleshooting ===== -->
+      <details class="q" id="technicalissue" data-cat="help" data-popular>
+        <summary><span>Video is buffering, freezing or won't play</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ol>
+            <li>Update the oneD app to the latest version</li>
+            <li>Check your internet or Wi-Fi connection</li>
+            <li>Close and reopen the app (on the website, refresh the page)</li>
+          </ol>
+          <p>Still not working? <a href="https://support.oned.net/?lang=en">Contact our team</a></p>
+        </div>
+      </details>
+
+      <details class="q" id="signinissue" data-cat="help" data-popular>
+        <summary><span>I can't log in</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ol>
+            <li>Use the same log-in method you signed up with, and check your email and password</li>
+            <li>If you use Facebook, Google or Apple, check that the account isn't suspended</li>
+            <li>Update the app to the latest version and reopen it</li>
+          </ol>
+          <p>Still can't log in? <a href="https://support.oned.net/?lang=en">Contact our team</a></p>
+        </div>
+      </details>
+
+      <details class="q" id="premiumnotreceived" data-cat="help" data-popular>
+        <summary><span>I paid, but I don't have PREMIUM yet</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ol>
+            <li>Check you're logged in with the account you subscribed with</li>
+            <li>Check that the payment went through</li>
+            <li>Still no PREMIUM? <a href="https://support.oned.net/?lang=en">Contact our team</a> with a screenshot of the receipt email from Apple or Google Play</li>
+          </ol>
+        </div>
+      </details>
+
+      <!-- ===== Cancel ===== -->
+      <details class="q" id="unsubscribe" data-cat="cancel" data-popular>
+        <summary><span>Cancel a package bought on iPhone / iPad</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p><span class="ui">Settings</span> › your name › <span class="ui">Subscriptions</span> › oneD › <span class="ui">Cancel Subscription</span></p>
+        </div>
+      </details>
+
+      <details class="q" id="unsubscribeandroid" data-cat="cancel">
+        <summary><span>Cancel a package bought on Android</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p><span class="ui">Google Play</span> › your profile picture › <span class="ui">Payments &amp; Subscriptions</span> › <span class="ui">Subscriptions</span> › oneD › <span class="ui">Cancel Subscription</span></p>
+        </div>
+      </details>
+
+      <details class="q" id="unsubscribeais" data-cat="cancel">
+        <summary><span>Cancel a package bought through AIS</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p><b>myAIS app:</b> <span class="ui">Package</span> › <span class="ui">Add-on Packages</span> or <span class="ui">Additional Services</span> › oneD › <span class="ui">Cancel Package</span></p>
+          <p><b>Or call AIS Call Center 1175</b> and ask to cancel the oneD service billed to AIS.</p>
+        </div>
+      </details>
+
+      <details class="q" id="unsubscribedaypass" data-cat="cancel">
+        <summary><span>Can I cancel top-up days?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a"><p>There's nothing to cancel: top-up days are never charged automatically. When they run out, you go back to watching with ads. (You can't cancel before they expire.)</p></div>
+      </details>
+
+      <!-- ===== General ===== -->
+      <details class="q" id="servicearea" data-cat="general">
+        <summary><span>Can I use oneD outside Thailand?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a"><p>oneD works in Thailand and in some other countries, depending on licensing. What you can watch may differ by country. Live TV is only available in Thailand.</p></div>
+      </details>
+    </div>
+
+    <div class="empty" id="empty">No questions match your search</div>
+
+    <a class="contact" href="https://support.oned.net/?lang=en">
+      <div><b>Still need help?</b>Mon–Fri 10:00–19:00 · support@oned.net</div>
+      <span class="go">Contact Us</span>
+    </a>
+  </div>
+
+  <script>
+    (function () {
+      var root = document.documentElement;
+      var top = document.getElementById('top');
+      var items = [].slice.call(document.querySelectorAll('.q'));
+      var tabs = [].slice.call(document.querySelectorAll('.tab'));
+      var input = document.getElementById('search');
+      var status = document.getElementById('status');
+      var empty = document.getElementById('empty');
+      var list = document.getElementById('list');
+      var cat = 'popular';
+      var names = {}; tabs.forEach(function (t) { names[t.dataset.cat] = t.textContent; });
+
+      function inCat(item, c) { return c === 'popular' ? item.hasAttribute('data-popular') : item.dataset.cat === c; }
+      function norm(s) { return (s || '').toLowerCase().replace(/\s+/g, ''); }
+      items.forEach(function (i) { i._t = norm(i.textContent); });
+
+      function render() {
+        var q = norm(input.value), n = 0;
+        root.classList.toggle('searching', !!q);
+        items.forEach(function (i) {
+          var show = q ? i._t.indexOf(q) !== -1 : inCat(i, cat);
+          i.hidden = !show; if (show) n++;
+        });
+        // fix divider on first visible item
+        var first = true;
+        items.forEach(function (i) { if (!i.hidden) { i.style.borderTop = first ? '0' : ''; first = false; } });
+        list.hidden = n === 0;
+        empty.classList.toggle('show', n === 0);
+        status.textContent = (q ? '' : names[cat] + ' · ') + n + (n === 1 ? ' question' : ' questions') + (q ? ' found' : '');
+      }
+
+      function selectTab(c) {
+        cat = c;
+        tabs.forEach(function (t) { t.setAttribute('aria-selected', String(t.dataset.cat === c)); });
+        items.forEach(function (i) { i.open = false; });
+        render();
+      }
+      tabs.forEach(function (t) {
+        t.addEventListener('click', function () {
+          input.value = '';
+          selectTab(t.dataset.cat);
+          window.scrollTo(0, 0);
+          t.scrollIntoView({ inline: 'center', block: 'nearest' });
+        });
+      });
+
+      input.addEventListener('input', render);
+      input.addEventListener('keydown', function (e) { if (e.key === 'Enter') input.blur(); });
+      document.getElementById('clear').addEventListener('click', function () { input.value = ''; render(); input.focus(); });
+
+      // One answer open at a time; keep the opened question visible below the sticky bar
+      items.forEach(function (i) {
+        i.addEventListener('toggle', function () {
+          if (!i.open) return;
+          items.forEach(function (o) { if (o !== i) o.open = false; });
+          requestAnimationFrame(function () {
+            var y = i.getBoundingClientRect().top;
+            if (y < top.offsetHeight) window.scrollBy(0, y - top.offsetHeight - 8);
+          });
+        });
+      });
+
+      // Deep links (#Register, #unsubscribe, ...) switch to the right tab and open the answer
+      function openHash() {
+        var el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+        if (!el || !el.classList.contains('q')) return;
+        input.value = '';
+        selectTab(inCat(el, cat) ? cat : el.dataset.cat);
+        el.open = true;
+        requestAnimationFrame(function () {
+          window.scrollTo(0, el.getBoundingClientRect().top + window.pageYOffset - top.offsetHeight - 8);
+        });
+      }
+      window.addEventListener('hashchange', openHash);
+      render();
+      openHash();
+    })();
+  </script>
+</body>
+</html>

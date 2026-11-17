@@ -20,6 +20,7 @@ FAQ page (assets.oned.net)  --POST /chat-->  API Gateway  -->  Lambda  -->  Clau
 | `src/grounding.mjs` | The FAQ-only guardrail (see below) |
 | `web/nongdee.js` | The chat widget the FAQ page loads |
 | `web/faq-th-beta.html` | The new FAQ page with the widget included |
+| `web/faq-en-beta.html` | The new FAQ page in English (same question ids as the Thai page) |
 | `web/support-index.html` | The new support form (reads `?issue=` from น้องดี's handoff) |
 | `test/local-test.mjs` | Local tests with a fake Claude API (`npm test`) |
 | `index.html`, `preview/`, `scripts/build-preview.mjs` | GitHub Pages preview (see below) |
@@ -48,6 +49,7 @@ GitHub Pages serves this repo from `main` at **https://kiki057.github.io/oned-no
 | --- | --- |
 | `/` (`index.html`) | Start page with links |
 | `/preview/faq.html` | The new FAQ. "ติดต่อเรา" links go to the preview form, not the live site |
+| `/preview/faq-en.html` | The new FAQ in English (same questions and links; no assistant yet) |
 | `/preview/support.html` | The new support form. It checks the form but sends nothing |
 
 The preview pages are generated from `web/`. After changing anything in `web/`, rebuild them and commit:
