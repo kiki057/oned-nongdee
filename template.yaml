@@ -8,6 +8,11 @@ Parameters:
     Default: claude-haiku-5-5
     AllowedValues: [claude-haiku-5-5, claude-sonnet-5-5]
     Description: Claude model to answer with
+  Verify:
+    Type: String
+    Default: 'on'
+    AllowedValues: ['on', 'off']
+    Description: Second Claude call that checks each answer against the cited FAQ entries (safer, a little slower)
   FaqUrl:
     Type: String
     Default: https://assets.oned.net/doc/faq-th-beta.html
@@ -64,6 +69,7 @@ Resources:
       Environment:
         Variables:
           MODEL: !Ref Model
+          VERIFY: !Ref Verify
           FAQ_URL: !Ref FaqUrl
           ALLOWED_ORIGINS: !Join [',', !Ref AllowedOrigins]
           ANTHROPIC_SECRET_ARN: !Ref AnthropicKeySecret

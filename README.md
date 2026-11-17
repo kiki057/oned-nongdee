@@ -17,11 +17,28 @@ FAQ page (assets.oned.net)  --POST /chat-->  API Gateway  -->  Lambda  -->  Clau
 | `src/handler.mjs` | The chat API: `POST /chat` and `POST /feedback` |
 | `src/prompt.mjs` | น้องดี's rules and the support-form issue list. **Edit her behaviour here** |
 | `src/faq.mjs` | Reads the FAQ entries from the FAQ page (cached 10 minutes) |
+| `src/grounding.mjs` | The FAQ-only guardrail (see below) |
 | `web/nongdee.js` | The chat widget the FAQ page loads |
 | `web/faq-th-beta.html` | The new FAQ page with the widget included |
 | `web/support-index.html` | The new support form (reads `?issue=` from น้องดี's handoff) |
 | `test/local-test.mjs` | Local tests with a fake Claude API (`npm test`) |
 | `index.html`, `preview/`, `scripts/build-preview.mjs` | GitHub Pages preview (see below) |
+
+## FAQ-only guardrail
+
+น้องดี may only say what the FAQ says. Her instructions ask for that, but instructions alone aren't a guarantee, so every reply is also checked **in code** before it reaches the user:
+
+| Check | What fails it |
+| --- | --- |
+| Cites the FAQ | No valid FAQ entry cited |
+| Quotes match | Her "evidence" quotes aren't word for word in the entries she cited |
+| Facts match | A link, a number (2+ digits) or a "quoted" button name in the answer isn't in the cited entries |
+| Fixed refusals | "Not in the FAQ" and off-topic replies always use fixed wording, so nothing can slip in there |
+| Second opinion (`Verify=on`, the default) | A separate Claude call reads only the cited entries and the answer, and finds a statement they don't support. If this check can't run, the answer is blocked |
+
+A reply that fails is replaced with: "ขออภัยค่ะ น้องดีไม่แน่ใจคำตอบนี้…", plus links to the related FAQ entries and the handoff button. In CloudWatch the turn is logged with `"guardrail": "blocked"`, the reasons, and what the model tried to say, so CS can spot gaps in the FAQ.
+
+The second opinion adds one short, cheap call (Haiku) per answer. To turn it off: `sam deploy --parameter-overrides Verify=off`.
 
 ## Try it on GitHub Pages
 
@@ -135,6 +152,7 @@ To try it inside the oneD app, point a test build's FAQ link at `faq-th-beta.htm
 | Update an answer | Edit the FAQ page. น้องดี picks it up within 10 minutes |
 | Switch model | `sam deploy --parameter-overrides Model=claude-sonnet-5-5` (keep the other parameters) |
 | Read conversations | CloudWatch log group in the stack outputs. Each turn is one `chat_turn` line; thumbs are `feedback` lines |
+| Find blocked answers | CloudWatch Logs Insights: `filter guardrail = "blocked" \| fields user, blocked_reasons, blocked_answer` |
 | Raise limits after the pilot | `ThrottleRatePerSecond` / `ThrottleBurst` parameters |
 | Turn the bot off | Remove the `<script src="nongdee.js">` line from the page, or delete the stack |
 

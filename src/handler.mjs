@@ -6,9 +6,12 @@
 import { randomUUID } from 'node:crypto';
 import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import { loadFaq } from './faq.mjs';
-import { RULES, ISSUES, STATUSES } from './prompt.mjs';
+import { RULES, VERIFY_RULES, ISSUES, STATUSES } from './prompt.mjs';
+import { ground, unsure, lang } from './grounding.mjs';
 
 const MODEL = process.env.MODEL || 'claude-haiku-5-5';
+const VERIFY = (process.env.VERIFY || 'on') === 'on';
+const VERIFY_MODEL = process.env.VERIFY_MODEL || 'claude-haiku-5-5';
 const FAQ_URL = process.env.FAQ_URL || 'https://assets.oned.net/doc/faq-th-beta.html';
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '').split(',').map((s) => s.trim()).filter(Boolean);
 const MAX_TURNS = 10;
@@ -80,11 +83,11 @@ export function clean(v, faqIds) {
   let status = STATUSES.includes(v.status) ? v.status : 'not_in_faq';
   const sources = (Array.isArray(v.sources) ? v.sources : []).filter((id) => faqIds.has(id)).slice(0, 3);
   const answer = typeof v.answer === 'string' && v.answer.trim() ? v.answer.trim().slice(0, 1200) : 'ขออภัยค่ะ ตอนนี้น้องดียังตอบคำถามนี้ไม่ได้';
-  if (status === 'answered' && !sources.length) status = 'partial';
   let handoff_issue = ISSUES.includes(v.handoff_issue) ? v.handoff_issue : null;
   if (status === 'not_in_faq' && !handoff_issue) handoff_issue = ISSUES[ISSUES.length - 1];
   const suggestions = (Array.isArray(v.suggestions) ? v.suggestions : []).filter((x) => typeof x === 'string' && x.length < 60).slice(0, 2);
-  return { answer, sources, status, handoff_issue, suggestions };
+  const evidence = (Array.isArray(v.evidence) ? v.evidence : []).filter((x) => typeof x === 'string').slice(0, 5);
+  return { answer, sources, status, handoff_issue, suggestions, evidence };
 }
 
 function parseJson(text) {
@@ -93,26 +96,39 @@ function parseJson(text) {
   try { return JSON.parse(text.slice(a, b + 1)); } catch { return null; }
 }
 
-async function askClaude(messages, faq) {
+async function callClaude(model, system, messages, maxTokens) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'x-api-key': await apiKey(), 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
-    body: JSON.stringify({
-      model: MODEL,
-      max_tokens: 800,
-      system: [
-        { type: 'text', text: RULES },
-        // The FAQ is the same on every call: cache it to cut cost and latency.
-        { type: 'text', text: 'FAQ ENTRIES (Thai):\n' + JSON.stringify(faq), cache_control: { type: 'ephemeral' } },
-      ],
-      messages,
-    }),
+    body: JSON.stringify({ model, max_tokens: maxTokens, system, messages }),
     signal: AbortSignal.timeout(25000),
   });
   if (!res.ok) throw Object.assign(new Error(`Anthropic API ${res.status}: ${(await res.text()).slice(0, 300)}`), { upstream: res.status });
   const data = await res.json();
   const text = (data.content || []).filter((b) => b.type === 'text').map((b) => b.text).join('');
   return { parsed: parseJson(text), usage: data.usage, stop: data.stop_reason };
+}
+
+function askClaude(messages, faq) {
+  return callClaude(MODEL, [
+    { type: 'text', text: RULES },
+    // The FAQ is the same on every call: cache it to cut cost and latency.
+    { type: 'text', text: 'FAQ ENTRIES (Thai):\n' + JSON.stringify(faq), cache_control: { type: 'ephemeral' } },
+  ], messages, 900);
+}
+
+// Second opinion: does the answer say anything the cited FAQ entries don't? Fails closed.
+async function verify(answer, cited) {
+  try {
+    const { parsed } = await callClaude(VERIFY_MODEL, VERIFY_RULES, [{
+      role: 'user',
+      content: 'FAQ ENTRIES:\n' + JSON.stringify(cited) + '\n\nANSWER:\n' + answer,
+    }], 300);
+    if (parsed && typeof parsed.supported === 'boolean') return { ok: parsed.supported, unsupported: Array.isArray(parsed.unsupported) ? parsed.unsupported.slice(0, 5) : [] };
+    return { ok: false, unsupported: ['verifier_unreadable'] };
+  } catch (e) {
+    return { ok: false, unsupported: ['verifier_error: ' + String(e.message || e).slice(0, 80)] };
+  }
 }
 
 // ---------- Handler ----------
@@ -154,13 +170,28 @@ export async function handler(event) {
   const started = Date.now();
   try {
     const faq = await loadFaq(FAQ_URL);
-    const ids = new Set(faq.map((f) => f.id));
+    const byId = Object.fromEntries(faq.map((f) => [f.id, f]));
+    const ids = new Set(Object.keys(byId));
+    const userText = messages[messages.length - 1].content;
     const { parsed, usage, stop } = await askClaude(messages, faq);
-    const out = clean(parsed, ids);
+    const modelReply = clean(parsed, ids);
+
+    // FAQ-only guardrail (grounding.mjs), then the optional second opinion
+    let { reply: out, check } = ground(modelReply, byId, userText, ISSUES[ISSUES.length - 1]);
+    if (check.ok && VERIFY && (out.status === 'answered' || out.status === 'partial')) {
+      const v = await verify(out.answer, out.sources.map((id) => byId[id]));
+      if (!v.ok) {
+        check = { ok: false, reasons: v.unsupported.map((u) => 'verifier: ' + u) };
+        out = unsure(out, lang(userText), ISSUES[ISSUES.length - 1]);
+      }
+    }
+
     console.log(JSON.stringify({
       type: 'chat_turn', chatId, platform, model: MODEL, turn: messages.filter((m) => m.role === 'user').length,
-      user: messages[messages.length - 1].content, answer: out.answer, status: out.status, sources: out.sources,
-      handoff_issue: out.handoff_issue, parsed_ok: !!parsed, stop, latency_ms: Date.now() - started, usage,
+      user: userText, answer: out.answer, status: out.status, sources: out.sources, handoff_issue: out.handoff_issue,
+      guardrail: check.ok ? (check.fixed ? 'fixed_text' : 'pass') : 'blocked', blocked_reasons: check.reasons,
+      blocked_answer: check.ok ? undefined : modelReply.answer, verify: VERIFY,
+      parsed_ok: !!parsed, stop, latency_ms: Date.now() - started, usage,
     }));
     return reply(200, { chatId, ...out }, corsOrigin);
   } catch (err) {
