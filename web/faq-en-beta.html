@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FAQ | oneD</title>
+  <title>คำถามที่พบบ่อย | oneD</title>
   <meta name="robots" content="noindex">
-  <meta name="description" content="Frequently asked questions about using oneD">
+  <meta name="description" content="คำถามที่พบบ่อยเกี่ยวกับการใช้งาน oneD">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
@@ -103,32 +103,267 @@
     .contact div b { display: block; font-size: 15px; }
     .contact .go { flex: none; height: 40px; padding: 0 16px; border-radius: 99px; background: var(--pink); color: #fff; display: inline-flex; align-items: center; font-size: 14px; }
 
+    .titlebar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 4px 0 10px; }
+    .titlebar h1 { margin: 0; }
+    .lang { flex: none; display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 99px; padding: 2px; }
+    .lang button { font: inherit; font-size: 13px; font-weight: 400; color: var(--text-2); background: none; border: 0; border-radius: 99px; height: 30px; min-width: 40px; padding: 0 12px; cursor: pointer; }
+    .lang button[aria-pressed="true"] { background: var(--pink); color: #fff; }
+
     [hidden] { display: none !important; }
   </style>
 </head>
 <body>
   <div class="page">
     <div class="top" id="top">
-      <h1>Frequently asked questions</h1>
+      <div class="titlebar">
+        <h1 id="title">คำถามที่พบบ่อย</h1>
+        <div class="lang" role="group" aria-label="ภาษา / Language">
+          <button type="button" data-lang="th" aria-pressed="true" lang="th">TH</button>
+          <button type="button" data-lang="en" aria-pressed="false" lang="en">EN</button>
+        </div>
+      </div>
       <div class="search">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        <input id="search" type="search" enterkeyhint="search" placeholder="Search, e.g. code, cancel, TV" autocomplete="off" aria-label="Search questions">
-        <button class="clear" id="clear" type="button" aria-label="Clear">×</button>
+        <input id="search" type="search" enterkeyhint="search" placeholder="ค้นหา เช่น แลกโค้ด, ยกเลิก, ทีวี" autocomplete="off" aria-label="ค้นหาคำถาม">
+        <button class="clear" id="clear" type="button" aria-label="ล้าง">×</button>
       </div>
-      <div class="tabs" role="tablist" aria-label="Categories">
-        <button class="tab" role="tab" data-cat="popular" aria-selected="true">Popular</button>
-        <button class="tab" role="tab" data-cat="account" aria-selected="false">Account</button>
+      <div class="tabs" role="tablist" aria-label="หมวดหมู่">
+        <button class="tab" role="tab" data-cat="popular" aria-selected="true">ยอดนิยม</button>
+        <button class="tab" role="tab" data-cat="account" aria-selected="false">บัญชี</button>
         <button class="tab" role="tab" data-cat="premium" aria-selected="false">PREMIUM</button>
-        <button class="tab" role="tab" data-cat="code" aria-selected="false">Top-up codes</button>
-        <button class="tab" role="tab" data-cat="help" aria-selected="false">Troubleshooting</button>
-        <button class="tab" role="tab" data-cat="cancel" aria-selected="false">Cancel</button>
-        <button class="tab" role="tab" data-cat="general" aria-selected="false">General</button>
+        <button class="tab" role="tab" data-cat="code" aria-selected="false">โค้ดเติมวัน</button>
+        <button class="tab" role="tab" data-cat="help" aria-selected="false">แก้ปัญหา</button>
+        <button class="tab" role="tab" data-cat="cancel" aria-selected="false">ยกเลิก</button>
+        <button class="tab" role="tab" data-cat="general" aria-selected="false">ทั่วไป</button>
       </div>
     </div>
 
     <p class="status" id="status"></p>
 
     <div class="list" id="list">
+
+      <!-- ===== บัญชี ===== -->
+      <details class="q" id="Register" data-cat="account">
+        <summary><span>สร้างบัญชี oneD ได้อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ol>
+            <li>เปิดแอปหรือเว็บไซต์ oneD กด <span class="ui">เข้าสู่ระบบ</span> แล้วกด <span class="ui">สร้างบัญชี</span></li>
+            <li>สมัครด้วยอีเมล (ตั้งรหัสผ่านอย่างน้อย 8 ตัวอักษร) หรือเบอร์โทรศัพท์ (กรอกรหัส OTP)</li>
+            <li>กด <span class="ui">ยืนยัน</span> เท่านี้ก็เริ่มดูได้เลย</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="q" id="Signin" data-cat="account">
+        <summary><span>เข้าสู่ระบบได้อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p>กด <span class="ui">เข้าสู่ระบบ</span> แล้วเลือกวิธีเดียวกับที่ใช้ตอนสมัคร: อีเมล, เบอร์โทรศัพท์, Facebook, Google, Apple หรือเบอร์ AIS</p>
+          <p class="note">ถ้าใช้วิธีเข้าสู่ระบบต่างจากตอนสมัคร ระบบจะมองเป็นคนละบัญชี และจะไม่เห็นแพ็กเกจที่สมัครไว้</p>
+        </div>
+      </details>
+
+      <details class="q" id="editprofile" data-cat="account">
+        <summary><span>แก้ไขข้อมูลส่วนตัวได้อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a"><p>เข้าสู่ระบบ แล้วกด <span class="ui">โปรไฟล์</span> (มุมขวาบน) › <span class="ui">แก้ไข</span></p></div>
+      </details>
+
+      <details class="q" id="signout" data-cat="account">
+        <summary><span>ออกจากระบบได้อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a"><p>กด <span class="ui">โปรไฟล์</span> (มุมขวาบน) › <span class="ui">ออกจากระบบ</span> บนเว็บไซต์ให้กด <span class="ui">ตกลง</span> อีกครั้งเพื่อยืนยัน</p></div>
+      </details>
+
+      <!-- ===== PREMIUM ===== -->
+      <details class="q" id="checksubscription" data-cat="premium">
+        <summary><span>ตรวจสอบว่าเป็น oneD PREMIUM แล้วหรือยัง</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p>กด <span class="ui">โปรไฟล์</span></p>
+          <ul>
+            <li>เห็นเมนู <span class="ui">การสมัครสมาชิก</span> = เป็น PREMIUM แล้ว (กดเข้าไปดูแพ็กเกจได้)</li>
+            <li>เห็นปุ่ม <span class="ui">สมัครสมาชิก</span> = ยังไม่เป็น PREMIUM</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="q" id="subscription" data-cat="premium">
+        <summary><span>สมัคร oneD PREMIUM ได้อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ol>
+            <li>เข้าสู่ระบบ แล้วกดเมนูด้านบน › <span class="ui">วันดี พรีเมี่ยม</span></li>
+            <li>เลือกแพ็กเกจ แล้วกด <span class="ui">สมัครเลย</span></li>
+            <li>ยืนยันการชำระเงินผ่าน App Store หรือ Google Play ดูแบบ PREMIUM ได้ทันที</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="q" id="privilegeonedpremium" data-cat="premium">
+        <summary><span>oneD PREMIUM ได้อะไรบ้าง</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ul>
+            <li>ไม่มีโฆษณาคั่น และดูได้ครบทุกตอน</li>
+            <li>ภาพ Full HD 1080p และดูพร้อมกันได้ 2 อุปกรณ์</li>
+            <li>ส่งขึ้นทีวีผ่าน Chromecast และ AirPlay</li>
+            <li>ละครแนวตั้ง oneD Shorts (มือถือและแท็บเล็ต)</li>
+            <li>Picture in Picture และปรับความเร็ววิดีโอ</li>
+          </ul>
+          <p style="font-size:13px;color:var(--text-3)">เงื่อนไขเป็นไปตามที่บริษัทกำหนด</p>
+        </div>
+      </details>
+
+      <details class="q" id="watchontv" data-cat="premium" data-popular>
+        <summary><span>ดู oneD บนทีวีได้อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p>ต้องเป็นสมาชิก oneD PREMIUM</p>
+          <ol>
+            <li>ค้นหา "oneD" ใน store ของทีวี แล้วติดตั้ง:
+              <ul>
+                <li><b>Android TV / Google TV</b> (Android 9+): Play Store</li>
+                <li><b>Samsung</b> (ปี 2019+, Tizen 5.0+): Home › APPS</li>
+                <li><b>LG</b> (webOS 5.0+): LG Content Store</li>
+                <li><b>Apple TV</b> (tvOS 17.6+): App Store</li>
+              </ul>
+            </li>
+            <li>เปิดแอป แล้วใช้มือถือสแกน QR Code บนจอทีวี</li>
+            <li>เข้าสู่ระบบด้วยบัญชี PREMIUM เริ่มดูได้เลย</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="q" id="ChromecastAirplay" data-cat="premium">
+        <summary><span>ส่งภาพขึ้นทีวีด้วย Chromecast / AirPlay</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ol>
+            <li>ให้มือถือกับทีวีใช้ Wi-Fi เดียวกัน และอัปเดตแอป oneD เป็นเวอร์ชันล่าสุด</li>
+            <li>เข้าสู่ระบบด้วยบัญชี PREMIUM แล้วเปิดเรื่องที่ต้องการดู</li>
+            <li>กด <img class="ico" src="https://assets.oned.net/imgs/ic_round-cast.png" alt="Chromecast"> หรือ <img class="ico" src="https://assets.oned.net/imgs/ic_round-airplay.png" alt="AirPlay"> แล้วเลือกทีวี</li>
+          </ol>
+        </div>
+      </details>
+
+      <!-- ===== โค้ดเติมวัน ===== -->
+      <details class="q" id="Activateonetimecode" data-cat="code" data-popular>
+        <summary><span>แลกโค้ด PREMIUM แบบเติมวันได้อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p>แลกได้บน<b>เว็บเบราว์เซอร์</b>เท่านั้น (แลกในแอปไม่ได้)</p>
+          <ol>
+            <li>ไปที่ <a href="https://redeem.oned.net">redeem.oned.net</a> แล้วเข้าสู่ระบบ<br><span style="color:var(--text-3);font-size:14px">หรือที่ www.oned.net › โปรไฟล์ › แลกโค้ด</span></li>
+            <li>กรอกโค้ด (ตัวพิมพ์ใหญ่) กดยอมรับข้อกำหนด แล้วกด <span class="ui">แลกโค้ด</span></li>
+            <li>แลกสำเร็จแล้ว ดู PREMIUM ได้ทุกอุปกรณ์ รวมถึงในแอป</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="q" id="manageonetimecode" data-cat="code">
+        <summary><span>เติมโค้ดเพิ่ม หรือใช้โค้ดหลายระยะเวลาได้ไหม</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p><b>ได้</b> เติมได้ทันทีแม้วันเดิมยังเหลือ ใช้โค้ด 1, 7, 30 วันร่วมกันได้ ระบบจะบวกวันเพิ่มให้</p>
+          <p class="note warn">เติมได้ไม่เกิน 10 โค้ดต่อสัปดาห์</p>
+        </div>
+      </details>
+
+      <details class="q" id="codeexpiry" data-cat="code">
+        <summary><span>ดูวันหมดอายุของแพ็กเกจได้ที่ไหน</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a"><p><span class="ui">โปรไฟล์</span> › <span class="ui">การสมัครสมาชิก</span> › ดูที่หัวข้อ <span class="ui">วันที่ต่ออายุ</span></p></div>
+      </details>
+
+      <details class="q" id="codefailed" data-cat="code" data-popular>
+        <summary><span>แลกโค้ดไม่สำเร็จ</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ul>
+            <li>บัญชีที่ใช้ต้อง<b>ไม่มี</b>แพ็กเกจรายเดือน/รายปีอยู่</li>
+            <li>กรอกโค้ดเป็นตัวพิมพ์ใหญ่ทั้งหมด</li>
+            <li>โค้ดยังไม่หมดอายุ และยังไม่เกิน 10 โค้ดต่อสัปดาห์</li>
+          </ul>
+          <p>ยังไม่ได้? <a href="https://support.oned.net/">แจ้งทีมงาน</a> พร้อมบอกว่าได้รับโค้ดจากช่องทางไหน</p>
+        </div>
+      </details>
+
+      <details class="q" id="codewithrecurring" data-cat="code">
+        <summary><span>มีแพ็กเกจรายเดือน/รายปี แลกโค้ดเติมวันได้ไหม</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a"><p><b>ยังไม่ได้</b> ให้สร้างบัญชีใหม่สำหรับโค้ดเติมวัน หรือรอให้แพ็กเกจเดิมหมดอายุก่อน</p></div>
+      </details>
+
+      <details class="q" id="codetorecurring" data-cat="code">
+        <summary><span>ใช้แบบเติมวันอยู่ สมัครรายเดือน/รายปีได้ไหม</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p>ได้ แต่แนะนำให้<b>รอวันเติมหมดก่อน</b></p>
+          <p class="note warn">ถ้าสมัครตอนที่ยังมีวันเหลือ ระบบจะเริ่มเก็บเงินทันที และวันที่เหลือจะหายไปโดยไม่มีการชดเชย</p>
+        </div>
+      </details>
+
+      <!-- ===== แก้ปัญหา ===== -->
+      <details class="q" id="technicalissue" data-cat="help" data-popular>
+        <summary><span>วิดีโอกระตุก ค้าง หรือเล่นไม่ได้</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ol>
+            <li>อัปเดตแอป oneD เป็นเวอร์ชันล่าสุด</li>
+            <li>ตรวจสอบอินเทอร์เน็ตหรือ Wi-Fi</li>
+            <li>ปิดแล้วเปิดแอปใหม่ (บนเว็บให้รีเฟรช)</li>
+          </ol>
+          <p>ยังไม่หาย? <a href="https://support.oned.net/">แจ้งทีมงาน</a></p>
+        </div>
+      </details>
+
+      <details class="q" id="signinissue" data-cat="help" data-popular>
+        <summary><span>เข้าสู่ระบบไม่ได้</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ol>
+            <li>ใช้วิธีเข้าสู่ระบบเดียวกับตอนสมัคร และตรวจสอบอีเมล/รหัสผ่าน</li>
+            <li>ถ้าใช้ Facebook, Google หรือ Apple ตรวจสอบว่าบัญชีนั้นไม่ถูกระงับ</li>
+            <li>อัปเดตแอปเป็นเวอร์ชันล่าสุด แล้วเปิดใหม่</li>
+          </ol>
+          <p>ยังเข้าไม่ได้? <a href="https://support.oned.net/">แจ้งทีมงาน</a></p>
+        </div>
+      </details>
+
+      <details class="q" id="premiumnotreceived" data-cat="help" data-popular>
+        <summary><span>จ่ายเงินแล้ว แต่ยังไม่เป็น PREMIUM</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ol>
+            <li>ตรวจสอบว่าเข้าสู่ระบบด้วยบัญชีเดียวกับที่สมัคร</li>
+            <li>ตรวจสอบว่าถูกหักเงินแล้ว</li>
+            <li>ยังไม่ได้? <a href="https://support.oned.net/">แจ้งทีมงาน</a> พร้อมแคปหน้าจออีเมลใบเสร็จจาก Apple หรือ Google Play</li>
+          </ol>
+        </div>
+      </details>
+
+      <!-- ===== ยกเลิก ===== -->
+      <details class="q" id="unsubscribe" data-cat="cancel" data-popular>
+        <summary><span>ยกเลิกแพ็กเกจที่สมัครผ่าน iPhone / iPad</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p><span class="ui">การตั้งค่า</span> › ชื่อของคุณ › <span class="ui">การสมัครรับ</span> › oneD › <span class="ui">ยกเลิกการสมัครรับ</span></p>
+        </div>
+      </details>
+
+      <details class="q" id="unsubscribeandroid" data-cat="cancel">
+        <summary><span>ยกเลิกแพ็กเกจที่สมัครผ่าน Android</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p><span class="ui">Google Play</span> › รูปโปรไฟล์ › <span class="ui">การชำระเงินและการสมัครใช้บริการ</span> › <span class="ui">การสมัครใช้บริการ</span> › oneD › <span class="ui">ยกเลิก</span></p>
+        </div>
+      </details>
+
+      <details class="q" id="unsubscribeais" data-cat="cancel">
+        <summary><span>ยกเลิกแพ็กเกจที่สมัครผ่าน AIS</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <p><b>แอป myAIS:</b> <span class="ui">แพ็กเกจ</span> › <span class="ui">แพ็กเกจเสริม</span> หรือ <span class="ui">บริการเสริม</span> › oneD › <span class="ui">ยกเลิกแพ็กเกจ</span></p>
+          <p><b>หรือโทร AIS Call Center 1175</b> แจ้งยกเลิกบริการ oneD ที่ชำระผ่านบิล AIS</p>
+        </div>
+      </details>
+
+      <details class="q" id="unsubscribedaypass" data-cat="cancel">
+        <summary><span>ยกเลิกแบบเติมวันได้ไหม</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a"><p>ไม่ต้องยกเลิก แบบเติมวันไม่ตัดเงินอัตโนมัติ เมื่อครบวันจะกลับเป็นแบบมีโฆษณาเอง (ยกเลิกก่อนครบกำหนดไม่ได้)</p></div>
+      </details>
+
+      <!-- ===== ทั่วไป ===== -->
+      <details class="q" id="servicearea" data-cat="general">
+        <summary><span>ใช้ oneD ในต่างประเทศได้ไหม</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a"><p>ใช้ได้ในไทยและบางประเทศตามลิขสิทธิ์ เรื่องที่ดูได้อาจต่างกันในแต่ละประเทศ ส่วน Live ดูได้เฉพาะในไทย</p></div>
+      </details>
+    </div>
+
+    <!-- English questions: same ids, categories and popular set as the Thai ones above. Swapped in by the TH | EN switch. -->
+    <template id="list-en">
+
 
       <!-- ===== Account ===== -->
       <details class="q" id="Register" data-cat="account">
@@ -347,32 +582,56 @@
         <summary><span>Can I use oneD outside Thailand?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
         <div class="a"><p>oneD works in Thailand and in some other countries, depending on licensing. What you can watch may differ by country. Live TV is only available in Thailand.</p></div>
       </details>
-    </div>
+    </template>
 
-    <div class="empty" id="empty">No questions match your search</div>
+    <div class="empty" id="empty">ไม่พบคำถามที่ตรงกับคำค้นหา</div>
 
-    <a class="contact" href="https://support.oned.net/?lang=en">
-      <div><b>Still need help?</b>Mon–Fri 10:00–19:00 · support@oned.net</div>
-      <span class="go">Contact Us</span>
+    <a class="contact" id="contact" href="https://support.oned.net/">
+      <div><b id="still">ยังไม่เจอคำตอบ?</b><span id="hours">จ.–ศ. 10:00–19:00 · support@oned.net</span></div>
+      <span class="go" id="contactGo">ติดต่อเรา</span>
     </a>
   </div>
 
   <script>
     (function () {
+      // ---------- Language ----------
+      // ?lang=en|th wins; otherwise the file name decides (faq-en.html -> English); otherwise Thai.
+      // So the same file can be uploaded as both faq-th.html and faq-en.html.
+      var T = {
+        th: {
+          page: 'คำถามที่พบบ่อย | oneD', title: 'คำถามที่พบบ่อย',
+          ph: 'ค้นหา เช่น แลกโค้ด, ยกเลิก, ทีวี', search: 'ค้นหาคำถาม', clear: 'ล้าง', cats: 'หมวดหมู่',
+          tabs: { popular: 'ยอดนิยม', account: 'บัญชี', premium: 'PREMIUM', code: 'โค้ดเติมวัน', help: 'แก้ปัญหา', cancel: 'ยกเลิก', general: 'ทั่วไป' },
+          empty: 'ไม่พบคำถามที่ตรงกับคำค้นหา', still: 'ยังไม่เจอคำตอบ?', hours: 'จ.–ศ. 10:00–19:00 · support@oned.net', contact: 'ติดต่อเรา',
+          support: 'https://support.oned.net/',
+          count: function (n, q, name) { return q ? 'พบ ' + n + ' คำถาม' : name + ' · ' + n + ' คำถาม'; }
+        },
+        en: {
+          page: 'FAQ | oneD', title: 'FAQ',
+          ph: 'Search, e.g. code, cancel, TV', search: 'Search questions', clear: 'Clear', cats: 'Categories',
+          tabs: { popular: 'Popular', account: 'Account', premium: 'PREMIUM', code: 'Top-up codes', help: 'Troubleshooting', cancel: 'Cancel', general: 'General' },
+          empty: 'No questions match your search', still: 'Still need help?', hours: 'Mon–Fri 10:00–19:00 · support@oned.net', contact: 'Contact Us',
+          support: 'https://support.oned.net/?lang=en',
+          count: function (n, q, name) { return (q ? '' : name + ' · ') + n + (n === 1 ? ' question' : ' questions') + (q ? ' found' : ''); }
+        }
+      };
+
       var root = document.documentElement;
       var top = document.getElementById('top');
-      var items = [].slice.call(document.querySelectorAll('.q'));
       var tabs = [].slice.call(document.querySelectorAll('.tab'));
+      var langBtns = [].slice.call(document.querySelectorAll('.lang button'));
       var input = document.getElementById('search');
       var status = document.getElementById('status');
       var empty = document.getElementById('empty');
       var list = document.getElementById('list');
-      var cat = 'popular';
-      var names = {}; tabs.forEach(function (t) { names[t.dataset.cat] = t.textContent; });
+      var LISTS = { th: list.innerHTML, en: document.getElementById('list-en').innerHTML };
+      // Keep the Thai questions readable for other scripts (e.g. the assistant) while English is shown
+      var thTpl = document.createElement('template'); thTpl.id = 'list-th'; thTpl.innerHTML = LISTS.th;
+      list.parentNode.insertBefore(thTpl, list.nextSibling);
+      var items = [], cat = 'popular', lang = 'th';
 
       function inCat(item, c) { return c === 'popular' ? item.hasAttribute('data-popular') : item.dataset.cat === c; }
       function norm(s) { return (s || '').toLowerCase().replace(/\s+/g, ''); }
-      items.forEach(function (i) { i._t = norm(i.textContent); });
 
       function render() {
         var q = norm(input.value), n = 0;
@@ -386,8 +645,51 @@
         items.forEach(function (i) { if (!i.hidden) { i.style.borderTop = first ? '0' : ''; first = false; } });
         list.hidden = n === 0;
         empty.classList.toggle('show', n === 0);
-        status.textContent = (q ? '' : names[cat] + ' · ') + n + (n === 1 ? ' question' : ' questions') + (q ? ' found' : '');
+        status.textContent = T[lang].count(n, q, T[lang].tabs[cat]);
       }
+
+      // One answer open at a time; keep the opened question visible below the sticky bar
+      function onToggle(e) {
+        var i = e.currentTarget;
+        if (!i.open) return;
+        items.forEach(function (o) { if (o !== i) o.open = false; });
+        requestAnimationFrame(function () {
+          var y = i.getBoundingClientRect().top;
+          if (y < top.offsetHeight) window.scrollBy(0, y - top.offsetHeight - 8);
+        });
+      }
+      function bind() {
+        items = [].slice.call(list.querySelectorAll('.q'));
+        items.forEach(function (i) { i._t = norm(i.textContent); i.addEventListener('toggle', onToggle); });
+      }
+
+      function setLang(l, fromSwitch) {
+        var open = items.filter(function (i) { return i.open; })[0];
+        var openId = open && open.id;
+        lang = l;
+        var t = T[l];
+        root.lang = l;
+        document.title = t.page;
+        if (fromSwitch) input.value = ''; // a search word in one language won't match the other
+        if (list.dataset.lang !== l) { list.innerHTML = LISTS[l]; list.dataset.lang = l; bind(); }
+        document.getElementById('title').textContent = t.title;
+        input.placeholder = t.ph; input.setAttribute('aria-label', t.search);
+        document.getElementById('clear').setAttribute('aria-label', t.clear);
+        document.querySelector('.tabs').setAttribute('aria-label', t.cats);
+        tabs.forEach(function (b) { b.textContent = t.tabs[b.dataset.cat]; });
+        langBtns.forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lang === l)); });
+        empty.textContent = t.empty;
+        document.getElementById('still').textContent = t.still;
+        document.getElementById('hours').textContent = t.hours;
+        document.getElementById('contactGo').textContent = t.contact;
+        document.getElementById('contact').href = t.support;
+        render();
+        if (openId) { var el = document.getElementById(openId); if (el && !el.hidden) el.open = true; }
+        if (fromSwitch) {
+          try { var u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u); } catch (e) {}
+        }
+      }
+      langBtns.forEach(function (b) { b.addEventListener('click', function () { if (b.dataset.lang !== lang) setLang(b.dataset.lang, true); }); });
 
       function selectTab(c) {
         cat = c;
@@ -408,18 +710,6 @@
       input.addEventListener('keydown', function (e) { if (e.key === 'Enter') input.blur(); });
       document.getElementById('clear').addEventListener('click', function () { input.value = ''; render(); input.focus(); });
 
-      // One answer open at a time; keep the opened question visible below the sticky bar
-      items.forEach(function (i) {
-        i.addEventListener('toggle', function () {
-          if (!i.open) return;
-          items.forEach(function (o) { if (o !== i) o.open = false; });
-          requestAnimationFrame(function () {
-            var y = i.getBoundingClientRect().top;
-            if (y < top.offsetHeight) window.scrollBy(0, y - top.offsetHeight - 8);
-          });
-        });
-      });
-
       // Deep links (#Register, #unsubscribe, ...) switch to the right tab and open the answer
       function openHash() {
         var el = document.getElementById(decodeURIComponent(location.hash.slice(1)));
@@ -432,9 +722,20 @@
         });
       }
       window.addEventListener('hashchange', openHash);
-      render();
+
+      var start = 'th';
+      try {
+        var q = new URLSearchParams(location.search).get('lang');
+        if (q === 'en' || q === 'th') start = q;
+        else if (/-en(\.html?)?$/i.test(location.pathname)) start = 'en';
+      } catch (e) {}
+      list.dataset.lang = 'th';
+      bind();
+      setLang(start, false);
       openHash();
     })();
   </script>
+  <!-- น้องดี assistant: set data-endpoint to the ApiUrl output of the AWS stack -->
+  <script src="nongdee.js" data-endpoint="https://YOUR-API-ID.execute-api.ap-southeast-1.amazonaws.com" data-support-url="https://support.oned.net/" defer></script>
 </body>
 </html>

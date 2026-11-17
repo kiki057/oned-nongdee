@@ -45,6 +45,8 @@ const test = async (name, fn) => { try { await fn(); results.push(['PASS', name]
 await test('parses every FAQ question from the page', async () => {
   const faq = parseFaq(faqHtml);
   assert.ok(faq.length >= 20, 'only ' + faq.length);
+  assert.equal(new Set(faq.map((f) => f.id)).size, faq.length, 'no duplicate ids (English template skipped)');
+  assert.ok(/[\u0E00-\u0E7F]/.test(faq[0].question), 'Thai questions');
   const code = faq.find((f) => f.id === 'Activateonetimecode');
   assert.ok(code && code.answer.includes('redeem.oned.net') && code.answer.includes('\n- '));
 });

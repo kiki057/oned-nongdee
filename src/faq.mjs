@@ -21,6 +21,8 @@ export async function loadFaq(url) {
 
 export function parseFaq(html) {
   const out = [];
+  // The FAQ page carries the English questions in a <template> for its TH | EN switch: read only the Thai ones.
+  html = html.replace(/<template\b[\s\S]*?<\/template>/gi, '');
   const re = /<details\b([^>]*)>([\s\S]*?)<\/details>/gi;
   let m;
   while ((m = re.exec(html))) {

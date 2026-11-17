@@ -103,20 +103,29 @@
     var history = [], chatId = null, busy = false, started = false, turn = 0;
     try { chatId = sessionStorage.getItem('nd-chat') || null; } catch (e) {}
 
-    var titles = {};
-    [].forEach.call(document.querySelectorAll('details.q[id]'), function (q) {
-      var s = q.querySelector('summary span'); if (s) titles[q.id] = s.textContent.trim();
-    });
+    // Titles shown on source chips: whatever language the page shows right now
+    function title(id) {
+      var q = document.getElementById(id), s = q && q.querySelector('summary span');
+      return s ? s.textContent.trim() : '';
+    }
 
     // ---------- Demo mode: closest FAQ entry by character-bigram overlap (works for Thai without word breaks) ----------
-    var FAQ = [].map.call(document.querySelectorAll('details.q[id]'), function (q) {
-      var a = q.querySelector('.a'), c = a ? a.cloneNode(true) : document.createElement('div');
-      [].forEach.call(c.querySelectorAll('li'), function (li) { li.insertBefore(document.createTextNode('\n• '), li.firstChild); });
-      [].forEach.call(c.querySelectorAll('p, h4, br'), function (x) { x.parentNode.insertBefore(document.createTextNode('\n'), x); });
-      [].forEach.call(c.querySelectorAll('img[alt]'), function (i) { i.replaceWith(document.createTextNode(i.alt)); });
-      var answer = c.textContent.split('\n').map(function (l) { return l.replace(/\s+/g, ' ').trim(); }).filter(Boolean).join('\n');
-      return { id: q.id, cat: q.dataset.cat, q: titles[q.id] || '', a: answer };
-    });
+    // Reads every FAQ question on the page, including both languages of a TH | EN page (kept in <template>s).
+    function entriesIn(rootNode) {
+      return [].map.call(rootNode.querySelectorAll('details.q[id]'), function (q) {
+        var a = q.querySelector('.a'), c = a ? a.cloneNode(true) : document.createElement('div');
+        [].forEach.call(c.querySelectorAll('li'), function (li) { li.insertBefore(document.createTextNode('\n• '), li.firstChild); });
+        [].forEach.call(c.querySelectorAll('p, h4, br'), function (x) { x.parentNode.insertBefore(document.createTextNode('\n'), x); });
+        [].forEach.call(c.querySelectorAll('img[alt]'), function (i) { i.replaceWith(document.createTextNode(i.alt)); });
+        var answer = c.textContent.split('\n').map(function (l) { return l.replace(/\s+/g, ' ').trim(); }).filter(Boolean).join('\n');
+        var s = q.querySelector('summary span');
+        return { id: q.id, cat: q.dataset.cat, q: s ? s.textContent.trim() : '', a: answer };
+      });
+    }
+    var FAQ = [], seenKey = {};
+    [].forEach.call(document.querySelectorAll('template'), function (t) { FAQ = FAQ.concat(entriesIn(t.content)); });
+    FAQ = FAQ.concat(entriesIn(document));
+    FAQ = FAQ.filter(function (f) { var k = f.id + '|' + f.q; if (seenKey[k]) return false; seenKey[k] = 1; return true; });
     function grams(s) {
       s = s.toLowerCase().replace(/[^\u0E00-\u0E7Fa-z0-9]+/g, '');
       var g = {}; for (var i = 0; i < s.length - 1; i++) g[s.substr(i, 2)] = 1; return g;
@@ -151,11 +160,12 @@
               status: 'partial', handoff_issue: null, suggestions: [] };
       } else if (!best || best.s < 0.85) {
         r = { answer: 'ขออภัยค่ะ น้องดียังหาคำตอบเรื่องนี้ใน FAQ ไม่เจอ ลองถามด้วยคำอื่น หรือให้ทีมงานช่วยต่อได้นะคะ', sources: [], status: 'not_in_faq',
-              handoff_issue: OTHER, suggestions: ranked.slice(0, 2).map(function (x) { return x.f.q; }) };
+              handoff_issue: OTHER, suggestions: [] };
       } else {
         var lines = best.f.a.split('\n'), body = lines.slice(0, 7).join('\n') + (lines.length > 7 ? '\n…' : '');
-        r = { answer: 'น้องดีเจอคำตอบนี้ใน FAQ ค่ะ\n\n' + body, sources: [best.f.id], status: 'answered',
-              handoff_issue: null, suggestions: ranked.slice(1, 3).filter(function (x) { return x.s >= 0.85; }).map(function (x) { return x.f.q; }) };
+        var more = [], ids = {}; ids[best.f.id] = 1;
+        ranked.slice(1).forEach(function (x) { if (more.length < 2 && x.s >= 0.85 && !ids[x.f.id]) { ids[x.f.id] = 1; more.push(title(x.f.id) || x.f.q); } });
+        r = { answer: 'น้องดีเจอคำตอบนี้ใน FAQ ค่ะ\n\n' + body, sources: [best.f.id], status: 'answered', handoff_issue: null, suggestions: more };
         r.demoIssue = ISSUE_BY_ID[best.f.id] || OTHER;
       }
       r.chatId = 'c_demo';
@@ -191,11 +201,11 @@
     function addBot(r, n) {
       var m = el('div', 'nd-msg nd-bot'), w = el('div', 'nd-wrap');
       w.appendChild(el('div', 'nd-bubble', r.answer));
-      var srcs = (r.sources || []).filter(function (id) { return titles[id]; });
+      var srcs = (r.sources || []).filter(function (id) { return title(id); });
       if (srcs.length) {
         var s = el('div', 'nd-srcs');
         srcs.forEach(function (id) {
-          var c = el('button', 'nd-src', titles[id]); c.type = 'button';
+          var c = el('button', 'nd-src', title(id)); c.type = 'button';
           c.onclick = function () { close(); location.hash = ''; location.hash = id; };
           s.appendChild(c);
         });

@@ -19,16 +19,21 @@ const banner = (text) =>
 
 // FAQ preview: "contact us" links go to the preview support form; widget uses ../web/nongdee.js
 faq = faq
+  .replaceAll('https://support.oned.net/?lang=en', 'support.html?lang=en')
   .replaceAll('https://support.oned.net/', 'support.html')
   .replace('src="nongdee.js"', 'src="../web/nongdee.js"')
   .replace(/data-support-url="[^"]*"/, 'data-support-url="support.html"')
   .replace(/<body>/, '<body>\n' + banner('ตัวอย่างสำหรับทดสอบ · Preview only — not the live oneD FAQ'));
 faq = faq.replace(/data-endpoint="[^"]*"/, `data-endpoint="${endpoint}"`);
 
-// English FAQ preview (no assistant yet: น้องดี speaks Thai first)
+// Same bilingual page saved as faq-en.html: the file name makes it open in English
 faqEn = faqEn
   .replaceAll('https://support.oned.net/?lang=en', 'support.html?lang=en')
-  .replace(/<body>/, '<body>\n' + banner('Preview only — not the live oneD FAQ'));
+  .replaceAll('https://support.oned.net/', 'support.html')
+  .replace('src="nongdee.js"', 'src="../web/nongdee.js"')
+  .replace(/data-support-url="[^"]*"/, 'data-support-url="support.html"')
+  .replace(/data-endpoint="[^"]*"/, `data-endpoint="${endpoint}"`)
+  .replace(/<body>/, '<body>\n' + banner('ตัวอย่างสำหรับทดสอบ · Preview only — not the live oneD FAQ'));
 
 // Support preview: FAQ links go to the preview FAQ; the form must not reach the real /submit
 support = support
