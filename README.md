@@ -39,7 +39,7 @@ The preview pages are generated from `web/`. After changing anything in `web/`, 
 node scripts/build-preview.mjs
 ```
 
-น้องดี stays hidden on the preview until the AWS API is deployed. To show her there:
+On the preview, น้องดี runs in **demo mode**: she finds the closest FAQ answer by text matching. No AI, no server, nothing sent anywhere. It shows the chat design and flow only. To switch the preview to the real AI:
 
 1. Add `https://kiki057.github.io` to the stack's `AllowedOrigins` (e.g. `sam deploy --parameter-overrides AllowedOrigins=https://assets.oned.net,https://kiki057.github.io`).
 2. Rebuild with the API address: `NONGDEE_ENDPOINT=<ApiUrl> node scripts/build-preview.mjs`, then commit and push.

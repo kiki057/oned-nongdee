@@ -3,6 +3,7 @@
  * Include on the FAQ page, after its content:
  *   <script src="nongdee.js" data-endpoint="https://xxxx.execute-api.ap-southeast-1.amazonaws.com" defer></script>
  * Optional: data-support-url="https://support.oned.net/"
+ * Demo (no AI, no server): data-endpoint="demo" picks the closest FAQ answer by text matching.
  * Reads FAQ titles from the page (<details class="q" id="...">) to label answer sources.
  */
 (function () {
@@ -11,6 +12,7 @@
   var ENDPOINT = ((script && script.dataset.endpoint) || '').replace(/\/+$/, '');
   var SUPPORT_URL = (script && script.dataset.supportUrl) || 'https://support.oned.net/';
   if (!ENDPOINT || /YOUR-API/i.test(ENDPOINT)) { console.warn('[nongdee] data-endpoint is not set; assistant hidden'); return; }
+  var DEMO = ENDPOINT === 'demo';
 
   var OTHER = 'อื่นๆ (โปรดระบุ)';
   var SUGGEST = ['แลกโค้ดในแอปได้ไหม', 'ยกเลิก PREMIUM ยังไง', 'จ่ายเงินแล้วแต่ยังเห็นโฆษณา', 'ดูบนทีวี Samsung ได้ไหม'];
@@ -23,6 +25,11 @@
     busy: 'ตอนนี้มีคนถามเยอะอยู่ ลองใหม่อีกสักครู่นะคะ', error: 'ขออภัยค่ะ ตอนนี้น้องดีตอบไม่ได้',
     offline: 'ดูเหมือนอินเทอร์เน็ตจะหลุดอยู่นะคะ ลองใหม่อีกครั้งค่ะ', askInstead: 'ถามน้องดีแทน'
   };
+  if (DEMO) {
+    T.sub = 'โหมดสาธิต · ค้นจาก FAQ ยังไม่ใช่ AI';
+    T.note = 'โหมดสาธิต: ข้อความไม่ถูกส่งหรือบันทึกที่ไหน · ห้ามพิมพ์รหัสผ่าน OTP หรือเลขบัตร';
+    T.hello = 'สวัสดีค่ะ น้องดีเองค่ะ ตอนนี้เป็นโหมดสาธิต น้องดีจะค้นคำตอบที่ใกล้ที่สุดจาก FAQ ให้นะคะ (เวอร์ชัน AI จะตอบได้เป็นธรรมชาติกว่านี้ค่ะ)';
+  }
 
   // ---------- Styles (uses the FAQ page's colours, with fallbacks) ----------
   var css = [
@@ -101,6 +108,60 @@
       var s = q.querySelector('summary span'); if (s) titles[q.id] = s.textContent.trim();
     });
 
+    // ---------- Demo mode: closest FAQ entry by character-bigram overlap (works for Thai without word breaks) ----------
+    var FAQ = [].map.call(document.querySelectorAll('details.q[id]'), function (q) {
+      var a = q.querySelector('.a'), c = a ? a.cloneNode(true) : document.createElement('div');
+      [].forEach.call(c.querySelectorAll('li'), function (li) { li.insertBefore(document.createTextNode('\n• '), li.firstChild); });
+      [].forEach.call(c.querySelectorAll('p, h4, br'), function (x) { x.parentNode.insertBefore(document.createTextNode('\n'), x); });
+      [].forEach.call(c.querySelectorAll('img[alt]'), function (i) { i.replaceWith(document.createTextNode(i.alt)); });
+      var answer = c.textContent.split('\n').map(function (l) { return l.replace(/\s+/g, ' ').trim(); }).filter(Boolean).join('\n');
+      return { id: q.id, cat: q.dataset.cat, q: titles[q.id] || '', a: answer };
+    });
+    function grams(s) {
+      s = s.toLowerCase().replace(/[^\u0E00-\u0E7Fa-z0-9]+/g, '');
+      var g = {}; for (var i = 0; i < s.length - 1; i++) g[s.substr(i, 2)] = 1; return g;
+    }
+    FAQ.forEach(function (f) { f.gq = grams(f.q); f.ga = grams(f.a); });
+    // Bigrams found in many entries (e.g. from "PREMIUM") count for less
+    var df = {};
+    FAQ.forEach(function (f) { var k, seen = {}; for (k in f.gq) seen[k] = 1; for (k in f.ga) seen[k] = 1; for (k in seen) df[k] = (df[k] || 0) + 1; });
+    function w(k) { return Math.log((FAQ.length + 1) / ((df[k] || 0) + 1)) + 0.2; }
+    function overlap(qg, g) { var n = 0, k; for (k in qg) if (g[k]) n += w(k); return n; }
+    var ISSUE_BY_ID = { signinissue: 'เข้าสู่ระบบไม่ได้', Signin: 'เข้าสู่ระบบไม่ได้', technicalissue: 'ดูวิดีโอไม่ได้',
+      subscription: 'ไม่สามารถสมัครสมาชิกพรีเมียมได้', premiumnotreceived: 'สมัครสมาชิกพรีเมียมแล้ว แต่ไม่ขึ้นสถานะพรีเมียม',
+      ChromecastAirplay: 'สมัครสมาชิกพรีเมียมแล้ว แต่ cast ขึ้น TV ไม่ได้', unsubscribeais: 'แพ็กเกจ AIS',
+      codefailed: 'สมาชิก oneD PREMIUM แบบเติมวัน', Activateonetimecode: 'สมาชิก oneD PREMIUM แบบเติมวัน' };
+    function demoChat(text) {
+      var qg = grams(text), size = 0, k;
+      for (k in qg) size += w(k);
+      size = size || 1;
+      var ranked = FAQ.map(function (f) {
+        return { f: f, s: (2 * overlap(qg, f.gq) + overlap(qg, f.ga)) / size };
+      }).sort(function (x, y) { return y.s - x.s; });
+      var best = ranked[0];
+      var r;
+      var lower = text.toLowerCase();
+      if (/[\[](อีเมล|เบอร์โทร|ตัวเลข)[\]]/.test(text)) {
+        r = { answer: 'ไม่ต้องพิมพ์ข้อมูลส่วนตัวในแชตนะคะ น้องดีซ่อนไว้ให้แล้วค่ะ ถามต่อได้เลยนะคะ', sources: [], status: 'partial', handoff_issue: null, suggestions: [] };
+      } else if (/คืนเงิน|เงินคืน|refund/.test(lower)) {
+        r = { answer: 'เรื่องคืนเงิน น้องดีช่วยเองไม่ได้ค่ะ ถ้าสมัครผ่าน App Store หรือ Google Play การคืนเงินเป็นของ Apple หรือ Google นะคะ ให้ทีมงานช่วยดูให้ได้ค่ะ',
+              sources: [], status: 'not_in_faq', handoff_issue: OTHER, suggestions: [] };
+      } else if (/ยกเลิก|cancel|unsubscribe/.test(lower) && !/เติมวัน|โค้ด|code/.test(lower)) {
+        r = { answer: 'คุณสมัครผ่านช่องทางไหนคะ? กดหัวข้อด้านล่างเพื่อดูวิธียกเลิกได้เลยค่ะ', sources: ['unsubscribe', 'unsubscribeandroid', 'unsubscribeais'],
+              status: 'partial', handoff_issue: null, suggestions: [] };
+      } else if (!best || best.s < 0.85) {
+        r = { answer: 'ขออภัยค่ะ น้องดียังหาคำตอบเรื่องนี้ใน FAQ ไม่เจอ ลองถามด้วยคำอื่น หรือให้ทีมงานช่วยต่อได้นะคะ', sources: [], status: 'not_in_faq',
+              handoff_issue: OTHER, suggestions: ranked.slice(0, 2).map(function (x) { return x.f.q; }) };
+      } else {
+        var lines = best.f.a.split('\n'), body = lines.slice(0, 7).join('\n') + (lines.length > 7 ? '\n…' : '');
+        r = { answer: 'น้องดีเจอคำตอบนี้ใน FAQ ค่ะ\n\n' + body, sources: [best.f.id], status: 'answered',
+              handoff_issue: null, suggestions: ranked.slice(1, 3).filter(function (x) { return x.s >= 0.85; }).map(function (x) { return x.f.q; }) };
+        r.demoIssue = ISSUE_BY_ID[best.f.id] || OTHER;
+      }
+      r.chatId = 'c_demo';
+      return new Promise(function (res) { setTimeout(function () { res({ status: 200, data: r }); }, 500); });
+    }
+
     function mask(s) {
       return s.replace(/[\w.+-]+@[\w-]+\.[\w.]+/g, '[อีเมล]')
               .replace(/\b(?:\d[ -]?){12,19}\b/g, '[ตัวเลข]')
@@ -121,7 +182,7 @@
       return row;
     }
     function feedback(n, rating) {
-      if (!chatId) return;
+      if (!chatId || DEMO) return;
       try {
         fetch(ENDPOINT + '/feedback', { method: 'POST', keepalive: true, headers: { 'content-type': 'application/json' },
           body: JSON.stringify({ chatId: chatId, turn: n, rating: rating }) }).catch(function () {});
@@ -147,7 +208,7 @@
         up.onclick = function () { up.setAttribute('aria-pressed', 'true'); dn.setAttribute('aria-pressed', 'false'); feedback(n, 'up'); };
         dn.onclick = function () {
           dn.setAttribute('aria-pressed', 'true'); up.setAttribute('aria-pressed', 'false'); feedback(n, 'down');
-          if (!w.querySelector('.nd-handoff')) { w.appendChild(handoffCard(r.handoff_issue || OTHER, T.sorry)); down(); }
+          if (!w.querySelector('.nd-handoff')) { w.appendChild(handoffCard(r.handoff_issue || r.demoIssue || OTHER, T.sorry)); down(); }
         };
         rate.appendChild(up); rate.appendChild(dn); w.appendChild(rate);
       }
@@ -172,12 +233,12 @@
       var t = el('div', 'nd-msg nd-bot'), tb = el('div', 'nd-bubble nd-typing'); tb.innerHTML = '<span></span><span></span><span></span>';
       t.appendChild(tb); log.appendChild(t); down();
 
-      fetch(ENDPOINT + '/chat', {
+      (DEMO ? demoChat(safe) : fetch(ENDPOINT + '/chat', {
         method: 'POST', headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ chatId: chatId, messages: history.slice(-10) })
       }).then(function (res) {
         return res.json().catch(function () { return {}; }).then(function (data) { return { status: res.status, data: data }; });
-      }).then(function (r) {
+      })).then(function (r) {
         t.remove();
         if (r.data && r.data.chatId) { chatId = r.data.chatId; try { sessionStorage.setItem('nd-chat', chatId); } catch (e) {} }
         if (r.status === 200) {

@@ -7,7 +7,8 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 
 const root = new URL('../', import.meta.url);
 const read = (p) => readFile(new URL(p, root), 'utf8');
-const endpoint = process.env.NONGDEE_ENDPOINT || '';
+// Without NONGDEE_ENDPOINT the preview runs น้องดี in demo mode (FAQ text matching, no AI, no server).
+const endpoint = process.env.NONGDEE_ENDPOINT || 'demo';
 
 let faq = await read('web/faq-th-beta.html');
 let support = await read('web/support-index.html');
@@ -21,7 +22,7 @@ faq = faq
   .replace('src="nongdee.js"', 'src="../web/nongdee.js"')
   .replace(/data-support-url="[^"]*"/, 'data-support-url="support.html"')
   .replace(/<body>/, '<body>\n' + banner('ตัวอย่างสำหรับทดสอบ · Preview only — not the live oneD FAQ'));
-if (endpoint) faq = faq.replace(/data-endpoint="[^"]*"/, `data-endpoint="${endpoint}"`);
+faq = faq.replace(/data-endpoint="[^"]*"/, `data-endpoint="${endpoint}"`);
 
 // Support preview: FAQ links go to the preview FAQ; the form must not reach the real /submit
 support = support
@@ -43,4 +44,4 @@ support = support.replace(before, stub + "\n        btn.disabled = true; btn.cla
 await mkdir(new URL('preview/', root), { recursive: true });
 await writeFile(new URL('preview/faq.html', root), faq);
 await writeFile(new URL('preview/support.html', root), support);
-console.log('preview/faq.html and preview/support.html written' + (endpoint ? ` (endpoint ${endpoint})` : ' (no endpoint: น้องดี hidden)'));
+console.log(`preview/faq.html and preview/support.html written (น้องดี: ${endpoint === 'demo' ? 'demo mode, no AI' : endpoint})`);
