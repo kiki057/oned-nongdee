@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ติดต่อทีมงาน oneD</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --pink: #f20b7e;
+      --pink-soft: rgba(242, 11, 126, .14);
+      --bg: #0a0a0c;
+      --surface: #16161a;
+      --surface-2: #202027;
+      --line: #2a2a33;
+      --text: #f4f4f6;
+      --text-2: #b9b9c3;
+      --text-3: #80808c;
+      --danger: #ff5c7a;
+      --ok: #3ddc97;
+    }
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: 'Prompt', system-ui, sans-serif; font-weight: 300; font-size: 16px; line-height: 1.6;
+    }
+    a { color: var(--pink); text-decoration: none; font-weight: 400; }
+    b { font-weight: 500; color: var(--text); }
+    .page { max-width: 560px; margin: 0 auto; padding: 0 16px 32px; }
+
+    .bar { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
+    .bar img { height: 24px; display: block; }
+    .lang { display: inline-flex; background: var(--surface); border: 1px solid var(--line); border-radius: 99px; padding: 2px; }
+    .lang button { font: inherit; font-size: 13px; color: var(--text-2); background: none; border: 0; border-radius: 99px; height: 30px; padding: 0 12px; cursor: pointer; }
+    .lang button[aria-pressed="true"] { background: var(--pink); color: #fff; }
+
+    h1 { font-size: 22px; font-weight: 500; margin: 6px 0 2px; }
+    .sub { margin: 0; font-size: 14px; color: var(--text-2); }
+    .sub .dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--text-3); margin-right: 6px; vertical-align: 1px; }
+    .sub.open .dot { background: var(--ok); }
+    .faqlink { display: flex; align-items: center; justify-content: space-between; margin: 14px 0 0; padding: 12px 14px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); font-size: 15px; font-weight: 300; color: var(--text); }
+    .faqlink::after { content: '›'; color: var(--pink); font-size: 20px; line-height: 1; }
+
+    form { margin-top: 18px; }
+    .field { margin-bottom: 18px; }
+    .field > label, .field > .label { display: block; font-size: 15px; font-weight: 400; margin-bottom: 6px; }
+    .req { color: var(--pink); margin-left: 2px; }
+    .opt { color: var(--text-3); font-size: 13px; font-weight: 300; margin-left: 4px; }
+
+    input[type="text"], input[type="email"], input[type="tel"], select, textarea {
+      width: 100%; height: 50px; font: inherit; font-size: 16px; color: var(--text);
+      background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 0 14px;
+      outline: none; -webkit-appearance: none; appearance: none;
+    }
+    textarea { height: auto; min-height: 96px; padding: 12px 14px; resize: vertical; line-height: 1.5; }
+    input::placeholder, textarea::placeholder { color: var(--text-3); }
+    input:focus, select:focus, textarea:focus { border-color: var(--pink); }
+    select {
+      padding-right: 40px; cursor: pointer;
+      background: var(--surface) url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="%23f20b7e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>') no-repeat right 14px center;
+    }
+    select:invalid { color: var(--text-3); }
+    select option { color: #f4f4f6; background: #202027; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 420px) { .row { grid-template-columns: 1fr; gap: 18px; } }
+
+    .suggest { display: none; margin-top: 8px; font-size: 14px; color: var(--text-2); }
+    .suggest.show { display: block; }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip { position: relative; }
+    .chip input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+    .chip span {
+      display: inline-flex; align-items: center; height: 42px; padding: 0 16px; border-radius: 99px; font-size: 15px;
+      color: var(--text-2); background: var(--surface); border: 1px solid var(--line);
+    }
+    .chip input:checked + span { color: #fff; background: var(--pink-soft); border-color: var(--pink); }
+
+    /* Prefilled account summary (when the app passes details in) */
+    .summary { display: flex; align-items: center; gap: 10px; padding: 12px 14px; margin-bottom: 18px; border-radius: 12px; background: var(--surface); border: 1px solid var(--line); font-size: 14px; color: var(--text-2); }
+    .summary div { flex: 1; min-width: 0; line-height: 1.5; }
+    .summary b { display: block; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .summary button { flex: none; font: inherit; font-size: 14px; color: var(--pink); background: none; border: 0; padding: 8px; cursor: pointer; }
+
+    details.more { margin-bottom: 18px; }
+    details.more > summary { list-style: none; cursor: pointer; font-size: 15px; color: var(--pink); font-weight: 400; padding: 4px 0; }
+    details.more > summary::-webkit-details-marker { display: none; }
+    details.more > summary::before { content: '+ '; }
+    details.more[open] > summary::before { content: '– '; }
+    details.more .inner { padding-top: 12px; }
+    .hint { display: block; margin-top: 4px; font-size: 13px; color: var(--text-3); }
+    .hint a { font-weight: 300; }
+
+    .consent { display: flex; gap: 12px; align-items: flex-start; font-size: 14px; color: var(--text-2); margin-bottom: 18px; }
+    .consent input { flex: none; width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--pink); }
+    .consent a { font-weight: 300; }
+
+    .submit {
+      width: 100%; height: 52px; border: 0; border-radius: 99px; cursor: pointer;
+      background: var(--pink); color: #fff; font: inherit; font-size: 16px; font-weight: 500;
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .submit:disabled { opacity: .6; }
+    .spinner { display: none; width: 16px; height: 16px; border-radius: 50%; border: 2px solid rgba(255,255,255,.35); border-top-color: #fff; animation: spin 1s linear infinite; }
+    .submit.loading .spinner { display: inline-block; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .msg { display: none; margin: 10px 0 0; text-align: center; font-size: 14px; color: var(--danger); }
+    .msg.show { display: block; }
+    .foot { margin: 14px 0 0; text-align: center; font-size: 13px; color: var(--text-3); }
+
+    .touched input:invalid, .touched select:invalid, .touched textarea:invalid { border-color: var(--danger); }
+    .touched .chips.needs .chip span { border-color: var(--danger); }
+    .touched .consent input:invalid + span { color: var(--danger); }
+
+    dialog { padding: 0; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--text); width: min(420px, calc(100% - 24px)); }
+    dialog::backdrop { background: rgba(0,0,0,.7); }
+    dialog img { display: block; width: 100%; height: auto; }
+    dialog button { display: block; width: 100%; height: 48px; border: 0; border-top: 1px solid var(--line); background: none; color: var(--pink); font: inherit; font-size: 15px; cursor: pointer; }
+
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="bar">
+      <img src="https://assets.oned.net/imgs/oned-logo.png" alt="oneD">
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="th" aria-pressed="true">TH</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+
+    <h1 data-i18n="title">ติดต่อทีมงาน</h1>
+    <p class="sub" id="sub"><span class="dot"></span><span id="statusText"></span></p>
+    <a class="faqlink" id="faqLink" href="https://assets.oned.net/doc/faq-th.html" data-i18n="faqLink">ลองดูคำถามที่พบบ่อยก่อน</a>
+
+    <!--
+      Backend contract (unchanged): POST /submit
+      Fields: loginType, email, tel, appVersion, device, model, issue, detail, confirm
+      Option values are identical to the previous form.
+
+      Prefill (optional, for the oneD app):
+        - URL: ?device=iPhone&loginType=Google&appVersion=1.6.0&model=iPhone%2015
+        - JS:  window.onedSupportPrefill({ email, tel, loginType, device, model, appVersion })
+          Use the JS hook for email/tel so personal data stays out of URLs and server logs.
+    -->
+    <form id="reportForm" method="POST" action="/submit" novalidate>
+
+      <div class="field">
+        <label for="issue"><span data-i18n="issue">พบปัญหาเรื่องอะไร</span><span class="req">*</span></label>
+        <select id="issue" name="issue" required>
+          <option value="" data-i18n="issuePh">เลือกหัวข้อ</option>
+          <option value="เข้าสู่ระบบไม่ได้" data-faq="signinissue" data-i18n="i1">เข้าสู่ระบบไม่ได้</option>
+          <option value="ดูวิดีโอไม่ได้" data-faq="technicalissue" data-i18n="i2">ดูวิดีโอไม่ได้</option>
+          <option value="แอปเด้ง, แอปค้าง" data-faq="technicalissue" data-i18n="i3">แอปเด้ง หรือแอปค้าง</option>
+          <option value="ไม่สามารถสมัครสมาชิกพรีเมียมได้" data-faq="subscription" data-i18n="i4">สมัคร PREMIUM ไม่ได้</option>
+          <option value="สมัครสมาชิกพรีเมียมแล้ว แต่ยังเห็นโฆษณา" data-faq="premiumnotreceived" data-i18n="i5">สมัคร PREMIUM แล้ว แต่ยังเห็นโฆษณา</option>
+          <option value="สมัครสมาชิกพรีเมียมแล้ว แต่ cast ขึ้น TV ไม่ได้" data-faq="ChromecastAirplay" data-i18n="i6">สมัคร PREMIUM แล้ว แต่ cast ขึ้นทีวีไม่ได้</option>
+          <option value="สมัครสมาชิกพรีเมียมแล้ว แต่ไม่ขึ้นสถานะพรีเมียม" data-faq="premiumnotreceived" data-i18n="i7">สมัคร PREMIUM แล้ว แต่สถานะไม่เป็น PREMIUM</option>
+          <option value="แพ็กเกจ AIS" data-faq="unsubscribeais" data-i18n="i8">แพ็กเกจที่สมัครผ่าน AIS</option>
+          <option value="สมาชิก oneD PREMIUM แบบเติมวัน" data-faq="codefailed" data-i18n="i9">PREMIUM แบบเติมวัน (โค้ด)</option>
+          <option value="อื่นๆ (โปรดระบุ)" data-i18n="i10">เรื่องอื่น ๆ</option>
+        </select>
+        <div class="suggest" id="suggest"><span data-i18n="suggest">อาจแก้ได้ทันที:</span> <a id="suggestLink" data-i18n="suggestLink">ดูวิธีแก้ใน FAQ</a></div>
+      </div>
+
+      <div class="field">
+        <label for="detail"><span data-i18n="detail">รายละเอียด</span><span class="opt" id="detailOpt" data-i18n="optional">(ไม่บังคับ)</span><span class="req" id="detailReq" hidden>*</span></label>
+        <textarea id="detail" name="detail" maxlength="1000" rows="3" data-i18n-ph="detailPh" placeholder="เกิดขึ้นเมื่อไร กับเรื่องไหน หน้าจอแจ้งว่าอะไร"></textarea>
+      </div>
+
+      <div class="summary" id="summary" hidden>
+        <div><b id="summaryMain"></b><span id="summarySub"></span></div>
+        <button type="button" id="editAccount" data-i18n="edit">แก้ไข</button>
+      </div>
+
+      <div id="accountFields">
+        <div class="row field">
+          <div>
+            <label for="email" style="display:block;font-size:15px;font-weight:400;margin-bottom:6px"><span data-i18n="email">อีเมล</span><span class="req">*</span></label>
+            <input type="email" id="email" name="email" placeholder="name@example.com" autocomplete="email" enterkeyhint="next" required>
+          </div>
+          <div>
+            <label for="tel" style="display:block;font-size:15px;font-weight:400;margin-bottom:6px"><span data-i18n="tel">เบอร์โทรศัพท์</span><span class="req">*</span></label>
+            <input type="tel" id="tel" name="tel" placeholder="0812345678" autocomplete="tel" inputmode="tel" enterkeyhint="next" pattern="[0-9+\-\s]{9,15}" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="label"><span data-i18n="loginType">เข้าสู่ระบบ oneD ด้วย</span><span class="req">*</span></span>
+          <div class="chips" data-group="loginType">
+            <label class="chip"><input type="radio" name="loginType" value="Email" required><span data-i18n="lEmail">อีเมล</span></label>
+            <label class="chip"><input type="radio" name="loginType" value="Phone"><span data-i18n="lPhone">เบอร์โทร</span></label>
+            <label class="chip"><input type="radio" name="loginType" value="Facebook"><span>Facebook</span></label>
+            <label class="chip"><input type="radio" name="loginType" value="Google"><span>Google</span></label>
+            <label class="chip"><input type="radio" name="loginType" value="Apple"><span>Apple</span></label>
+          </div>
+        </div>
+
+        <div class="field">
+          <span class="label"><span data-i18n="device">อุปกรณ์ที่พบปัญหา</span><span class="req">*</span></span>
+          <div class="chips" data-group="device">
+            <label class="chip"><input type="radio" name="device" value="iPhone" required><span>iPhone</span></label>
+            <label class="chip"><input type="radio" name="device" value="Android"><span>Android</span></label>
+            <label class="chip"><input type="radio" name="device" value="iPad"><span>iPad</span></label>
+            <label class="chip"><input type="radio" name="device" value="PC"><span>PC</span></label>
+            <label class="chip"><input type="radio" name="device" value="Mac"><span>Mac</span></label>
+            <label class="chip"><input type="radio" name="device" value="SmartTV"><span>Smart TV</span></label>
+          </div>
+        </div>
+
+        <details class="more" id="more">
+          <summary data-i18n="more">เพิ่มรุ่นอุปกรณ์และเวอร์ชันแอป (ไม่บังคับ)</summary>
+          <div class="inner row">
+            <div>
+              <label for="model" style="display:block;font-size:15px;font-weight:400;margin-bottom:6px" data-i18n="model">รุ่นอุปกรณ์</label>
+              <input type="text" id="model" name="model" data-i18n-ph="modelPh" placeholder="เช่น iPhone 15">
+            </div>
+            <div>
+              <label for="appVersion" style="display:block;font-size:15px;font-weight:400;margin-bottom:6px" data-i18n="appVersion">เวอร์ชันแอป</label>
+              <input type="text" id="appVersion" name="appVersion" placeholder="1.0.0" inputmode="decimal">
+              <a class="hint" href="#" id="openVersion" data-i18n="howVersion">ดูได้ที่ไหน?</a>
+            </div>
+          </div>
+        </details>
+      </div>
+
+      <label class="consent">
+        <input type="checkbox" id="confirm" name="confirm" required>
+        <span data-i18n-html="consent">ยอมรับการเก็บและใช้ข้อมูลส่วนบุคคลตาม <a href="https://assets.oned.net/doc/privacy-policy-th.html">นโยบายความเป็นส่วนตัว</a> และ <a href="https://assets.oned.net/doc/term-condition-th.html">ข้อตกลงการใช้บริการ</a></span>
+      </label>
+
+      <button class="submit" id="submitButton" type="submit"><span data-i18n="submit">ส่งถึงทีมงาน</span><span class="spinner" aria-hidden="true"></span></button>
+      <p class="msg" id="msg" role="alert" data-i18n="errors">กรุณากรอกช่องที่มี * ให้ครบ</p>
+      <p class="foot" data-i18n="foot">ตอบกลับ จ.–ศ. 10:00–19:00 น. (ไม่รวมวันหยุด) · support@oned.net</p>
+    </form>
+  </div>
+
+  <dialog id="versionDialog">
+    <img src="https://assets.oned.net/imgs/app_version.jpg" alt="">
+    <button type="button" id="closeVersion" data-i18n="close">ปิด</button>
+  </dialog>
+
+  <script>
+    (function () {
+      var FAQ = { th: 'https://assets.oned.net/doc/faq-th.html', en: 'https://assets.oned.net/doc/faq-en.html' };
+      var EN = {
+        pageTitle: 'Contact oneD Support', title: 'Contact support',
+        faqLink: 'Check the FAQ first',
+        issue: 'What is the problem?', issuePh: 'Choose a topic',
+        i1: "Can't sign in", i2: "Can't play videos", i3: 'App crashes or freezes', i4: "Can't subscribe to PREMIUM",
+        i5: 'Subscribed but still seeing ads', i6: "Subscribed but can't cast to TV", i7: "Subscribed but status isn't PREMIUM",
+        i8: 'Package through AIS', i9: 'PREMIUM day pass (code)', i10: 'Something else',
+        suggest: 'This might fix it now:', suggestLink: 'See the FAQ',
+        detail: 'Details', optional: '(optional)', detailPh: 'When did it start? Which title? What does the error say?',
+        email: 'Email', tel: 'Phone number', edit: 'Edit',
+        loginType: 'You sign in to oneD with', lEmail: 'Email', lPhone: 'Phone',
+        device: 'Device with the problem',
+        more: 'Add device model and app version (optional)', model: 'Device model', modelPh: 'e.g. iPhone 15',
+        appVersion: 'App version', howVersion: 'Where to find it?', close: 'Close',
+        consent: 'I agree to the collection and use of my personal data under the <a href="https://assets.oned.net/doc/privacy-policy-en.html">Privacy Policy</a> and <a href="https://assets.oned.net/doc/term-condition-en.html">Terms of Service</a>',
+        submit: 'Send to support', errors: 'Please complete the fields marked *',
+        foot: 'We reply Mon–Fri 10:00–19:00 (excl. holidays) · support@oned.net',
+        open: 'Online now · Mon–Fri 10:00–19:00', closed: 'Offline now · we reply Mon–Fri 10:00–19:00'
+      };
+      var TH = { pageTitle: 'ติดต่อทีมงาน oneD', open: 'ออนไลน์อยู่ · ตอบกลับ จ.–ศ. 10:00–19:00', closed: 'นอกเวลาทำการ · ตอบกลับ จ.–ศ. 10:00–19:00' };
+      var DEVICE_TH = { iPhone: 'iPhone', Android: 'Android', iPad: 'iPad', PC: 'PC', Mac: 'Mac', SmartTV: 'Smart TV' };
+
+      var form = document.getElementById('reportForm');
+      var issue = document.getElementById('issue');
+      var detail = document.getElementById('detail');
+      var btn = document.getElementById('submitButton');
+      var msg = document.getElementById('msg');
+      var lang = 'th';
+
+      var orig = { t: {}, h: {}, p: {} };
+      document.querySelectorAll('[data-i18n]').forEach(function (el) { orig.t[el.dataset.i18n] = el.textContent; });
+      document.querySelectorAll('[data-i18n-html]').forEach(function (el) { orig.h[el.dataset.i18nHtml] = el.innerHTML; });
+      document.querySelectorAll('[data-i18n-ph]').forEach(function (el) { orig.p[el.dataset.i18nPh] = el.placeholder; });
+      function t(k) { return lang === 'en' ? (EN[k] || TH[k] || orig.t[k]) : (TH[k] || orig.t[k]); }
+
+      function setLang(l) {
+        lang = l; document.documentElement.lang = l; document.title = t('pageTitle');
+        document.querySelectorAll('.lang button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.lang === l)); });
+        document.querySelectorAll('[data-i18n]').forEach(function (el) { var k = el.dataset.i18n; el.textContent = l === 'en' && EN[k] ? EN[k] : orig.t[k]; });
+        document.querySelectorAll('[data-i18n-html]').forEach(function (el) { var k = el.dataset.i18nHtml; el.innerHTML = l === 'en' && EN[k] ? EN[k] : orig.h[k]; });
+        document.querySelectorAll('[data-i18n-ph]').forEach(function (el) { var k = el.dataset.i18nPh; el.placeholder = l === 'en' && EN[k] ? EN[k] : orig.p[k]; });
+        document.getElementById('faqLink').href = FAQ[l];
+        updateSuggest(); updateStatus(); updateSummary();
+        try { localStorage.setItem('oned-support-lang', l); } catch (e) {}
+      }
+      document.querySelectorAll('.lang button').forEach(function (b) { b.addEventListener('click', function () { setLang(b.dataset.lang); }); });
+
+      function updateStatus() {
+        var p = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Bangkok', weekday: 'short', hour: '2-digit', minute: '2-digit', hour12: false }).formatToParts(new Date());
+        var g = function (k) { return (p.find(function (x) { return x.type === k; }) || {}).value; };
+        var m = parseInt(g('hour'), 10) * 60 + parseInt(g('minute'), 10);
+        var open = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].indexOf(g('weekday')) > -1 && m >= 600 && m < 1140;
+        document.getElementById('sub').classList.toggle('open', open);
+        document.getElementById('statusText').textContent = t(open ? 'open' : 'closed');
+      }
+
+      function updateSuggest() {
+        var o = issue.options[issue.selectedIndex], f = o && o.dataset.faq;
+        document.getElementById('suggest').classList.toggle('show', !!f);
+        if (f) document.getElementById('suggestLink').href = FAQ[lang] + '#' + f;
+        var other = issue.value === 'อื่นๆ (โปรดระบุ)';
+        detail.required = other;
+        document.getElementById('detailReq').hidden = !other;
+        document.getElementById('detailOpt').hidden = other;
+      }
+      issue.addEventListener('change', updateSuggest);
+
+      // ---- Prefill from the app ----
+      function setVal(name, v) {
+        if (v == null || v === '') return;
+        var radios = form.querySelectorAll('input[type="radio"][name="' + name + '"]');
+        if (radios.length) { radios.forEach(function (r) { r.checked = r.value === String(v); }); return; }
+        var el = form.elements[name]; if (el) el.value = String(v);
+      }
+      function accountComplete() {
+        return form.elements.email.checkValidity() && form.elements.tel.checkValidity() &&
+          form.querySelector('input[name="loginType"]:checked') && form.querySelector('input[name="device"]:checked');
+      }
+      var editing = false;
+      function updateSummary() {
+        var show = !editing && accountComplete();
+        document.getElementById('summary').hidden = !show;
+        document.getElementById('accountFields').hidden = show;
+        if (!show) return;
+        var d = form.querySelector('input[name="device"]:checked').value;
+        var lt = form.querySelector('input[name="loginType"]:checked').value;
+        var v = form.elements.appVersion.value;
+        document.getElementById('summaryMain').textContent = form.elements.email.value;
+        document.getElementById('summarySub').textContent = form.elements.tel.value + ' · ' + lt + ' · ' + DEVICE_TH[d] + (v ? ' · v' + v : '');
+      }
+      document.getElementById('editAccount').addEventListener('click', function () { editing = true; updateSummary(); form.elements.email.focus(); });
+      window.onedSupportPrefill = function (data) {
+        data = data || {};
+        ['email', 'tel', 'loginType', 'device', 'model', 'appVersion'].forEach(function (k) { setVal(k, data[k]); });
+        editing = false; updateSummary();
+      };
+      var qs = new URLSearchParams(location.search);
+      ['loginType', 'device', 'model', 'appVersion'].forEach(function (k) { setVal(k, qs.get(k)); });
+      // Handoff from the FAQ assistant: ?issue=<one of the option values> preselects the topic
+      var qIssue = qs.get('issue');
+      if (qIssue && [].some.call(issue.options, function (o) { return o.value && o.value === qIssue; })) { issue.value = qIssue; updateSuggest(); }
+
+      // ---- App version help ----
+      var dlg = document.getElementById('versionDialog');
+      document.getElementById('openVersion').addEventListener('click', function (e) { e.preventDefault(); if (dlg.showModal) dlg.showModal(); });
+      document.getElementById('closeVersion').addEventListener('click', function () { dlg.close(); });
+
+      // ---- Validate + submit ----
+      function markChips() { form.querySelectorAll('.chips').forEach(function (g) { g.classList.toggle('needs', !g.querySelector('input:checked')); }); }
+      form.addEventListener('change', function () { if (form.classList.contains('touched')) { markChips(); msg.classList.toggle('show', !form.checkValidity()); } });
+      form.addEventListener('submit', function (e) {
+        form.classList.add('touched'); markChips();
+        if (!form.checkValidity()) {
+          e.preventDefault();
+          if (!accountComplete()) { editing = true; updateSummary(); }
+          msg.classList.add('show');
+          var first = form.querySelector(':invalid');
+          if (first) first.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          return;
+        }
+        msg.classList.remove('show');
+        btn.disabled = true; btn.classList.add('loading');
+      });
+      window.addEventListener('pageshow', function () { btn.disabled = false; btn.classList.remove('loading'); });
+
+      var saved = null; try { saved = localStorage.getItem('oned-support-lang'); } catch (e) {}
+      var ql = qs.get('lang');
+      setLang(ql === 'en' || ql === 'th' ? ql : (saved || 'th'));
+      setInterval(updateStatus, 60000);
+    })();
+  </script>
+</body>
+</html>

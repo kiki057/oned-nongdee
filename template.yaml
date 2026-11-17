@@ -1,0 +1,96 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: น้องดี — oneD FAQ chat API (Lambda + API Gateway HTTP API + Secrets Manager)
+
+Parameters:
+  Model:
+    Type: String
+    Default: claude-haiku-5-5
+    AllowedValues: [claude-haiku-5-5, claude-sonnet-5-5]
+    Description: Claude model to answer with
+  FaqUrl:
+    Type: String
+    Default: https://assets.oned.net/doc/faq-th-beta.html
+    Description: FAQ page the bot reads its answers from (must use the new <details class="q"> layout)
+  AllowedOrigins:
+    Type: CommaDelimitedList
+    Default: https://assets.oned.net
+    Description: Sites allowed to call the API (the FAQ page's origin). Add http://localhost:8080 for local testing.
+  ThrottleRatePerSecond:
+    Type: Number
+    Default: 5
+    Description: Steady requests per second across all users (raise after the pilot)
+  ThrottleBurst:
+    Type: Number
+    Default: 20
+  LogRetentionDays:
+    Type: Number
+    Default: 90
+    AllowedValues: [30, 60, 90, 120, 180, 365]
+
+Globals:
+  Function:
+    Runtime: nodejs22.x
+    Architectures: [arm64]
+    MemorySize: 256
+    Timeout: 30
+
+Resources:
+  AnthropicKeySecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub '${AWS::StackName}/anthropic-api-key'
+      Description: Anthropic API key for น้องดี. Set the value after deploy (see README).
+      SecretString: REPLACE_ME
+
+  ChatApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowOrigins: !Ref AllowedOrigins
+        AllowMethods: [POST, OPTIONS]
+        AllowHeaders: [content-type]
+        MaxAge: 600
+      DefaultRouteSettings:
+        ThrottlingRateLimit: !Ref ThrottleRatePerSecond
+        ThrottlingBurstLimit: !Ref ThrottleBurst
+
+  ChatFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: src/
+      Handler: handler.handler
+      Description: น้องดี chat API
+      Environment:
+        Variables:
+          MODEL: !Ref Model
+          FAQ_URL: !Ref FaqUrl
+          ALLOWED_ORIGINS: !Join [',', !Ref AllowedOrigins]
+          ANTHROPIC_SECRET_ARN: !Ref AnthropicKeySecret
+      Policies:
+        - AWSSecretsManagerGetSecretValuePolicy:
+            SecretArn: !Ref AnthropicKeySecret
+      Events:
+        Chat:
+          Type: HttpApi
+          Properties: { ApiId: !Ref ChatApi, Path: /chat, Method: POST }
+        Feedback:
+          Type: HttpApi
+          Properties: { ApiId: !Ref ChatApi, Path: /feedback, Method: POST }
+
+  ChatFunctionLogs:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${ChatFunction}'
+      RetentionInDays: !Ref LogRetentionDays
+
+Outputs:
+  ApiUrl:
+    Description: Put this in the widget's data-endpoint (add /chat is done by the widget)
+    Value: !Sub 'https://${ChatApi}.execute-api.${AWS::Region}.amazonaws.com'
+  SecretArn:
+    Description: Store the Anthropic API key here
+    Value: !Ref AnthropicKeySecret
+  LogGroup:
+    Description: CloudWatch logs (chat turns, feedback, errors)
+    Value: !Ref ChatFunctionLogs

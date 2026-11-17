@@ -1,0 +1,13 @@
+{
+  "name": "nongdee-chat-api",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "น้องดี — oneD FAQ chat API on AWS Lambda",
+  "scripts": {
+    "test": "node test/local-test.mjs"
+  },
+  "devDependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.600.0"
+  }
+}
