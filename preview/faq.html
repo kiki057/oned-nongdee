@@ -142,15 +142,16 @@
     <p class="status" id="status"></p>
 
     <div class="list" id="list">
-
       <!-- ===== บัญชี ===== -->
-      <details class="q" id="Register" data-cat="account">
+      <details class="q" id="Register" data-cat="account" data-popular>
         <summary><span>สร้างบัญชี oneD ได้อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
         <div class="a">
+          <p>ในแอป oneD ผู้ใช้ใหม่ต้อง<b>สมัครแพ็กเกจ PREMIUM และชำระเงินให้สำเร็จก่อน</b> จึงจะสร้างบัญชีได้ (สร้างบัญชีล่วงหน้าไม่ได้)</p>
           <ol>
-            <li>เปิดแอปหรือเว็บไซต์ oneD กด <span class="ui">เข้าสู่ระบบ</span> แล้วกด <span class="ui">สร้างบัญชี</span></li>
-            <li>สมัครด้วยอีเมล (ตั้งรหัสผ่านอย่างน้อย 8 ตัวอักษร) หรือเบอร์โทรศัพท์ (กรอกรหัส OTP)</li>
-            <li>กด <span class="ui">ยืนยัน</span> เท่านี้ก็เริ่มดูได้เลย</li>
+            <li>สมัคร PREMIUM และชำระเงินให้เรียบร้อย (ดู <a href="#subscription">วิธีสมัคร</a>)</li>
+            <li>เลือกสร้างบัญชีได้ 5 ช่องทาง: อีเมล, เบอร์โทรศัพท์, Facebook, Google หรือ Apple</li>
+            <li><b>อีเมล / เบอร์โทรศัพท์:</b> กรอกรหัส OTP ที่ส่งไปยืนยันตัวตน<br><b>Facebook / Google / Apple:</b> กรอกอีเมลหรือเบอร์โทรศัพท์เพิ่มในโปรไฟล์ แล้วยืนยันรหัส OTP</li>
+            <li>ยืนยันสำเร็จแล้ว เข้าหน้าหลักและเริ่มดูได้เลย</li>
           </ol>
         </div>
       </details>
@@ -158,39 +159,84 @@
       <details class="q" id="Signin" data-cat="account">
         <summary><span>เข้าสู่ระบบได้อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
         <div class="a">
-          <p>กด <span class="ui">เข้าสู่ระบบ</span> แล้วเลือกวิธีเดียวกับที่ใช้ตอนสมัคร: อีเมล, เบอร์โทรศัพท์, Facebook, Google, Apple หรือเบอร์ AIS</p>
-          <p class="note">ถ้าใช้วิธีเข้าสู่ระบบต่างจากตอนสมัคร ระบบจะมองเป็นคนละบัญชี และจะไม่เห็นแพ็กเกจที่สมัครไว้</p>
+          <p>เข้าสู่ระบบได้ 6 ช่องทาง:</p>
+          <ul>
+            <li>อีเมล หรือเบอร์โทรศัพท์</li>
+            <li>Facebook, Google หรือ Apple (Apple ID)</li>
+            <li>ไอคอนโลโก้ AIS (ใช้ได้ทั้งเบอร์มือถือ AIS และเบอร์อินเทอร์เน็ตบ้าน AIS Fibre)</li>
+          </ul>
+          <p class="note">ทุกช่องทาง<b>ต้องยืนยันรหัส OTP</b> ก่อนเข้าใช้งานเสมอ เพื่อความปลอดภัยของบัญชี</p>
+        </div>
+      </details>
+
+      <details class="q" id="existingaccount" data-cat="account" data-popular>
+        <summary><span>มีบัญชีเดิมอยู่แล้ว ต้องทำอะไรเพิ่มไหม</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <h4>บัญชี Facebook / Google / Apple</h4>
+          <p>ถ้ายังไม่เคยอัปเดตโปรไฟล์ ระบบจะให้กรอก<b>อีเมลหรือเบอร์โทรศัพท์</b>ในหน้าโปรไฟล์ และยืนยันรหัส OTP ก่อน จึงจะเข้าสู่ระบบได้</p>
+          <h4>บัญชีอีเมลที่เคยตั้งรหัสผ่านไว้</h4>
+          <p>เลือกได้ 2 แบบ:</p>
+          <ol>
+            <li><b>ใช้รหัสผ่านเดิม:</b> กรอกรหัสผ่าน แล้วอัปเดตอีเมลอีกครั้งและยืนยันรหัส OTP</li>
+            <li><b>ใช้รหัส OTP เลย:</b> เลือกเข้าสู่ระบบด้วยอีเมล แล้วกดขอรับรหัส OTP ไม่ต้องใช้รหัสผ่านเดิม</li>
+          </ol>
         </div>
       </details>
 
       <details class="q" id="editprofile" data-cat="account">
         <summary><span>แก้ไขข้อมูลส่วนตัวได้อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
-        <div class="a"><p>เข้าสู่ระบบ แล้วกด <span class="ui">โปรไฟล์</span> (มุมขวาบน) › <span class="ui">แก้ไข</span></p></div>
+        <div class="a">
+          <ol>
+            <li>ในแอป ไปที่แถบเมนู <span class="ui">บัญชี</span> แล้วกด<b>ไอคอนรูปดินสอ</b> ด้านขวาของชื่อโปรไฟล์</li>
+            <li>ในหน้า <span class="ui">ข้อมูลส่วนตัว</span> แก้ไขได้ 4 ส่วน: รูปโปรไฟล์, ชื่อผู้ใช้, เพศ และวันเกิด (เลือกจากปฏิทิน)</li>
+            <li>กด <span class="ui">บันทึก</span> ที่มุมขวาบนทุกครั้ง</li>
+          </ol>
+          <p class="note">แตะที่รูปโปรไฟล์เพื่ออัปโหลด เปลี่ยน หรือลบรูป · ถ้ากดย้อนกลับ (&lt;) โดยยังไม่บันทึก ระบบจะถามยืนยันก่อนละทิ้งการเปลี่ยนแปลง</p>
+        </div>
       </details>
 
       <details class="q" id="signout" data-cat="account">
         <summary><span>ออกจากระบบได้อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
-        <div class="a"><p>กด <span class="ui">โปรไฟล์</span> (มุมขวาบน) › <span class="ui">ออกจากระบบ</span> บนเว็บไซต์ให้กด <span class="ui">ตกลง</span> อีกครั้งเพื่อยืนยัน</p></div>
+        <div class="a">
+          <p><b>แอป:</b> แถบเมนู <span class="ui">บัญชี</span> › <span class="ui">ตั้งค่า</span> › <span class="ui">ออกจากระบบ</span></p>
+          <p><b>เว็บไซต์:</b> <span class="ui">โปรไฟล์</span> (มุมขวาบน) › <span class="ui">ออกจากระบบ</span> › <span class="ui">ตกลง</span></p>
+          <p><b>ทีวี:</b> จากหน้าหลัก เลื่อนไปที่ไอคอนโปรไฟล์ (มุมขวาบน) › <span class="ui">ออกจากระบบ</span> › <span class="ui">ใช่ ออกจากระบบ</span></p>
+        </div>
       </details>
 
       <!-- ===== PREMIUM ===== -->
       <details class="q" id="checksubscription" data-cat="premium">
         <summary><span>ตรวจสอบว่าเป็น oneD PREMIUM แล้วหรือยัง</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
         <div class="a">
-          <p>กด <span class="ui">โปรไฟล์</span></p>
+          <p><b>แอป:</b> แถบเมนู <span class="ui">บัญชี</span></p>
           <ul>
-            <li>เห็นเมนู <span class="ui">การสมัครสมาชิก</span> = เป็น PREMIUM แล้ว (กดเข้าไปดูแพ็กเกจได้)</li>
-            <li>เห็นปุ่ม <span class="ui">สมัครสมาชิก</span> = ยังไม่เป็น PREMIUM</li>
+            <li>เห็นเมนู <span class="ui">แพ็กเกจปัจจุบัน</span> = เป็น PREMIUM แล้ว (กดเข้าไปดูแพ็กเกจได้)</li>
+            <li>เห็นปุ่ม <span class="ui">สมัคร PREMIUM</span> = ยังไม่เป็น PREMIUM</li>
           </ul>
+          <p><b>ทีวี:</b> เมนู <span class="ui">บัญชี</span> › หน้า <span class="ui">บัญชีของฉัน</span> ดูแบบเดียวกับในแอป</p>
+          <p><b>เว็บไซต์:</b> กด <span class="ui">โปรไฟล์</span> ถ้าเห็นเมนู <span class="ui">การสมัครสมาชิก</span> = เป็น PREMIUM แล้ว ถ้าเห็นปุ่ม <span class="ui">สมัครสมาชิก</span> = ยังไม่เป็น</p>
         </div>
       </details>
 
-      <details class="q" id="subscription" data-cat="premium">
-        <summary><span>สมัคร oneD PREMIUM ได้อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+      <details class="q" id="subscription" data-cat="premium" data-popular>
+        <summary><span>สมัคร oneD PREMIUM ได้อย่างไร (ยังไม่มีบัญชี)</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
         <div class="a">
           <ol>
-            <li>เข้าสู่ระบบ แล้วกดเมนูด้านบน › <span class="ui">วันดี พรีเมี่ยม</span></li>
-            <li>เลือกแพ็กเกจ แล้วกด <span class="ui">สมัครเลย</span></li>
+            <li>เปิดแอป oneD แล้วกดแถบเมนู <span class="ui">บัญชี</span> ด้านล่าง หรือ <span class="ui">สมัคร PREMIUM</span> ที่มุมขวาบน</li>
+            <li>เลือก <span class="ui">สมัคร PREMIUM</span> เลือกแพ็กเกจ แล้วกด <span class="ui">สมัครเลย</span></li>
+            <li>ยืนยันการชำระเงินผ่าน App Store หรือ Google Play</li>
+            <li>สร้างบัญชีด้วยอีเมล, เบอร์โทรศัพท์, Facebook, Google หรือ Apple แล้วยืนยันรหัส OTP<br><span style="color:var(--text-3);font-size:14px">Facebook / Google / Apple: กรอกอีเมลหรือเบอร์โทรศัพท์เพิ่ม แล้วยืนยันรหัส OTP</span></li>
+            <li>ดูแบบ PREMIUM ได้ทันที</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="q" id="subscriptionexisting" data-cat="premium">
+        <summary><span>มีบัญชีแล้ว สมัคร PREMIUM อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ol>
+            <li>เข้าสู่ระบบในแอป oneD แล้วไปที่แถบเมนู <span class="ui">บัญชี</span></li>
+            <li>เลือก <span class="ui">สมัคร PREMIUM</span> เลือกแพ็กเกจ แล้วกด <span class="ui">สมัครเลย</span></li>
             <li>ยืนยันการชำระเงินผ่าน App Store หรือ Google Play ดูแบบ PREMIUM ได้ทันที</li>
           </ol>
         </div>
@@ -201,9 +247,10 @@
         <div class="a">
           <ul>
             <li>ไม่มีโฆษณาคั่น และดูได้ครบทุกตอน</li>
+            <li>ดูก่อนใคร (Early access)</li>
             <li>ภาพ Full HD 1080p และดูพร้อมกันได้ 2 อุปกรณ์</li>
             <li>ส่งขึ้นทีวีผ่าน Chromecast และ AirPlay</li>
-            <li>ละครแนวตั้ง oneD Shorts (มือถือและแท็บเล็ต)</li>
+            <li>ละครแนวตั้ง oneD Shorts</li>
             <li>Picture in Picture และปรับความเร็ววิดีโอ</li>
           </ul>
           <p style="font-size:13px;color:var(--text-3)">เงื่อนไขเป็นไปตามที่บริษัทกำหนด</p>
@@ -213,19 +260,19 @@
       <details class="q" id="watchontv" data-cat="premium" data-popular>
         <summary><span>ดู oneD บนทีวีได้อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
         <div class="a">
-          <p>ต้องเป็นสมาชิก oneD PREMIUM</p>
           <ol>
-            <li>ค้นหา "oneD" ใน store ของทีวี แล้วติดตั้ง:
+            <li>ค้นหา "oneD" ใน store ของทีวี แล้วกด <span class="ui">ติดตั้ง</span> และ <span class="ui">เปิด</span>:
               <ul>
-                <li><b>Android TV / Google TV</b> (Android 9+): Play Store</li>
+                <li><b>Android TV / Google TV</b> (Android 9+): Play Store (เข้าสู่ระบบบัญชี Google)</li>
                 <li><b>Samsung</b> (ปี 2019+, Tizen 5.0+): Home › APPS</li>
                 <li><b>LG</b> (webOS 5.0+): LG Content Store</li>
                 <li><b>Apple TV</b> (tvOS 17.6+): App Store</li>
               </ul>
             </li>
-            <li>เปิดแอป แล้วใช้มือถือสแกน QR Code บนจอทีวี</li>
-            <li>เข้าสู่ระบบด้วยบัญชี PREMIUM เริ่มดูได้เลย</li>
+            <li>ใช้มือถือสแกน QR Code บนจอทีวี เพื่อเข้าสู่ระบบด้วยบัญชีของคุณ หรือจะใช้งานโดยไม่เข้าสู่ระบบก็ได้</li>
+            <li>เริ่มดูได้เลย</li>
           </ol>
+          <p class="note">ถ้าไม่ได้เป็นสมาชิก PREMIUM จะดูได้เฉพาะคอนเทนต์ฟรีเท่านั้น คอนเทนต์ PREMIUM จะดูไม่ได้</p>
         </div>
       </details>
 
@@ -308,9 +355,10 @@
         <summary><span>เข้าสู่ระบบไม่ได้</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
         <div class="a">
           <ol>
-            <li>ใช้วิธีเข้าสู่ระบบเดียวกับตอนสมัคร และตรวจสอบอีเมล/รหัสผ่าน</li>
-            <li>ถ้าใช้ Facebook, Google หรือ Apple ตรวจสอบว่าบัญชีนั้นไม่ถูกระงับ</li>
-            <li>อัปเดตแอปเป็นเวอร์ชันล่าสุด แล้วเปิดใหม่</li>
+            <li>ตรวจสอบอีเมลหรือเบอร์โทรศัพท์ที่ใช้รับรหัสให้ถูกต้อง ถ้ายังไม่ได้รับรหัส กดขอรหัส OTP ใหม่อีกครั้ง</li>
+            <li>ถ้าใช้ Facebook, Google หรือ Apple ตรวจสอบอินเทอร์เน็ต และตรวจสอบว่าบัญชีนั้นยังใช้งานได้ ไม่ถูกระงับ</li>
+            <li>ถ้าเคยเพิ่มอีเมลหรือเบอร์โทรศัพท์ในโปรไฟล์แล้ว เข้าสู่ระบบด้วยอีเมลหรือเบอร์นั้น แล้วยืนยันรหัส OTP ได้เลย</li>
+            <li>อัปเดตแอปเป็นเวอร์ชันล่าสุด แล้วเปิดใหม่ (บนเว็บให้รีเฟรช)</li>
           </ol>
           <p>ยังเข้าไม่ได้? <a href="support.html">แจ้งทีมงาน</a></p>
         </div>
@@ -322,7 +370,8 @@
           <ol>
             <li>ตรวจสอบว่าเข้าสู่ระบบด้วยบัญชีเดียวกับที่สมัคร</li>
             <li>ตรวจสอบว่าถูกหักเงินแล้ว</li>
-            <li>ยังไม่ได้? <a href="support.html">แจ้งทีมงาน</a> พร้อมแคปหน้าจออีเมลใบเสร็จจาก Apple หรือ Google Play</li>
+            <li>กด <span class="ui">คืนค่าการสั่งซื้อ</span> (ใช้ได้ทั้ง iOS และ Android)</li>
+            <li>ยังไม่ได้? <a href="support.html">แจ้งทีมงาน</a> พร้อมแคปหน้าจออีเมลใบเสร็จจาก Apple หรือ Google Play และบอกบัญชีที่ใช้สมัคร oneD</li>
           </ol>
         </div>
       </details>
@@ -364,16 +413,16 @@
 
     <!-- English questions: same ids, categories and popular set as the Thai ones above. Swapped in by the TH | EN switch. -->
     <template id="list-en">
-
-
       <!-- ===== Account ===== -->
-      <details class="q" id="Register" data-cat="account">
+      <details class="q" id="Register" data-cat="account" data-popular>
         <summary><span>How do I create a oneD account?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
         <div class="a">
+          <p>In the oneD app, new users must <b>subscribe to PREMIUM and complete payment first</b>. Then you can create your account (you can't create one in advance).</p>
           <ol>
-            <li>Open the oneD app or website, tap <span class="ui">Log In</span>, then tap <span class="ui">Create Account</span></li>
-            <li>Sign up with your email (set a password of at least 8 characters) or your phone number (enter the OTP code)</li>
-            <li>Tap <span class="ui">Confirm</span>. You can start watching right away</li>
+            <li>Subscribe to PREMIUM and pay (see <a href="#subscription">how to subscribe</a>)</li>
+            <li>Choose one of 5 ways to create your account: email, phone number, Facebook, Google or Apple</li>
+            <li><b>Email / phone number:</b> enter the OTP code we send you<br><b>Facebook / Google / Apple:</b> add an email or phone number to your profile, then confirm the OTP code</li>
+            <li>Once confirmed, you go to the home screen and can start watching</li>
           </ol>
         </div>
       </details>
@@ -381,39 +430,84 @@
       <details class="q" id="Signin" data-cat="account">
         <summary><span>How do I log in?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
         <div class="a">
-          <p>Tap <span class="ui">Log In</span> and use the same method you signed up with: email, phone number, Facebook, Google, Apple or an AIS number.</p>
-          <p class="note">If you log in with a different method from the one you signed up with, it counts as a different account, and you won't see the package you subscribed to.</p>
+          <p>There are 6 ways to log in:</p>
+          <ul>
+            <li>Email or phone number</li>
+            <li>Facebook, Google or Apple (Apple ID)</li>
+            <li>The AIS logo icon (works with both AIS mobile numbers and AIS Fibre home internet numbers)</li>
+          </ul>
+          <p class="note">Every way of logging in <b>requires an OTP code</b>, to keep your account safe.</p>
+        </div>
+      </details>
+
+      <details class="q" id="existingaccount" data-cat="account" data-popular>
+        <summary><span>I already have an account. Do I need to do anything?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <h4>Facebook / Google / Apple accounts</h4>
+          <p>If you've never updated your profile, you'll be asked to add an <b>email or phone number</b> on your profile page and confirm an OTP code before you can log in.</p>
+          <h4>Email accounts with a password</h4>
+          <p>You can choose either way:</p>
+          <ol>
+            <li><b>Use your old password:</b> enter it, then update your email again and confirm the OTP code</li>
+            <li><b>Use an OTP code instead:</b> choose to log in with email and request an OTP code. You don't need your old password</li>
+          </ol>
         </div>
       </details>
 
       <details class="q" id="editprofile" data-cat="account">
         <summary><span>How do I edit my personal information?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
-        <div class="a"><p>Log in, then tap <span class="ui">Profile</span> (top right) › <span class="ui">Edit</span></p></div>
+        <div class="a">
+          <ol>
+            <li>In the app, go to the <span class="ui">Account</span> tab and tap the <b>pencil icon</b> next to your profile name</li>
+            <li>On the <span class="ui">Personal Information</span> page you can edit 4 things: profile picture, username, gender and birthday (picked from a calendar)</li>
+            <li>Always tap <span class="ui">Save</span> at the top right</li>
+          </ol>
+          <p class="note">Tap your profile picture to upload, change or remove it · If you tap back (&lt;) without saving, you'll be asked to confirm before your changes are discarded</p>
+        </div>
       </details>
 
       <details class="q" id="signout" data-cat="account">
         <summary><span>How do I log out?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
-        <div class="a"><p>Tap <span class="ui">Profile</span> (top right) › <span class="ui">Log Out</span>. On the website, tap <span class="ui">OK</span> to confirm.</p></div>
+        <div class="a">
+          <p><b>App:</b> <span class="ui">Account</span> tab › <span class="ui">Settings</span> › <span class="ui">Log Out</span></p>
+          <p><b>Website:</b> <span class="ui">Profile</span> (top right) › <span class="ui">Log Out</span> › <span class="ui">OK</span></p>
+          <p><b>TV:</b> on the home screen, go to the profile icon (top right) › <span class="ui">Log Out</span> › <span class="ui">Yes, Log Out</span></p>
+        </div>
       </details>
 
       <!-- ===== PREMIUM ===== -->
       <details class="q" id="checksubscription" data-cat="premium">
         <summary><span>How do I check if I have oneD PREMIUM?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
         <div class="a">
-          <p>Tap <span class="ui">Profile</span></p>
+          <p><b>App:</b> open the <span class="ui">Account</span> tab</p>
           <ul>
-            <li>You see a <span class="ui">Subscription</span> menu = you have PREMIUM (tap it to see your package)</li>
-            <li>You see a <span class="ui">Subscribe</span> button = you don't have PREMIUM yet</li>
+            <li>You see a <span class="ui">Current Package</span> menu = you have PREMIUM (tap it to see your package)</li>
+            <li>You see a <span class="ui">Subscribe PREMIUM</span> button = you don't have PREMIUM yet</li>
           </ul>
+          <p><b>TV:</b> <span class="ui">Account</span> › <span class="ui">My Account</span>, then check the same way as in the app</p>
+          <p><b>Website:</b> tap <span class="ui">Profile</span>. A <span class="ui">Subscription</span> menu means you have PREMIUM; a <span class="ui">Subscribe</span> button means you don't yet</p>
         </div>
       </details>
 
-      <details class="q" id="subscription" data-cat="premium">
-        <summary><span>How do I subscribe to oneD PREMIUM?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+      <details class="q" id="subscription" data-cat="premium" data-popular>
+        <summary><span>How do I subscribe to oneD PREMIUM (no account yet)?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
         <div class="a">
           <ol>
-            <li>Log in, then tap <span class="ui">oneD PREMIUM</span> in the top menu</li>
-            <li>Choose a package and tap <span class="ui">Subscribe Now</span></li>
+            <li>Open the oneD app and tap the <span class="ui">Account</span> tab at the bottom, or <span class="ui">Subscribe PREMIUM</span> at the top right</li>
+            <li>Choose <span class="ui">Subscribe PREMIUM</span>, pick a package and tap <span class="ui">Subscribe Now</span></li>
+            <li>Confirm the payment through the App Store or Google Play</li>
+            <li>Create your account with email, phone number, Facebook, Google or Apple, and confirm the OTP code<br><span style="color:var(--text-3);font-size:14px">Facebook / Google / Apple: also add an email or phone number and confirm the OTP code</span></li>
+            <li>PREMIUM starts right away</li>
+          </ol>
+        </div>
+      </details>
+
+      <details class="q" id="subscriptionexisting" data-cat="premium">
+        <summary><span>I have an account. How do I subscribe to PREMIUM?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
+        <div class="a">
+          <ol>
+            <li>Log in to the oneD app and go to the <span class="ui">Account</span> tab</li>
+            <li>Choose <span class="ui">Subscribe PREMIUM</span>, pick a package and tap <span class="ui">Subscribe Now</span></li>
             <li>Confirm the payment through the App Store or Google Play. PREMIUM starts right away</li>
           </ol>
         </div>
@@ -424,9 +518,10 @@
         <div class="a">
           <ul>
             <li>No ad breaks, and every episode</li>
+            <li>Watch first (Early access)</li>
             <li>Full HD 1080p, on up to 2 devices at the same time</li>
             <li>Cast to your TV with Chromecast and AirPlay</li>
-            <li>oneD Shorts vertical dramas (phones and tablets)</li>
+            <li>oneD Shorts vertical dramas</li>
             <li>Picture in Picture and playback speed control</li>
           </ul>
           <p style="font-size:13px;color:var(--text-3)">Terms and conditions as set by the company apply.</p>
@@ -436,19 +531,19 @@
       <details class="q" id="watchontv" data-cat="premium" data-popular>
         <summary><span>How do I watch oneD on TV?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
         <div class="a">
-          <p>You need oneD PREMIUM.</p>
           <ol>
-            <li>Search for "oneD" in your TV's app store and install it:
+            <li>Search for "oneD" in your TV's app store, then tap <span class="ui">Install</span> and <span class="ui">Open</span>:
               <ul>
-                <li><b>Android TV / Google TV</b> (Android 9+): Play Store</li>
+                <li><b>Android TV / Google TV</b> (Android 9+): Play Store (signed in with your Google account)</li>
                 <li><b>Samsung</b> (2019 or newer, Tizen 5.0+): Home › APPS</li>
                 <li><b>LG</b> (webOS 5.0+): LG Content Store</li>
                 <li><b>Apple TV</b> (tvOS 17.6+): App Store</li>
               </ul>
             </li>
-            <li>Open the app and scan the QR code on the TV screen with your phone</li>
-            <li>Log in with your PREMIUM account and start watching</li>
+            <li>Scan the QR code on the TV with your phone to log in with your account, or use it without logging in</li>
+            <li>Start watching</li>
           </ol>
+          <p class="note">Without PREMIUM you can only watch free content. PREMIUM content won't play.</p>
         </div>
       </details>
 
@@ -531,9 +626,10 @@
         <summary><span>I can't log in</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
         <div class="a">
           <ol>
-            <li>Use the same log-in method you signed up with, and check your email and password</li>
-            <li>If you use Facebook, Google or Apple, check that the account isn't suspended</li>
-            <li>Update the app to the latest version and reopen it</li>
+            <li>Check the email or phone number you get the code on. If the code hasn't arrived, request a new OTP code</li>
+            <li>If you use Facebook, Google or Apple, check your internet connection and that the account still works and isn't suspended</li>
+            <li>If you've already added an email or phone number to your profile, log in with it and confirm the OTP code</li>
+            <li>Update the app to the latest version and reopen it (on the website, refresh the page)</li>
           </ol>
           <p>Still can't log in? <a href="support.html?lang=en">Contact our team</a></p>
         </div>
@@ -545,7 +641,8 @@
           <ol>
             <li>Check you're logged in with the account you subscribed with</li>
             <li>Check that the payment went through</li>
-            <li>Still no PREMIUM? <a href="support.html?lang=en">Contact our team</a> with a screenshot of the receipt email from Apple or Google Play</li>
+            <li>Tap <span class="ui">Restore Purchase</span> (works on both iOS and Android)</li>
+            <li>Still no PREMIUM? <a href="support.html?lang=en">Contact our team</a> with a screenshot of the receipt email from Apple or Google Play, and the account you use on oneD</li>
           </ol>
         </div>
       </details>
