@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: น้องดี — oneD FAQ chat API (Lambda + API Gateway HTTP API + Secrets Manager)
+Description: น้องดี — oneD FAQ and chat API (Lambda + API Gateway HTTP API + Secrets Manager)
 
 Parameters:
   Model:
@@ -13,10 +13,6 @@ Parameters:
     Default: 'on'
     AllowedValues: ['on', 'off']
     Description: Second Claude call that checks each answer against the cited FAQ entries (safer, a little slower)
-  FaqUrl:
-    Type: String
-    Default: https://assets.oned.net/doc/faq-th-beta.html
-    Description: FAQ page the bot reads its answers from (must use the new <details class="q"> layout)
   AllowedOrigins:
     Type: CommaDelimitedList
     Default: https://assets.oned.net
@@ -53,8 +49,8 @@ Resources:
     Properties:
       CorsConfiguration:
         AllowOrigins: !Ref AllowedOrigins
-        AllowMethods: [POST, OPTIONS]
-        AllowHeaders: [content-type]
+        AllowMethods: [GET, POST, OPTIONS]
+        AllowHeaders: [content-type, if-none-match]
         MaxAge: 600
       DefaultRouteSettings:
         ThrottlingRateLimit: !Ref ThrottleRatePerSecond
@@ -70,7 +66,6 @@ Resources:
         Variables:
           MODEL: !Ref Model
           VERIFY: !Ref Verify
-          FAQ_URL: !Ref FaqUrl
           ALLOWED_ORIGINS: !Join [',', !Ref AllowedOrigins]
           ANTHROPIC_SECRET_ARN: !Ref AnthropicKeySecret
       Policies:
@@ -83,6 +78,9 @@ Resources:
         Feedback:
           Type: HttpApi
           Properties: { ApiId: !Ref ChatApi, Path: /feedback, Method: POST }
+        Faq:
+          Type: HttpApi
+          Properties: { ApiId: !Ref ChatApi, Path: /faq, Method: GET }
 
   ChatFunctionLogs:
     Type: AWS::Logs::LogGroup

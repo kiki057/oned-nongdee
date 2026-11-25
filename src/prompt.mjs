@@ -1,6 +1,6 @@
-// น้องดี's rules. Edit here; the FAQ itself is read from the FAQ page (faq.mjs).
+// น้องดี's rules. Edit here; the FAQ itself comes from src/faq.json (faq.mjs).
 
-// Must match the <option value="..."> list on support.oned.net exactly.
+// Must match the <option value="..."> list on support.oned.net exactly (and SupportIssue in openapi.yaml).
 export const ISSUES = [
   'เข้าสู่ระบบไม่ได้',
   'ดูวิดีโอไม่ได้',

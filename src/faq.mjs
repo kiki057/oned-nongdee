@@ -1,70 +1,59 @@
-// Reads the FAQ entries straight from the published FAQ page, so the bot never drifts from it.
-// Each question on the page is: <details class="q" id="..." data-cat="..."> <summary><span>Question</span>…</summary> <div class="a">Answer</div> </details>
+// The FAQ, from src/faq.json (the source of truth, bundled with the Lambda).
+//   loadFaq()          Thai entries as plain text: what น้องดี answers from and the guardrail checks against
+//   faqDocument(lang)  one language's FAQ for GET /faq (web page and the iOS / Android apps)
+// To change the FAQ: edit src/faq.json, run `node scripts/build-faq.mjs` (updates the web page), then deploy.
 
-const TTL_MS = 10 * 60 * 1000; // re-read the page at most every 10 minutes
-let cache = { at: 0, url: '', entries: null };
+import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+import { answerText, validate } from './faq-format.mjs';
 
-export async function loadFaq(url) {
-  if (cache.entries && cache.url === url && Date.now() - cache.at < TTL_MS) return cache.entries;
-  try {
-    const res = await fetch(url, { signal: AbortSignal.timeout(5000) });
-    if (!res.ok) throw new Error(`FAQ fetch failed: ${res.status}`);
-    const entries = parseFaq(await res.text());
-    if (!entries.length) throw new Error('FAQ page has no <details class="q"> entries (is it the new layout?)');
-    cache = { at: Date.now(), url, entries };
-  } catch (err) {
-    if (!cache.entries) throw err; // nothing cached yet: fail
-    console.warn(JSON.stringify({ type: 'faq_refresh_failed', message: String(err) })); // keep serving the last good copy
+export const LANGS = ['th', 'en'];
+
+// Where each question lives on the web (deep link by id).
+const PAGE_URL = { th: 'https://assets.oned.net/doc/faq-th.html', en: 'https://assets.oned.net/doc/faq-en.html' };
+
+let data = null;
+export function faqData() {
+  if (!data) {
+    const raw = JSON.parse(readFileSync(new URL('./faq.json', import.meta.url), 'utf8'));
+    const errors = validate(raw);
+    if (errors.length) throw new Error('src/faq.json is invalid: ' + errors.join('; '));
+    data = raw;
   }
-  return cache.entries;
+  return data;
 }
 
-export function parseFaq(html) {
-  const out = [];
-  // The FAQ page carries the English questions in a <template> for its TH | EN switch: read only the Thai ones.
-  html = html.replace(/<template\b[\s\S]*?<\/template>/gi, '');
-  const re = /<details\b([^>]*)>([\s\S]*?)<\/details>/gi;
-  let m;
-  while ((m = re.exec(html))) {
-    const attrs = m[1];
-    if (!/\bclass\s*=\s*"[^"]*\bq\b[^"]*"/.test(attrs)) continue;
-    const id = attr(attrs, 'id');
-    if (!id) continue;
-    const q = /<summary[^>]*>\s*<span[^>]*>([\s\S]*?)<\/span>/i.exec(m[2]);
-    const a = /<div\s+class\s*=\s*"a"[^>]*>([\s\S]*)<\/div>\s*$/i.exec(m[2]);
-    if (!q || !a) continue;
-    out.push({ id, category: attr(attrs, 'data-cat') || '', question: toText(q[1]), answer: toText(a[1]) });
+// Thai only: the guardrail checks every fact against the Thai source, also for English questions.
+let botEntries = null;
+export async function loadFaq() {
+  if (!botEntries) {
+    botEntries = faqData().entries.map((e) => ({ id: e.id, category: e.category, question: e.th.question, answer: answerText(e.th.answer) }));
   }
-  return out;
+  return botEntries;
 }
 
-function attr(attrs, name) {
-  const m = new RegExp(`\\b${name}\\s*=\\s*"([^"]*)"`, 'i').exec(attrs);
-  return m ? m[1] : '';
-}
-
-function toText(html) {
-  return decode(
-    html
-      .replace(/<!--[\s\S]*?-->/g, '')
-      .replace(/<img\b[^>]*\balt\s*=\s*"([^"]*)"[^>]*>/gi, '[$1]')
-      .replace(/<li\b[^>]*>/gi, '\n- ')
-      .replace(/<\/?(p|h\d|br|ol|ul|div)\b[^>]*>/gi, '\n')
-      .replace(/<[^>]+>/g, '')
-  )
-    .split('\n')
-    .map((l) => l.replace(/\s+/g, ' ').trim())
-    .filter(Boolean)
-    .join('\n');
-}
-
-function decode(s) {
-  return s
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;|&apos;/g, "'")
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(+n))
-    .replace(/&amp;/g, '&');
+const docs = {};
+export function faqDocument(lang) {
+  if (!LANGS.includes(lang)) return null;
+  if (!docs[lang]) {
+    const f = faqData();
+    const body = {
+      lang,
+      version: f.version,
+      popularLabel: f.popular[lang],
+      categories: f.categories.map((c) => ({ id: c.id, label: c[lang] })),
+      entries: f.entries.map((e) => ({
+        id: e.id,
+        category: e.category,
+        popular: !!e.popular,
+        question: e[lang].question,
+        answer: e[lang].answer,
+        text: answerText(e[lang].answer),
+        url: `${PAGE_URL[lang]}#${e.id}`,
+      })),
+    };
+    const json = JSON.stringify(body);
+    docs[lang] = { json, etag: '"' + createHash('sha256').update(json).digest('base64url').slice(0, 22) + '"' };
+  }
+  return docs[lang];
 }

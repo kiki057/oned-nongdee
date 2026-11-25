@@ -142,6 +142,7 @@
     <p class="status" id="status"></p>
 
     <div class="list" id="list">
+      <!-- faq:th (generated from src/faq.json by scripts/build-faq.mjs: edit the JSON, not this list) -->
       <!-- ===== บัญชี ===== -->
       <details class="q" id="Register" data-cat="account" data-popular>
         <summary><span>สร้างบัญชี oneD ได้อย่างไร</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
@@ -310,7 +311,9 @@
 
       <details class="q" id="codeexpiry" data-cat="code">
         <summary><span>ดูวันหมดอายุของแพ็กเกจได้ที่ไหน</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
-        <div class="a"><p><span class="ui">โปรไฟล์</span> › <span class="ui">การสมัครสมาชิก</span> › ดูที่หัวข้อ <span class="ui">วันที่ต่ออายุ</span></p></div>
+        <div class="a">
+          <p><span class="ui">โปรไฟล์</span> › <span class="ui">การสมัครสมาชิก</span> › ดูที่หัวข้อ <span class="ui">วันที่ต่ออายุ</span></p>
+        </div>
       </details>
 
       <details class="q" id="codefailed" data-cat="code" data-popular>
@@ -327,7 +330,9 @@
 
       <details class="q" id="codewithrecurring" data-cat="code">
         <summary><span>มีแพ็กเกจรายเดือน/รายปี แลกโค้ดเติมวันได้ไหม</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
-        <div class="a"><p><b>ยังไม่ได้</b> ให้สร้างบัญชีใหม่สำหรับโค้ดเติมวัน หรือรอให้แพ็กเกจเดิมหมดอายุก่อน</p></div>
+        <div class="a">
+          <p><b>ยังไม่ได้</b> ให้สร้างบัญชีใหม่สำหรับโค้ดเติมวัน หรือรอให้แพ็กเกจเดิมหมดอายุก่อน</p>
+        </div>
       </details>
 
       <details class="q" id="codetorecurring" data-cat="code">
@@ -401,18 +406,24 @@
 
       <details class="q" id="unsubscribedaypass" data-cat="cancel">
         <summary><span>ยกเลิกแบบเติมวันได้ไหม</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
-        <div class="a"><p>ไม่ต้องยกเลิก แบบเติมวันไม่ตัดเงินอัตโนมัติ เมื่อครบวันจะกลับเป็นแบบมีโฆษณาเอง (ยกเลิกก่อนครบกำหนดไม่ได้)</p></div>
+        <div class="a">
+          <p>ไม่ต้องยกเลิก แบบเติมวันไม่ตัดเงินอัตโนมัติ เมื่อครบวันจะกลับเป็นแบบมีโฆษณาเอง (ยกเลิกก่อนครบกำหนดไม่ได้)</p>
+        </div>
       </details>
 
       <!-- ===== ทั่วไป ===== -->
       <details class="q" id="servicearea" data-cat="general">
         <summary><span>ใช้ oneD ในต่างประเทศได้ไหม</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
-        <div class="a"><p>ใช้ได้ในไทยและบางประเทศตามลิขสิทธิ์ เรื่องที่ดูได้อาจต่างกันในแต่ละประเทศ ส่วน Live ดูได้เฉพาะในไทย</p></div>
+        <div class="a">
+          <p>ใช้ได้ในไทยและบางประเทศตามลิขสิทธิ์ เรื่องที่ดูได้อาจต่างกันในแต่ละประเทศ ส่วน Live ดูได้เฉพาะในไทย</p>
+        </div>
       </details>
+      <!-- /faq:th -->
     </div>
 
     <!-- English questions: same ids, categories and popular set as the Thai ones above. Swapped in by the TH | EN switch. -->
     <template id="list-en">
+      <!-- faq:en (generated from src/faq.json by scripts/build-faq.mjs: edit the JSON, not this list) -->
       <!-- ===== Account ===== -->
       <details class="q" id="Register" data-cat="account" data-popular>
         <summary><span>How do I create a oneD account?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
@@ -581,7 +592,9 @@
 
       <details class="q" id="codeexpiry" data-cat="code">
         <summary><span>Where can I see when my package expires?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
-        <div class="a"><p><span class="ui">Profile</span> › <span class="ui">Subscription</span> › see <span class="ui">Renewal Date</span></p></div>
+        <div class="a">
+          <p><span class="ui">Profile</span> › <span class="ui">Subscription</span> › see <span class="ui">Renewal Date</span></p>
+        </div>
       </details>
 
       <details class="q" id="codefailed" data-cat="code" data-popular>
@@ -598,7 +611,9 @@
 
       <details class="q" id="codewithrecurring" data-cat="code">
         <summary><span>I have a monthly/yearly package. Can I redeem a top-up code?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
-        <div class="a"><p><b>Not yet.</b> Create a new account for top-up codes, or wait until your current package expires.</p></div>
+        <div class="a">
+          <p><b>Not yet.</b> Create a new account for top-up codes, or wait until your current package expires.</p>
+        </div>
       </details>
 
       <details class="q" id="codetorecurring" data-cat="code">
@@ -672,14 +687,19 @@
 
       <details class="q" id="unsubscribedaypass" data-cat="cancel">
         <summary><span>Can I cancel top-up days?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
-        <div class="a"><p>There's nothing to cancel: top-up days are never charged automatically. When they run out, you go back to watching with ads. (You can't cancel before they expire.)</p></div>
+        <div class="a">
+          <p>There's nothing to cancel: top-up days are never charged automatically. When they run out, you go back to watching with ads. (You can't cancel before they expire.)</p>
+        </div>
       </details>
 
       <!-- ===== General ===== -->
       <details class="q" id="servicearea" data-cat="general">
         <summary><span>Can I use oneD outside Thailand?</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></summary>
-        <div class="a"><p>oneD works in Thailand and in some other countries, depending on licensing. What you can watch may differ by country. Live TV is only available in Thailand.</p></div>
+        <div class="a">
+          <p>oneD works in Thailand and in some other countries, depending on licensing. What you can watch may differ by country. Live TV is only available in Thailand.</p>
+        </div>
       </details>
+      <!-- /faq:en -->
     </template>
 
     <div class="empty" id="empty"><span id="emptyText">ไม่พบคำถามที่ตรงกับคำค้นหา</span></div>

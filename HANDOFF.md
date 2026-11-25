@@ -43,12 +43,12 @@ Ask Tong first: **what are the apps built with** (Swift / Kotlin, Flutter, React
 
 Suggested order:
 
-1. **FAQ as data**
-   - Convert the FAQ to `faq.json` (Thai + English, ids, categories, popular, answer blocks), and serve it with `GET /faq?lang=th|en`.
-   - Switch the web page and `src/faq.mjs` to read it (replacing the HTML parsing). Keep ids so deep links still work.
-2. **OpenAPI spec** for `/faq`, `/chat`, `/feedback` and a future `/tickets`.
+Answered (25 Nov): the apps are native **Swift and Kotlin**, only the mobile apps are in scope (no TV), and users sign in with **Firebase Auth**. Still needed: the Firebase project id (to verify tokens), and whether guests may use the chat in the apps.
+
+1. **FAQ as data** — done. `src/faq.json` is the source of truth; `scripts/build-faq.mjs` writes it into the page (same HTML, same ids); `GET /faq?lang=th|en` serves it with ETag caching; น้องดี reads the same file (text proven identical to before).
+2. **OpenAPI spec** — done for `/faq`, `/chat`, `/feedback` (`openapi.yaml`). Firebase ID token bearer auth is in the spec but marked planned. `/tickets` still to add.
 3. **Chat API for apps**
-   - Authentication: app key + Apple App Attest / Google Play Integrity, or the user's oneD token. The web version uses CORS, which apps bypass.
+   - Authentication: verify the Firebase ID token (`Authorization: Bearer`) in the Lambda; optionally add App Check. The web version uses the Origin allowlist, which apps don't send, so today the apps get 403 on `/chat`.
    - Optional user context: logged-in user id, so the handoff fills itself in. This is groundwork for phase 2 (read-only Evergent lookups).
    - Streaming answers: the guardrail must still check the whole answer before it's shown, so this needs care.
 4. **`POST /tickets`**: native handoff without the web form, using the same fields as `/submit`.

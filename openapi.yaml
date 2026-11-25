@@ -1,0 +1,382 @@
+openapi: 3.1.0
+info:
+  title: oneD FAQ and น้องดี (Nong Dee) API
+  version: 1.0.0
+  summary: The oneD FAQ as data, and the FAQ-only help assistant, for the web FAQ page and the iOS (Swift) and Android (Kotlin) apps.
+  description: |
+    Three endpoints, all served by one AWS Lambda behind API Gateway (see `template.yaml`):
+
+    - `GET /faq` returns the FAQ in Thai or English, as structured blocks the apps can render natively.
+    - `POST /chat` asks น้องดี a question. She answers **only** from the FAQ; every reply is checked in code
+      before it is returned (see README, "FAQ-only guardrail").
+    - `POST /feedback` records a thumbs up or down on one of her replies.
+
+    **Thai is the source of truth.** English is translated from it. Question ids are stable: the apps and the
+    support form deep-link to them, so an id is never renamed or dropped without a redirect.
+
+    **Authentication** (see `securitySchemes`): `GET /faq` is public. For `/chat` and `/feedback`, the apps will
+    send the signed-in user's Firebase ID token. This is **not enforced yet**: today the API only accepts browser
+    calls from the allowed FAQ page origin, so the apps can't call `/chat` until token checking is built (next step).
+servers:
+  - url: https://{apiId}.execute-api.{region}.amazonaws.com
+    description: The `ApiUrl` output of the SAM stack. A custom domain can replace it later.
+    variables:
+      apiId: { default: YOUR-API-ID }
+      region: { default: ap-southeast-1 }
+
+tags:
+  - name: FAQ
+  - name: Assistant
+
+paths:
+  /faq:
+    get:
+      tags: [FAQ]
+      operationId: getFaq
+      summary: Get the FAQ in one language
+      description: |
+        The whole FAQ in one response (about 25 questions). The same for every user, so it needs no sign-in and
+        is cacheable: keep the last copy on the device, send its `ETag` back in `If-None-Match`, and a `304`
+        means it hasn't changed. Show the `popular` questions under `popularLabel` as the first tab, then one
+        tab per category, in the order given.
+      security: []
+      parameters:
+        - name: lang
+          in: query
+          description: Language of the questions and answers. Thai if left out.
+          schema: { type: string, enum: [th, en], default: th }
+        - name: If-None-Match
+          in: header
+          description: The `ETag` of the copy the app already has.
+          schema: { type: string }
+      responses:
+        '200':
+          description: The FAQ.
+          headers:
+            ETag: { schema: { type: string }, description: Changes whenever the FAQ content changes. }
+            Cache-Control: { schema: { type: string, example: 'public, max-age=300' } }
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FaqDocument' }
+        '304': { description: Not modified since the `If-None-Match` ETag. }
+        '400':
+          description: Unknown `lang` (`bad_lang`).
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+
+  /chat:
+    post:
+      tags: [Assistant]
+      operationId: chat
+      summary: Ask น้องดี a question
+      description: |
+        Send the conversation so far (the app keeps it; the server keeps no chat state) and get her next reply.
+        She replies in the language the user writes in. Personal data (emails, phone and card numbers) is masked
+        before the question reaches the model or the logs, but the app should still tell users not to type it.
+
+        Show `answer`, then link the `sources` (FAQ ids, open them in the native FAQ screen), offer the
+        `suggestions` as tappable chips, and when `handoff_issue` is set, show a "contact support" button that
+        opens the support form with that issue preselected.
+
+        Allow up to 30 seconds. Rate limits: 20 messages per 10 minutes per IP, plus a stack-wide limit.
+      security:
+        - firebaseIdToken: []
+        - {}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/ChatRequest' }
+            example:
+              chatId: c_3f9a1c0e7b2d4a61
+              messages:
+                - { role: user, content: แลกโค้ดในแอปได้ไหม }
+      responses:
+        '200':
+          description: Her reply, already checked by the FAQ-only guardrail.
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ChatReply' }
+              example:
+                chatId: c_3f9a1c0e7b2d4a61
+                answer: แลกโค้ดได้บนเว็บเบราว์เซอร์เท่านั้นค่ะ ไปที่ redeem.oned.net แล้วเข้าสู่ระบบ กรอกโค้ดเป็นตัวพิมพ์ใหญ่ แล้วกด "แลกโค้ด" ได้เลยค่ะ
+                sources: [Activateonetimecode]
+                status: answered
+                handoff_issue: null
+                suggestions: [แลกโค้ดไม่สำเร็จ]
+        '400':
+          description: '`bad_json` or `bad_messages` (empty, wrong roles, or the last message is not from the user).'
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '401':
+          description: '*Planned:* missing, expired or invalid Firebase ID token (`unauthorized`). Not returned yet.'
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '403':
+          description: '`origin_not_allowed`: a browser call from a site that isn''t on the allow list. Today this also blocks the apps (they send no `Origin`) until token checking is built.'
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '413':
+          description: '`too_large`: the request body is over 30,000 characters.'
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '429':
+          description: '`rate_limited`: too many messages. Show "please try again in a moment".'
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '502':
+          description: '`upstream_error`: the AI service failed. Show a generic error and offer the support form.'
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '503':
+          description: '`busy`: the AI service is overloaded. Same handling as 429.'
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+
+  /feedback:
+    post:
+      tags: [Assistant]
+      operationId: feedback
+      summary: Rate one of her replies
+      security:
+        - firebaseIdToken: []
+        - {}
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/FeedbackRequest' }
+      responses:
+        '204': { description: Recorded. }
+        '400':
+          description: '`bad_feedback` or `bad_json`.'
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '403':
+          description: '`origin_not_allowed` (see `/chat`).'
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+
+components:
+  securitySchemes:
+    firebaseIdToken:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        **PLANNED, NOT ENFORCED YET.** The apps send the signed-in user's Firebase ID token
+        (`Auth.auth().currentUser?.getIDToken()` on iOS, `FirebaseAuth.getInstance().currentUser?.getIdToken(false)`
+        on Android) as `Authorization: Bearer <token>`. The API will verify it against Google's public keys
+        (issuer `https://securetoken.google.com/<firebase-project-id>`, audience `<firebase-project-id>`) and
+        return `401` if it's missing or invalid. The web FAQ page sends no token and is allowed by its origin
+        instead, which is why `{}` (no auth) is also listed on `/chat` and `/feedback`.
+        Open: the Firebase project id, and whether guests (not signed in) may use the assistant in the apps.
+
+  schemas:
+    FaqDocument:
+      type: object
+      required: [lang, version, popularLabel, categories, entries]
+      properties:
+        lang: { type: string, enum: [th, en] }
+        version: { type: string, description: Version of the Thai source document., example: '2.0' }
+        popularLabel: { type: string, description: Label for the "popular questions" tab., example: ยอดนิยม }
+        categories:
+          type: array
+          description: In display order.
+          items: { $ref: '#/components/schemas/FaqCategory' }
+        entries:
+          type: array
+          description: In display order. Ids, categories and the popular set are the same in every language.
+          items: { $ref: '#/components/schemas/FaqEntry' }
+
+    FaqCategory:
+      type: object
+      required: [id, label]
+      properties:
+        id: { type: string, enum: [account, premium, code, help, cancel, general] }
+        label: { type: string, example: บัญชี }
+
+    FaqEntry:
+      type: object
+      required: [id, category, popular, question, answer, text, url]
+      properties:
+        id:
+          type: string
+          pattern: '^[A-Za-z][A-Za-z0-9_-]*$'
+          description: Stable id, used for deep links (`#Register`) and by น้องดี in `sources`.
+          example: Activateonetimecode
+        category: { type: string, description: A `FaqCategory` id. }
+        popular: { type: boolean, description: Also shown in the popular tab. }
+        question: { type: string }
+        answer:
+          type: array
+          description: The answer as blocks, to render natively.
+          items: { $ref: '#/components/schemas/Block' }
+        text: { type: string, description: The answer as plain text (lists as "- " lines), for search and accessibility. }
+        url: { type: string, format: uri, description: The same question on the web FAQ page., example: 'https://assets.oned.net/doc/faq-th.html#Activateonetimecode' }
+
+    Block:
+      oneOf:
+        - $ref: '#/components/schemas/ParagraphBlock'
+        - $ref: '#/components/schemas/HeadingBlock'
+        - $ref: '#/components/schemas/ListBlock'
+      discriminator:
+        propertyName: type
+        mapping:
+          paragraph: '#/components/schemas/ParagraphBlock'
+          heading: '#/components/schemas/HeadingBlock'
+          list: '#/components/schemas/ListBlock'
+    ParagraphBlock:
+      type: object
+      required: [type, content]
+      properties:
+        type: { const: paragraph }
+        style:
+          type: string
+          enum: [note, warning, fine]
+          description: 'Absent = normal text. `note` = info callout, `warning` = warning callout, `fine` = small grey print.'
+        content: { type: array, items: { $ref: '#/components/schemas/Inline' } }
+    HeadingBlock:
+      type: object
+      required: [type, content]
+      properties:
+        type: { const: heading }
+        content: { type: array, items: { $ref: '#/components/schemas/Inline' } }
+    ListBlock:
+      type: object
+      required: [type, ordered, items]
+      properties:
+        type: { const: list }
+        ordered: { type: boolean, description: 'true = numbered steps, false = bullets.' }
+        items:
+          type: array
+          items:
+            type: object
+            required: [content]
+            properties:
+              content: { type: array, items: { $ref: '#/components/schemas/Inline' } }
+              children: { type: array, description: Nested blocks under this item (a sub-list)., items: { $ref: '#/components/schemas/Block' } }
+
+    Inline:
+      oneOf:
+        - $ref: '#/components/schemas/TextInline'
+        - $ref: '#/components/schemas/UiInline'
+        - $ref: '#/components/schemas/LinkInline'
+        - $ref: '#/components/schemas/IconInline'
+        - $ref: '#/components/schemas/BreakInline'
+      discriminator:
+        propertyName: type
+        mapping:
+          text: '#/components/schemas/TextInline'
+          ui: '#/components/schemas/UiInline'
+          link: '#/components/schemas/LinkInline'
+          icon: '#/components/schemas/IconInline'
+          break: '#/components/schemas/BreakInline'
+    TextInline:
+      type: object
+      required: [type, text]
+      properties:
+        type: { const: text }
+        text: { type: string }
+        bold: { type: boolean }
+        muted: { type: boolean, description: Secondary grey text. }
+    UiInline:
+      type: object
+      required: [type, text]
+      description: The name of a button or screen in the app, shown as a chip (the web page uses a pink outline).
+      properties:
+        type: { const: ui }
+        text: { type: string }
+    LinkInline:
+      type: object
+      required: [type, text, href]
+      description: '`href` starting with `#` is another FAQ question (`#subscription`): open it in the app. Links to `support.oned.net` should open the app''s support flow.'
+      properties:
+        type: { const: link }
+        text: { type: string }
+        href: { type: string }
+    IconInline:
+      type: object
+      required: [type, name, src]
+      description: A small inline icon. `name` is its accessible label (e.g. Chromecast, AirPlay); the apps can map it to their own icon.
+      properties:
+        type: { const: icon }
+        name: { type: string }
+        src: { type: string, format: uri }
+    BreakInline:
+      type: object
+      required: [type]
+      properties:
+        type: { const: break }
+
+    ChatMessage:
+      type: object
+      required: [role, content]
+      properties:
+        role: { type: string, enum: [user, assistant] }
+        content: { type: string, description: Longer messages are cut to 1,000 characters. }
+
+    ChatRequest:
+      type: object
+      required: [messages]
+      properties:
+        chatId:
+          type: string
+          pattern: '^c_[a-z0-9]{8,32}$'
+          description: Leave out on the first message, then send back the `chatId` from the last reply. An invalid one is replaced.
+        messages:
+          type: array
+          minItems: 1
+          description: The conversation so far, oldest first, ending with the user's new message. Only the last 10 turns are used; send at most 20.
+          items: { $ref: '#/components/schemas/ChatMessage' }
+
+    ChatReply:
+      type: object
+      required: [chatId, answer, sources, status, handoff_issue, suggestions]
+      properties:
+        chatId: { type: string, pattern: '^c_[a-z0-9]{8,32}$' }
+        answer: { type: string, description: 'Plain text, up to 1,200 characters. May contain line breaks.' }
+        sources:
+          type: array
+          maxItems: 3
+          description: FAQ entry ids the answer comes from. Always real ids from `GET /faq`.
+          items: { type: string }
+        status:
+          type: string
+          enum: [answered, partial, not_in_faq, out_of_scope]
+          description: |
+            `answered`: answered from the FAQ. `partial`: she asks one clarifying question (e.g. iPhone or Android?).
+            `not_in_faq`: the FAQ doesn't cover it, or the guardrail blocked her draft; offer the handoff.
+            `out_of_scope`: not about using oneD.
+        handoff_issue:
+          oneOf:
+            - $ref: '#/components/schemas/SupportIssue'
+            - type: 'null'
+          description: When set, offer the support form with this issue preselected.
+        suggestions:
+          type: array
+          maxItems: 2
+          description: Short follow-up questions in the user's language, to show as chips.
+          items: { type: string }
+
+    SupportIssue:
+      type: string
+      description: The support form's issue values (the `/submit` contract). Always Thai, whatever the chat language.
+      enum:
+        - เข้าสู่ระบบไม่ได้
+        - ดูวิดีโอไม่ได้
+        - แอปเด้ง, แอปค้าง
+        - ไม่สามารถสมัครสมาชิกพรีเมียมได้
+        - สมัครสมาชิกพรีเมียมแล้ว แต่ยังเห็นโฆษณา
+        - สมัครสมาชิกพรีเมียมแล้ว แต่ cast ขึ้น TV ไม่ได้
+        - สมัครสมาชิกพรีเมียมแล้ว แต่ไม่ขึ้นสถานะพรีเมียม
+        - แพ็กเกจ AIS
+        - สมาชิก oneD PREMIUM แบบเติมวัน
+        - อื่นๆ (โปรดระบุ)
+
+    FeedbackRequest:
+      type: object
+      required: [chatId, rating]
+      properties:
+        chatId: { type: string, description: The `chatId` from the reply being rated. }
+        turn: { type: integer, minimum: 1, description: Which of her replies in the chat (1 = first). }
+        rating: { type: string, enum: [up, down] }
+
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+          enum: [bad_json, bad_messages, bad_feedback, bad_lang, too_large, rate_limited, origin_not_allowed, method_not_allowed, upstream_error, busy, unauthorized]
+        chatId: { type: string, description: Present on 502 / 503 from `/chat`. }

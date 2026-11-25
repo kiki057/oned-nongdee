@@ -5,7 +5,6 @@ import { readFile } from 'node:fs/promises';
 import assert from 'node:assert/strict';
 
 process.env.ANTHROPIC_API_KEY = 'test-key';
-process.env.FAQ_URL = 'https://assets.oned.net/doc/faq-th-beta.html';
 process.env.ALLOWED_ORIGINS = 'https://assets.oned.net';
 
 const faqHtml = await readFile(new URL('../web/faq-th-beta.html', import.meta.url), 'utf8');
@@ -32,12 +31,16 @@ globalThis.fetch = async (url, opts) => {
 console.log = () => {}; console.warn = () => {}; console.error = () => {}; // keep test output clean
 
 const { handler, normalise, clean } = await import('../src/handler.mjs');
-const { parseFaq } = await import('../src/faq.mjs');
+const { parseFaq, questionsFromHtml, renderList, validate } = await import('../src/faq-format.mjs');
+const { loadFaq } = await import('../src/faq.mjs');
+const { writeLists } = await import('../scripts/build-faq.mjs');
+const faqJson = JSON.parse(await readFile(new URL('../src/faq.json', import.meta.url), 'utf8'));
 const ev = (body, extra = {}) => ({
   rawPath: extra.path || '/chat',
   requestContext: { http: { method: extra.method || 'POST', sourceIp: extra.ip || '1.2.3.4' } },
-  headers: { origin: extra.origin ?? 'https://assets.oned.net', 'user-agent': 'test' },
-  body: typeof body === 'string' ? body : JSON.stringify(body),
+  headers: { ...(extra.origin === null ? {} : { origin: extra.origin ?? 'https://assets.oned.net' }), 'user-agent': 'test', ...extra.headers },
+  queryStringParameters: extra.query,
+  body: body == null ? undefined : typeof body === 'string' ? body : JSON.stringify(body),
 });
 const results = [];
 const test = async (name, fn) => { try { await fn(); results.push(['PASS', name]); } catch (e) { results.push(['FAIL', name + ' — ' + e.message]); } };
@@ -49,6 +52,66 @@ await test('parses every FAQ question from the page', async () => {
   assert.ok(/[\u0E00-\u0E7F]/.test(faq[0].question), 'Thai questions');
   const code = faq.find((f) => f.id === 'Activateonetimecode');
   assert.ok(code && code.answer.includes('redeem.oned.net') && code.answer.includes('\n- '));
+});
+
+// ---------------- FAQ as data (src/faq.json) ----------------
+await test('faq.json is valid: unique ids, known categories, Thai and English for every question', async () => {
+  assert.deepEqual(validate(faqJson), []);
+  assert.ok(faqJson.entries.length >= 20);
+});
+
+await test('the FAQ page is generated from faq.json (run scripts/build-faq.mjs if this fails)', async () => {
+  assert.equal(writeLists(faqHtml, faqJson), faqHtml);
+  const en = await readFile(new URL('../web/faq-en-beta.html', import.meta.url), 'utf8');
+  assert.equal(en, faqHtml, 'faq-en-beta.html and faq-th-beta.html are the same file');
+});
+
+await test('page -> JSON -> page round trip loses nothing', async () => {
+  const th = /<!-- faq:th[^>]*-->([\s\S]*?)<!-- \/faq:th -->/.exec(faqHtml)[1];
+  const en = /<!-- faq:en[^>]*-->([\s\S]*?)<!-- \/faq:en -->/.exec(faqHtml)[1];
+  const back = (html, L) => questionsFromHtml(html).map((q) => ({ id: q.id, category: q.category, popular: q.popular, question: q.question, answer: q.answer }));
+  const want = (L) => faqJson.entries.map((e) => ({ id: e.id, category: e.category, popular: !!e.popular, question: e[L].question, answer: e[L].answer }));
+  assert.deepEqual(back(th, 'th'), want('th'));
+  assert.deepEqual(back(en, 'en'), want('en'));
+  assert.equal(renderList(faqJson, 'th').trim(), th.trim());
+});
+
+await test('น้องดี reads the same Thai text from faq.json as from the page', async () => {
+  assert.deepEqual(await loadFaq(), parseFaq(faqHtml));
+});
+
+await test('openapi.yaml lists the same support-form issues as src/prompt.mjs', async () => {
+  const { ISSUES } = await import('../src/prompt.mjs');
+  const spec = await readFile(new URL('../openapi.yaml', import.meta.url), 'utf8');
+  const listed = /SupportIssue:[\s\S]*?enum:\n((?:\s+- .*\n)+)/.exec(spec)[1].trim().split('\n').map((l) => l.trim().slice(2));
+  assert.deepEqual(listed, ISSUES);
+});
+
+const getFaq = (query, extra = {}) => handler(ev(null, { path: '/faq', method: 'GET', query, ...extra }));
+
+await test('GET /faq returns Thai by default and English with ?lang=en, same ids', async () => {
+  const th = await getFaq(undefined, { origin: null });
+  assert.equal(th.statusCode, 200, 'apps send no Origin header');
+  const t = JSON.parse(th.body);
+  assert.equal(t.lang, 'th');
+  assert.match(th.headers['cache-control'], /public/);
+  const e = JSON.parse((await getFaq({ lang: 'en' })).body);
+  assert.equal(e.lang, 'en');
+  assert.deepEqual(e.entries.map((x) => [x.id, x.category, x.popular]), t.entries.map((x) => [x.id, x.category, x.popular]));
+  assert.ok(/[\u0E00-\u0E7F]/.test(t.entries[0].question) && !/[\u0E00-\u0E7F]/.test(e.entries[0].question));
+  const code = e.entries.find((x) => x.id === 'Activateonetimecode');
+  assert.ok(code.answer.some((b) => b.type === 'list'), 'answers are blocks');
+  assert.ok(code.text.includes('redeem.oned.net'), 'plus plain text for search');
+  assert.equal(code.url, 'https://assets.oned.net/doc/faq-en.html#Activateonetimecode');
+  assert.deepEqual(t.categories.map((c) => c.id), ['account', 'premium', 'code', 'help', 'cancel', 'general']);
+});
+
+await test('GET /faq: 304 for a matching ETag, 400 for an unknown language, 405 for POST', async () => {
+  const first = await getFaq({ lang: 'th' });
+  assert.ok(first.headers.etag);
+  assert.equal((await getFaq({ lang: 'th' }, { headers: { 'if-none-match': first.headers.etag } })).statusCode, 304);
+  assert.equal((await getFaq({ lang: 'jp' })).statusCode, 400);
+  assert.equal((await handler(ev({}, { path: '/faq', method: 'POST' }))).statusCode, 405);
 });
 
 await test('answers, keeps only real FAQ ids, returns a chat id', async () => {

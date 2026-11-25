@@ -1,18 +1,18 @@
 // น้องดี chat API — AWS Lambda (Node.js 22) behind API Gateway HTTP API.
 //   POST /chat      { chatId?, messages: [{ role: "user"|"assistant", content }] }  -> reply JSON
 //   POST /feedback  { chatId, turn, rating: "up"|"down" }                           -> 204
+//   GET  /faq?lang=th|en                                                            -> the FAQ (see openapi.yaml)
 // The Anthropic API key never leaves this function.
 
 import { randomUUID } from 'node:crypto';
 import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
-import { loadFaq } from './faq.mjs';
+import { loadFaq, faqDocument } from './faq.mjs';
 import { RULES, VERIFY_RULES, ISSUES, STATUSES } from './prompt.mjs';
 import { ground, unsure, lang } from './grounding.mjs';
 
 const MODEL = process.env.MODEL || 'claude-haiku-5-5';
 const VERIFY = (process.env.VERIFY || 'on') === 'on';
 const VERIFY_MODEL = process.env.VERIFY_MODEL || 'claude-haiku-5-5';
-const FAQ_URL = process.env.FAQ_URL || 'https://assets.oned.net/doc/faq-th-beta.html';
 const ALLOWED_ORIGINS = (process.env.ALLOWED_ORIGINS || '').split(',').map((s) => s.trim()).filter(Boolean);
 const MAX_TURNS = 10;
 const MAX_CHARS = 1000;
@@ -131,6 +131,20 @@ async function verify(answer, cited) {
   }
 }
 
+// ---------- GET /faq ----------
+// Public, read-only and the same for everyone: no Origin needed (the apps don't send one), cacheable, ETag for 304s.
+function getFaq(method, event, headers, corsOrigin) {
+  if (method !== 'GET' && method !== 'HEAD') return reply(405, { error: 'method_not_allowed' }, corsOrigin);
+  const lang = event.queryStringParameters?.lang || 'th';
+  const doc = faqDocument(lang);
+  if (!doc) return reply(400, { error: 'bad_lang' }, corsOrigin);
+  const h = { 'content-type': 'application/json; charset=utf-8', 'cache-control': 'public, max-age=300', etag: doc.etag, 'content-language': lang };
+  if (corsOrigin) { h['access-control-allow-origin'] = corsOrigin; h.vary = 'Origin'; }
+  const match = (headers['if-none-match'] || '').split(',').map((s) => s.trim().replace(/^W\//, ''));
+  if (match.includes(doc.etag)) return { statusCode: 304, headers: h, body: '' };
+  return { statusCode: 200, headers: h, body: method === 'HEAD' ? '' : doc.json };
+}
+
 // ---------- Handler ----------
 export async function handler(event) {
   const method = event.requestContext?.http?.method || event.httpMethod || 'POST';
@@ -141,6 +155,7 @@ export async function handler(event) {
   const corsOrigin = allowed && origin ? origin : '';
 
   if (method === 'OPTIONS') return reply(204, null, corsOrigin);
+  if (path.endsWith('/faq')) return getFaq(method, event, headers, corsOrigin);
   if (method !== 'POST') return reply(405, { error: 'method_not_allowed' }, corsOrigin);
   if (!allowed) return reply(403, { error: 'origin_not_allowed' });
 
@@ -169,7 +184,7 @@ export async function handler(event) {
 
   const started = Date.now();
   try {
-    const faq = await loadFaq(FAQ_URL);
+    const faq = await loadFaq();
     const byId = Object.fromEntries(faq.map((f) => [f.id, f]));
     const ids = new Set(Object.keys(byId));
     const userText = messages[messages.length - 1].content;

@@ -1,0 +1,1705 @@
+{
+  "source": "FAQ on oneD WebApp TH Version 2.0 (Nov 2026)",
+  "version": "2.0",
+  "popular": {"th":"ยอดนิยม","en":"Popular"},
+  "categories": [
+    {"id":"account","th":"บัญชี","en":"Account"},
+    {"id":"premium","th":"PREMIUM","en":"PREMIUM"},
+    {"id":"code","th":"โค้ดเติมวัน","en":"Top-up codes"},
+    {"id":"help","th":"แก้ปัญหา","en":"Troubleshooting"},
+    {"id":"cancel","th":"ยกเลิก","en":"Cancel"},
+    {"id":"general","th":"ทั่วไป","en":"General"}
+  ],
+  "entries": [
+    {
+      "id": "Register",
+      "category": "account",
+      "popular": true,
+      "th": {
+        "question": "สร้างบัญชี oneD ได้อย่างไร",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"ในแอป oneD ผู้ใช้ใหม่ต้อง"},
+              {"type":"text","text":"สมัครแพ็กเกจ PREMIUM และชำระเงินให้สำเร็จก่อน","bold":true},
+              {"type":"text","text":" จึงจะสร้างบัญชีได้ (สร้างบัญชีล่วงหน้าไม่ได้)"}
+            ]
+          },
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"สมัคร PREMIUM และชำระเงินให้เรียบร้อย (ดู "},
+                  {"type":"link","text":"วิธีสมัคร","href":"#subscription"},
+                  {"type":"text","text":")"}
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"เลือกสร้างบัญชีได้ 5 ช่องทาง: อีเมล, เบอร์โทรศัพท์, Facebook, Google หรือ Apple"}]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"อีเมล / เบอร์โทรศัพท์:","bold":true},
+                  {"type":"text","text":" กรอกรหัส OTP ที่ส่งไปยืนยันตัวตน"},
+                  {"type":"break"},
+                  {"type":"text","text":"Facebook / Google / Apple:","bold":true},
+                  {"type":"text","text":" กรอกอีเมลหรือเบอร์โทรศัพท์เพิ่มในโปรไฟล์ แล้วยืนยันรหัส OTP"}
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"ยืนยันสำเร็จแล้ว เข้าหน้าหลักและเริ่มดูได้เลย"}]
+              }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "How do I create a oneD account?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"In the oneD app, new users must "},
+              {"type":"text","text":"subscribe to PREMIUM and complete payment first","bold":true},
+              {"type":"text","text":". Then you can create your account (you can't create one in advance)."}
+            ]
+          },
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"Subscribe to PREMIUM and pay (see "},
+                  {"type":"link","text":"how to subscribe","href":"#subscription"},
+                  {"type":"text","text":")"}
+                ]
+              },
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Choose one of 5 ways to create your account: email, phone number, Facebook, Google or Apple"
+                  }
+                ]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"Email / phone number:","bold":true},
+                  {"type":"text","text":" enter the OTP code we send you"},
+                  {"type":"break"},
+                  {"type":"text","text":"Facebook / Google / Apple:","bold":true},
+                  {"type":"text","text":" add an email or phone number to your profile, then confirm the OTP code"}
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"Once confirmed, you go to the home screen and can start watching"}]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "Signin",
+      "category": "account",
+      "popular": false,
+      "th": {
+        "question": "เข้าสู่ระบบได้อย่างไร",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [{"type":"text","text":"เข้าสู่ระบบได้ 6 ช่องทาง:"}]
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              {
+                "content": [{"type":"text","text":"อีเมล หรือเบอร์โทรศัพท์"}]
+              },
+              {
+                "content": [{"type":"text","text":"Facebook, Google หรือ Apple (Apple ID)"}]
+              },
+              {
+                "content": [{"type":"text","text":"ไอคอนโลโก้ AIS (ใช้ได้ทั้งเบอร์มือถือ AIS และเบอร์อินเทอร์เน็ตบ้าน AIS Fibre)"}]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "style": "note",
+            "content": [
+              {"type":"text","text":"ทุกช่องทาง"},
+              {"type":"text","text":"ต้องยืนยันรหัส OTP","bold":true},
+              {"type":"text","text":" ก่อนเข้าใช้งานเสมอ เพื่อความปลอดภัยของบัญชี"}
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "How do I log in?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [{"type":"text","text":"There are 6 ways to log in:"}]
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              {
+                "content": [{"type":"text","text":"Email or phone number"}]
+              },
+              {
+                "content": [{"type":"text","text":"Facebook, Google or Apple (Apple ID)"}]
+              },
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "The AIS logo icon (works with both AIS mobile numbers and AIS Fibre home internet numbers)"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "style": "note",
+            "content": [
+              {"type":"text","text":"Every way of logging in "},
+              {"type":"text","text":"requires an OTP code","bold":true},
+              {"type":"text","text":", to keep your account safe."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "existingaccount",
+      "category": "account",
+      "popular": true,
+      "th": {
+        "question": "มีบัญชีเดิมอยู่แล้ว ต้องทำอะไรเพิ่มไหม",
+        "answer": [
+          {
+            "type": "heading",
+            "content": [{"type":"text","text":"บัญชี Facebook / Google / Apple"}]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"ถ้ายังไม่เคยอัปเดตโปรไฟล์ ระบบจะให้กรอก"},
+              {"type":"text","text":"อีเมลหรือเบอร์โทรศัพท์","bold":true},
+              {"type":"text","text":"ในหน้าโปรไฟล์ และยืนยันรหัส OTP ก่อน จึงจะเข้าสู่ระบบได้"}
+            ]
+          },
+          {
+            "type": "heading",
+            "content": [{"type":"text","text":"บัญชีอีเมลที่เคยตั้งรหัสผ่านไว้"}]
+          },
+          {
+            "type": "paragraph",
+            "content": [{"type":"text","text":"เลือกได้ 2 แบบ:"}]
+          },
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"ใช้รหัสผ่านเดิม:","bold":true},
+                  {"type":"text","text":" กรอกรหัสผ่าน แล้วอัปเดตอีเมลอีกครั้งและยืนยันรหัส OTP"}
+                ]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"ใช้รหัส OTP เลย:","bold":true},
+                  {"type":"text","text":" เลือกเข้าสู่ระบบด้วยอีเมล แล้วกดขอรับรหัส OTP ไม่ต้องใช้รหัสผ่านเดิม"}
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "I already have an account. Do I need to do anything?",
+        "answer": [
+          {
+            "type": "heading",
+            "content": [{"type":"text","text":"Facebook / Google / Apple accounts"}]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"If you've never updated your profile, you'll be asked to add an "},
+              {"type":"text","text":"email or phone number","bold":true},
+              {"type":"text","text":" on your profile page and confirm an OTP code before you can log in."}
+            ]
+          },
+          {
+            "type": "heading",
+            "content": [{"type":"text","text":"Email accounts with a password"}]
+          },
+          {
+            "type": "paragraph",
+            "content": [{"type":"text","text":"You can choose either way:"}]
+          },
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"Use your old password:","bold":true},
+                  {"type":"text","text":" enter it, then update your email again and confirm the OTP code"}
+                ]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"Use an OTP code instead:","bold":true},
+                  {
+                    "type": "text",
+                    "text": " choose to log in with email and request an OTP code. You don't need your old password"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "editprofile",
+      "category": "account",
+      "popular": false,
+      "th": {
+        "question": "แก้ไขข้อมูลส่วนตัวได้อย่างไร",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"ในแอป ไปที่แถบเมนู "},
+                  {"type":"ui","text":"บัญชี"},
+                  {"type":"text","text":" แล้วกด"},
+                  {"type":"text","text":"ไอคอนรูปดินสอ","bold":true},
+                  {"type":"text","text":" ด้านขวาของชื่อโปรไฟล์"}
+                ]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"ในหน้า "},
+                  {"type":"ui","text":"ข้อมูลส่วนตัว"},
+                  {"type":"text","text":" แก้ไขได้ 4 ส่วน: รูปโปรไฟล์, ชื่อผู้ใช้, เพศ และวันเกิด (เลือกจากปฏิทิน)"}
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"กด "},{"type":"ui","text":"บันทึก"},{"type":"text","text":" ที่มุมขวาบนทุกครั้ง"}]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "style": "note",
+            "content": [
+              {
+                "type": "text",
+                "text": "แตะที่รูปโปรไฟล์เพื่ออัปโหลด เปลี่ยน หรือลบรูป · ถ้ากดย้อนกลับ (<) โดยยังไม่บันทึก ระบบจะถามยืนยันก่อนละทิ้งการเปลี่ยนแปลง"
+              }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "How do I edit my personal information?",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"In the app, go to the "},
+                  {"type":"ui","text":"Account"},
+                  {"type":"text","text":" tab and tap the "},
+                  {"type":"text","text":"pencil icon","bold":true},
+                  {"type":"text","text":" next to your profile name"}
+                ]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"On the "},
+                  {"type":"ui","text":"Personal Information"},
+                  {
+                    "type": "text",
+                    "text": " page you can edit 4 things: profile picture, username, gender and birthday (picked from a calendar)"
+                  }
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"Always tap "},{"type":"ui","text":"Save"},{"type":"text","text":" at the top right"}]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "style": "note",
+            "content": [
+              {
+                "type": "text",
+                "text": "Tap your profile picture to upload, change or remove it · If you tap back (<) without saving, you'll be asked to confirm before your changes are discarded"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "signout",
+      "category": "account",
+      "popular": false,
+      "th": {
+        "question": "ออกจากระบบได้อย่างไร",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"แอป:","bold":true},
+              {"type":"text","text":" แถบเมนู "},
+              {"type":"ui","text":"บัญชี"},
+              {"type":"text","text":" › "},
+              {"type":"ui","text":"ตั้งค่า"},
+              {"type":"text","text":" › "},
+              {"type":"ui","text":"ออกจากระบบ"}
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"เว็บไซต์:","bold":true},
+              {"type":"text","text":" "},
+              {"type":"ui","text":"โปรไฟล์"},
+              {"type":"text","text":" (มุมขวาบน) › "},
+              {"type":"ui","text":"ออกจากระบบ"},
+              {"type":"text","text":" › "},
+              {"type":"ui","text":"ตกลง"}
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"ทีวี:","bold":true},
+              {"type":"text","text":" จากหน้าหลัก เลื่อนไปที่ไอคอนโปรไฟล์ (มุมขวาบน) › "},
+              {"type":"ui","text":"ออกจากระบบ"},
+              {"type":"text","text":" › "},
+              {"type":"ui","text":"ใช่ ออกจากระบบ"}
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "How do I log out?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"App:","bold":true},
+              {"type":"text","text":" "},
+              {"type":"ui","text":"Account"},
+              {"type":"text","text":" tab › "},
+              {"type":"ui","text":"Settings"},
+              {"type":"text","text":" › "},
+              {"type":"ui","text":"Log Out"}
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"Website:","bold":true},
+              {"type":"text","text":" "},
+              {"type":"ui","text":"Profile"},
+              {"type":"text","text":" (top right) › "},
+              {"type":"ui","text":"Log Out"},
+              {"type":"text","text":" › "},
+              {"type":"ui","text":"OK"}
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"TV:","bold":true},
+              {"type":"text","text":" on the home screen, go to the profile icon (top right) › "},
+              {"type":"ui","text":"Log Out"},
+              {"type":"text","text":" › "},
+              {"type":"ui","text":"Yes, Log Out"}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "checksubscription",
+      "category": "premium",
+      "popular": false,
+      "th": {
+        "question": "ตรวจสอบว่าเป็น oneD PREMIUM แล้วหรือยัง",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [{"type":"text","text":"แอป:","bold":true},{"type":"text","text":" แถบเมนู "},{"type":"ui","text":"บัญชี"}]
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"เห็นเมนู "},
+                  {"type":"ui","text":"แพ็กเกจปัจจุบัน"},
+                  {"type":"text","text":" = เป็น PREMIUM แล้ว (กดเข้าไปดูแพ็กเกจได้)"}
+                ]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"เห็นปุ่ม "},
+                  {"type":"ui","text":"สมัคร PREMIUM"},
+                  {"type":"text","text":" = ยังไม่เป็น PREMIUM"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"ทีวี:","bold":true},
+              {"type":"text","text":" เมนู "},
+              {"type":"ui","text":"บัญชี"},
+              {"type":"text","text":" › หน้า "},
+              {"type":"ui","text":"บัญชีของฉัน"},
+              {"type":"text","text":" ดูแบบเดียวกับในแอป"}
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"เว็บไซต์:","bold":true},
+              {"type":"text","text":" กด "},
+              {"type":"ui","text":"โปรไฟล์"},
+              {"type":"text","text":" ถ้าเห็นเมนู "},
+              {"type":"ui","text":"การสมัครสมาชิก"},
+              {"type":"text","text":" = เป็น PREMIUM แล้ว ถ้าเห็นปุ่ม "},
+              {"type":"ui","text":"สมัครสมาชิก"},
+              {"type":"text","text":" = ยังไม่เป็น"}
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "How do I check if I have oneD PREMIUM?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"App:","bold":true},
+              {"type":"text","text":" open the "},
+              {"type":"ui","text":"Account"},
+              {"type":"text","text":" tab"}
+            ]
+          },
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"You see a "},
+                  {"type":"ui","text":"Current Package"},
+                  {"type":"text","text":" menu = you have PREMIUM (tap it to see your package)"}
+                ]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"You see a "},
+                  {"type":"ui","text":"Subscribe PREMIUM"},
+                  {"type":"text","text":" button = you don't have PREMIUM yet"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"TV:","bold":true},
+              {"type":"text","text":" "},
+              {"type":"ui","text":"Account"},
+              {"type":"text","text":" › "},
+              {"type":"ui","text":"My Account"},
+              {"type":"text","text":", then check the same way as in the app"}
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"Website:","bold":true},
+              {"type":"text","text":" tap "},
+              {"type":"ui","text":"Profile"},
+              {"type":"text","text":". A "},
+              {"type":"ui","text":"Subscription"},
+              {"type":"text","text":" menu means you have PREMIUM; a "},
+              {"type":"ui","text":"Subscribe"},
+              {"type":"text","text":" button means you don't yet"}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "subscription",
+      "category": "premium",
+      "popular": true,
+      "th": {
+        "question": "สมัคร oneD PREMIUM ได้อย่างไร (ยังไม่มีบัญชี)",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"เปิดแอป oneD แล้วกดแถบเมนู "},
+                  {"type":"ui","text":"บัญชี"},
+                  {"type":"text","text":" ด้านล่าง หรือ "},
+                  {"type":"ui","text":"สมัคร PREMIUM"},
+                  {"type":"text","text":" ที่มุมขวาบน"}
+                ]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"เลือก "},
+                  {"type":"ui","text":"สมัคร PREMIUM"},
+                  {"type":"text","text":" เลือกแพ็กเกจ แล้วกด "},
+                  {"type":"ui","text":"สมัครเลย"}
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"ยืนยันการชำระเงินผ่าน App Store หรือ Google Play"}]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"สร้างบัญชีด้วยอีเมล, เบอร์โทรศัพท์, Facebook, Google หรือ Apple แล้วยืนยันรหัส OTP"},
+                  {"type":"break"},
+                  {
+                    "type": "text",
+                    "text": "Facebook / Google / Apple: กรอกอีเมลหรือเบอร์โทรศัพท์เพิ่ม แล้วยืนยันรหัส OTP",
+                    "muted": true
+                  }
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"ดูแบบ PREMIUM ได้ทันที"}]
+              }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "How do I subscribe to oneD PREMIUM (no account yet)?",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"Open the oneD app and tap the "},
+                  {"type":"ui","text":"Account"},
+                  {"type":"text","text":" tab at the bottom, or "},
+                  {"type":"ui","text":"Subscribe PREMIUM"},
+                  {"type":"text","text":" at the top right"}
+                ]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"Choose "},
+                  {"type":"ui","text":"Subscribe PREMIUM"},
+                  {"type":"text","text":", pick a package and tap "},
+                  {"type":"ui","text":"Subscribe Now"}
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"Confirm the payment through the App Store or Google Play"}]
+              },
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Create your account with email, phone number, Facebook, Google or Apple, and confirm the OTP code"
+                  },
+                  {"type":"break"},
+                  {
+                    "type": "text",
+                    "text": "Facebook / Google / Apple: also add an email or phone number and confirm the OTP code",
+                    "muted": true
+                  }
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"PREMIUM starts right away"}]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "subscriptionexisting",
+      "category": "premium",
+      "popular": false,
+      "th": {
+        "question": "มีบัญชีแล้ว สมัคร PREMIUM อย่างไร",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [{"type":"text","text":"เข้าสู่ระบบในแอป oneD แล้วไปที่แถบเมนู "},{"type":"ui","text":"บัญชี"}]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"เลือก "},
+                  {"type":"ui","text":"สมัคร PREMIUM"},
+                  {"type":"text","text":" เลือกแพ็กเกจ แล้วกด "},
+                  {"type":"ui","text":"สมัครเลย"}
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"ยืนยันการชำระเงินผ่าน App Store หรือ Google Play ดูแบบ PREMIUM ได้ทันที"}]
+              }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "I have an account. How do I subscribe to PREMIUM?",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"Log in to the oneD app and go to the "},
+                  {"type":"ui","text":"Account"},
+                  {"type":"text","text":" tab"}
+                ]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"Choose "},
+                  {"type":"ui","text":"Subscribe PREMIUM"},
+                  {"type":"text","text":", pick a package and tap "},
+                  {"type":"ui","text":"Subscribe Now"}
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"Confirm the payment through the App Store or Google Play. PREMIUM starts right away"}]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "privilegeonedpremium",
+      "category": "premium",
+      "popular": false,
+      "th": {
+        "question": "oneD PREMIUM ได้อะไรบ้าง",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              {
+                "content": [{"type":"text","text":"ไม่มีโฆษณาคั่น และดูได้ครบทุกตอน"}]
+              },
+              {
+                "content": [{"type":"text","text":"ดูก่อนใคร (Early access)"}]
+              },
+              {
+                "content": [{"type":"text","text":"ภาพ Full HD 1080p และดูพร้อมกันได้ 2 อุปกรณ์"}]
+              },
+              {
+                "content": [{"type":"text","text":"ส่งขึ้นทีวีผ่าน Chromecast และ AirPlay"}]
+              },
+              {
+                "content": [{"type":"text","text":"ละครแนวตั้ง oneD Shorts"}]
+              },
+              {
+                "content": [{"type":"text","text":"Picture in Picture และปรับความเร็ววิดีโอ"}]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "style": "fine",
+            "content": [{"type":"text","text":"เงื่อนไขเป็นไปตามที่บริษัทกำหนด"}]
+          }
+        ]
+      },
+      "en": {
+        "question": "What do I get with oneD PREMIUM?",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              {
+                "content": [{"type":"text","text":"No ad breaks, and every episode"}]
+              },
+              {
+                "content": [{"type":"text","text":"Watch first (Early access)"}]
+              },
+              {
+                "content": [{"type":"text","text":"Full HD 1080p, on up to 2 devices at the same time"}]
+              },
+              {
+                "content": [{"type":"text","text":"Cast to your TV with Chromecast and AirPlay"}]
+              },
+              {
+                "content": [{"type":"text","text":"oneD Shorts vertical dramas"}]
+              },
+              {
+                "content": [{"type":"text","text":"Picture in Picture and playback speed control"}]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "style": "fine",
+            "content": [{"type":"text","text":"Terms and conditions as set by the company apply."}]
+          }
+        ]
+      }
+    },
+    {
+      "id": "watchontv",
+      "category": "premium",
+      "popular": true,
+      "th": {
+        "question": "ดู oneD บนทีวีได้อย่างไร",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"ค้นหา \"oneD\" ใน store ของทีวี แล้วกด "},
+                  {"type":"ui","text":"ติดตั้ง"},
+                  {"type":"text","text":" และ "},
+                  {"type":"ui","text":"เปิด"},
+                  {"type":"text","text":":"}
+                ],
+                "children": [
+                  {
+                    "type": "list",
+                    "ordered": false,
+                    "items": [
+                      {
+                        "content": [
+                          {"type":"text","text":"Android TV / Google TV","bold":true},
+                          {"type":"text","text":" (Android 9+): Play Store (เข้าสู่ระบบบัญชี Google)"}
+                        ]
+                      },
+                      {
+                        "content": [{"type":"text","text":"Samsung","bold":true},{"type":"text","text":" (ปี 2019+, Tizen 5.0+): Home › APPS"}]
+                      },
+                      {
+                        "content": [{"type":"text","text":"LG","bold":true},{"type":"text","text":" (webOS 5.0+): LG Content Store"}]
+                      },
+                      {
+                        "content": [{"type":"text","text":"Apple TV","bold":true},{"type":"text","text":" (tvOS 17.6+): App Store"}]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "ใช้มือถือสแกน QR Code บนจอทีวี เพื่อเข้าสู่ระบบด้วยบัญชีของคุณ หรือจะใช้งานโดยไม่เข้าสู่ระบบก็ได้"
+                  }
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"เริ่มดูได้เลย"}]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "style": "note",
+            "content": [
+              {
+                "type": "text",
+                "text": "ถ้าไม่ได้เป็นสมาชิก PREMIUM จะดูได้เฉพาะคอนเทนต์ฟรีเท่านั้น คอนเทนต์ PREMIUM จะดูไม่ได้"
+              }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "How do I watch oneD on TV?",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"Search for \"oneD\" in your TV's app store, then tap "},
+                  {"type":"ui","text":"Install"},
+                  {"type":"text","text":" and "},
+                  {"type":"ui","text":"Open"},
+                  {"type":"text","text":":"}
+                ],
+                "children": [
+                  {
+                    "type": "list",
+                    "ordered": false,
+                    "items": [
+                      {
+                        "content": [
+                          {"type":"text","text":"Android TV / Google TV","bold":true},
+                          {"type":"text","text":" (Android 9+): Play Store (signed in with your Google account)"}
+                        ]
+                      },
+                      {
+                        "content": [
+                          {"type":"text","text":"Samsung","bold":true},
+                          {"type":"text","text":" (2019 or newer, Tizen 5.0+): Home › APPS"}
+                        ]
+                      },
+                      {
+                        "content": [{"type":"text","text":"LG","bold":true},{"type":"text","text":" (webOS 5.0+): LG Content Store"}]
+                      },
+                      {
+                        "content": [{"type":"text","text":"Apple TV","bold":true},{"type":"text","text":" (tvOS 17.6+): App Store"}]
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Scan the QR code on the TV with your phone to log in with your account, or use it without logging in"
+                  }
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"Start watching"}]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "style": "note",
+            "content": [{"type":"text","text":"Without PREMIUM you can only watch free content. PREMIUM content won't play."}]
+          }
+        ]
+      }
+    },
+    {
+      "id": "ChromecastAirplay",
+      "category": "premium",
+      "popular": false,
+      "th": {
+        "question": "ส่งภาพขึ้นทีวีด้วย Chromecast / AirPlay",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [{"type":"text","text":"ให้มือถือกับทีวีใช้ Wi-Fi เดียวกัน และอัปเดตแอป oneD เป็นเวอร์ชันล่าสุด"}]
+              },
+              {
+                "content": [{"type":"text","text":"เข้าสู่ระบบด้วยบัญชี PREMIUM แล้วเปิดเรื่องที่ต้องการดู"}]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"กด "},
+                  {"type":"icon","name":"Chromecast","src":"https://assets.oned.net/imgs/ic_round-cast.png"},
+                  {"type":"text","text":" หรือ "},
+                  {"type":"icon","name":"AirPlay","src":"https://assets.oned.net/imgs/ic_round-airplay.png"},
+                  {"type":"text","text":" แล้วเลือกทีวี"}
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "How do I cast to my TV with Chromecast or AirPlay?",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Connect your phone and TV to the same Wi-Fi, and update the oneD app to the latest version"
+                  }
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"Log in with your PREMIUM account and open what you want to watch"}]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"Tap "},
+                  {"type":"icon","name":"Chromecast","src":"https://assets.oned.net/imgs/ic_round-cast.png"},
+                  {"type":"text","text":" or "},
+                  {"type":"icon","name":"AirPlay","src":"https://assets.oned.net/imgs/ic_round-airplay.png"},
+                  {"type":"text","text":" and choose your TV"}
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "Activateonetimecode",
+      "category": "code",
+      "popular": true,
+      "th": {
+        "question": "แลกโค้ด PREMIUM แบบเติมวันได้อย่างไร",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"แลกได้บน"},
+              {"type":"text","text":"เว็บเบราว์เซอร์","bold":true},
+              {"type":"text","text":"เท่านั้น (แลกในแอปไม่ได้)"}
+            ]
+          },
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"ไปที่ "},
+                  {"type":"link","text":"redeem.oned.net","href":"https://redeem.oned.net"},
+                  {"type":"text","text":" แล้วเข้าสู่ระบบ"},
+                  {"type":"break"},
+                  {"type":"text","text":"หรือที่ www.oned.net › โปรไฟล์ › แลกโค้ด","muted":true}
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"กรอกโค้ด (ตัวพิมพ์ใหญ่) กดยอมรับข้อกำหนด แล้วกด "},{"type":"ui","text":"แลกโค้ด"}]
+              },
+              {
+                "content": [{"type":"text","text":"แลกสำเร็จแล้ว ดู PREMIUM ได้ทุกอุปกรณ์ รวมถึงในแอป"}]
+              }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "How do I redeem a PREMIUM top-up code?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"Codes can only be redeemed "},
+              {"type":"text","text":"in a web browser","bold":true},
+              {"type":"text","text":" (not in the app)."}
+            ]
+          },
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"Go to "},
+                  {"type":"link","text":"redeem.oned.net","href":"https://redeem.oned.net"},
+                  {"type":"text","text":" and log in"},
+                  {"type":"break"},
+                  {"type":"text","text":"or go to www.oned.net › Profile › Redeem Code","muted":true}
+                ]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"Enter the code (in capital letters), accept the Terms and Conditions, and tap "},
+                  {"type":"ui","text":"Redeem Code"}
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"Once it's redeemed, PREMIUM works on all your devices, including the app"}]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "manageonetimecode",
+      "category": "code",
+      "popular": false,
+      "th": {
+        "question": "เติมโค้ดเพิ่ม หรือใช้โค้ดหลายระยะเวลาได้ไหม",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"ได้","bold":true},
+              {"type":"text","text":" เติมได้ทันทีแม้วันเดิมยังเหลือ ใช้โค้ด 1, 7, 30 วันร่วมกันได้ ระบบจะบวกวันเพิ่มให้"}
+            ]
+          },
+          {
+            "type": "paragraph",
+            "style": "warning",
+            "content": [{"type":"text","text":"เติมได้ไม่เกิน 10 โค้ดต่อสัปดาห์"}]
+          }
+        ]
+      },
+      "en": {
+        "question": "Can I add more codes, or mix codes of different lengths?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"Yes.","bold":true},
+              {
+                "type": "text",
+                "text": " You can add a code right away, even if you still have days left, and mix 1-, 7- and 30-day codes. The extra days are added to your expiry date."
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "style": "warning",
+            "content": [{"type":"text","text":"You can redeem up to 10 codes per week."}]
+          }
+        ]
+      }
+    },
+    {
+      "id": "codeexpiry",
+      "category": "code",
+      "popular": false,
+      "th": {
+        "question": "ดูวันหมดอายุของแพ็กเกจได้ที่ไหน",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"ui","text":"โปรไฟล์"},
+              {"type":"text","text":" › "},
+              {"type":"ui","text":"การสมัครสมาชิก"},
+              {"type":"text","text":" › ดูที่หัวข้อ "},
+              {"type":"ui","text":"วันที่ต่ออายุ"}
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "Where can I see when my package expires?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"ui","text":"Profile"},
+              {"type":"text","text":" › "},
+              {"type":"ui","text":"Subscription"},
+              {"type":"text","text":" › see "},
+              {"type":"ui","text":"Renewal Date"}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "codefailed",
+      "category": "code",
+      "popular": true,
+      "th": {
+        "question": "แลกโค้ดไม่สำเร็จ",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"บัญชีที่ใช้ต้อง"},
+                  {"type":"text","text":"ไม่มี","bold":true},
+                  {"type":"text","text":"แพ็กเกจรายเดือน/รายปีอยู่"}
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"กรอกโค้ดเป็นตัวพิมพ์ใหญ่ทั้งหมด"}]
+              },
+              {
+                "content": [{"type":"text","text":"โค้ดยังไม่หมดอายุ และยังไม่เกิน 10 โค้ดต่อสัปดาห์"}]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"ยังไม่ได้? "},
+              {"type":"link","text":"แจ้งทีมงาน","href":"https://support.oned.net/"},
+              {"type":"text","text":" พร้อมบอกว่าได้รับโค้ดจากช่องทางไหน"}
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "My code won't redeem",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": false,
+            "items": [
+              {
+                "content": [
+                  {"type":"text","text":"The account must "},
+                  {"type":"text","text":"not","bold":true},
+                  {"type":"text","text":" have a monthly/yearly package"}
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"Enter the code in capital letters only"}]
+              },
+              {
+                "content": [{"type":"text","text":"The code hasn't expired, and you haven't redeemed more than 10 codes this week"}]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"Still not working? "},
+              {"type":"link","text":"Contact our team","href":"https://support.oned.net/?lang=en"},
+              {"type":"text","text":" and tell us where you got the code."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "codewithrecurring",
+      "category": "code",
+      "popular": false,
+      "th": {
+        "question": "มีแพ็กเกจรายเดือน/รายปี แลกโค้ดเติมวันได้ไหม",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"ยังไม่ได้","bold":true},
+              {"type":"text","text":" ให้สร้างบัญชีใหม่สำหรับโค้ดเติมวัน หรือรอให้แพ็กเกจเดิมหมดอายุก่อน"}
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "I have a monthly/yearly package. Can I redeem a top-up code?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"Not yet.","bold":true},
+              {"type":"text","text":" Create a new account for top-up codes, or wait until your current package expires."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "codetorecurring",
+      "category": "code",
+      "popular": false,
+      "th": {
+        "question": "ใช้แบบเติมวันอยู่ สมัครรายเดือน/รายปีได้ไหม",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [{"type":"text","text":"ได้ แต่แนะนำให้"},{"type":"text","text":"รอวันเติมหมดก่อน","bold":true}]
+          },
+          {
+            "type": "paragraph",
+            "style": "warning",
+            "content": [
+              {
+                "type": "text",
+                "text": "ถ้าสมัครตอนที่ยังมีวันเหลือ ระบบจะเริ่มเก็บเงินทันที และวันที่เหลือจะหายไปโดยไม่มีการชดเชย"
+              }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "I'm on top-up days. Can I subscribe monthly/yearly?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"Yes, but we recommend "},
+              {"type":"text","text":"waiting until your top-up days run out","bold":true},
+              {"type":"text","text":"."}
+            ]
+          },
+          {
+            "type": "paragraph",
+            "style": "warning",
+            "content": [
+              {
+                "type": "text",
+                "text": "If you subscribe while you still have days left, you're charged right away and the remaining days are lost, with no compensation."
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "technicalissue",
+      "category": "help",
+      "popular": true,
+      "th": {
+        "question": "วิดีโอกระตุก ค้าง หรือเล่นไม่ได้",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [{"type":"text","text":"อัปเดตแอป oneD เป็นเวอร์ชันล่าสุด"}]
+              },
+              {
+                "content": [{"type":"text","text":"ตรวจสอบอินเทอร์เน็ตหรือ Wi-Fi"}]
+              },
+              {
+                "content": [{"type":"text","text":"ปิดแล้วเปิดแอปใหม่ (บนเว็บให้รีเฟรช)"}]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [{"type":"text","text":"ยังไม่หาย? "},{"type":"link","text":"แจ้งทีมงาน","href":"https://support.oned.net/"}]
+          }
+        ]
+      },
+      "en": {
+        "question": "Video is buffering, freezing or won't play",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [{"type":"text","text":"Update the oneD app to the latest version"}]
+              },
+              {
+                "content": [{"type":"text","text":"Check your internet or Wi-Fi connection"}]
+              },
+              {
+                "content": [{"type":"text","text":"Close and reopen the app (on the website, refresh the page)"}]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"Still not working? "},
+              {"type":"link","text":"Contact our team","href":"https://support.oned.net/?lang=en"}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "signinissue",
+      "category": "help",
+      "popular": true,
+      "th": {
+        "question": "เข้าสู่ระบบไม่ได้",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "ตรวจสอบอีเมลหรือเบอร์โทรศัพท์ที่ใช้รับรหัสให้ถูกต้อง ถ้ายังไม่ได้รับรหัส กดขอรหัส OTP ใหม่อีกครั้ง"
+                  }
+                ]
+              },
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "ถ้าใช้ Facebook, Google หรือ Apple ตรวจสอบอินเทอร์เน็ต และตรวจสอบว่าบัญชีนั้นยังใช้งานได้ ไม่ถูกระงับ"
+                  }
+                ]
+              },
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "ถ้าเคยเพิ่มอีเมลหรือเบอร์โทรศัพท์ในโปรไฟล์แล้ว เข้าสู่ระบบด้วยอีเมลหรือเบอร์นั้น แล้วยืนยันรหัส OTP ได้เลย"
+                  }
+                ]
+              },
+              {
+                "content": [{"type":"text","text":"อัปเดตแอปเป็นเวอร์ชันล่าสุด แล้วเปิดใหม่ (บนเว็บให้รีเฟรช)"}]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"ยังเข้าไม่ได้? "},
+              {"type":"link","text":"แจ้งทีมงาน","href":"https://support.oned.net/"}
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "I can't log in",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "Check the email or phone number you get the code on. If the code hasn't arrived, request a new OTP code"
+                  }
+                ]
+              },
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "If you use Facebook, Google or Apple, check your internet connection and that the account still works and isn't suspended"
+                  }
+                ]
+              },
+              {
+                "content": [
+                  {
+                    "type": "text",
+                    "text": "If you've already added an email or phone number to your profile, log in with it and confirm the OTP code"
+                  }
+                ]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"Update the app to the latest version and reopen it (on the website, refresh the page)"}
+                ]
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"Still can't log in? "},
+              {"type":"link","text":"Contact our team","href":"https://support.oned.net/?lang=en"}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "premiumnotreceived",
+      "category": "help",
+      "popular": true,
+      "th": {
+        "question": "จ่ายเงินแล้ว แต่ยังไม่เป็น PREMIUM",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [{"type":"text","text":"ตรวจสอบว่าเข้าสู่ระบบด้วยบัญชีเดียวกับที่สมัคร"}]
+              },
+              {
+                "content": [{"type":"text","text":"ตรวจสอบว่าถูกหักเงินแล้ว"}]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"กด "},
+                  {"type":"ui","text":"คืนค่าการสั่งซื้อ"},
+                  {"type":"text","text":" (ใช้ได้ทั้ง iOS และ Android)"}
+                ]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"ยังไม่ได้? "},
+                  {"type":"link","text":"แจ้งทีมงาน","href":"https://support.oned.net/"},
+                  {"type":"text","text":" พร้อมแคปหน้าจออีเมลใบเสร็จจาก Apple หรือ Google Play และบอกบัญชีที่ใช้สมัคร oneD"}
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "I paid, but I don't have PREMIUM yet",
+        "answer": [
+          {
+            "type": "list",
+            "ordered": true,
+            "items": [
+              {
+                "content": [{"type":"text","text":"Check you're logged in with the account you subscribed with"}]
+              },
+              {
+                "content": [{"type":"text","text":"Check that the payment went through"}]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"Tap "},
+                  {"type":"ui","text":"Restore Purchase"},
+                  {"type":"text","text":" (works on both iOS and Android)"}
+                ]
+              },
+              {
+                "content": [
+                  {"type":"text","text":"Still no PREMIUM? "},
+                  {"type":"link","text":"Contact our team","href":"https://support.oned.net/?lang=en"},
+                  {
+                    "type": "text",
+                    "text": " with a screenshot of the receipt email from Apple or Google Play, and the account you use on oneD"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "unsubscribe",
+      "category": "cancel",
+      "popular": true,
+      "th": {
+        "question": "ยกเลิกแพ็กเกจที่สมัครผ่าน iPhone / iPad",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"ui","text":"การตั้งค่า"},
+              {"type":"text","text":" › ชื่อของคุณ › "},
+              {"type":"ui","text":"การสมัครรับ"},
+              {"type":"text","text":" › oneD › "},
+              {"type":"ui","text":"ยกเลิกการสมัครรับ"}
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "Cancel a package bought on iPhone / iPad",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"ui","text":"Settings"},
+              {"type":"text","text":" › your name › "},
+              {"type":"ui","text":"Subscriptions"},
+              {"type":"text","text":" › oneD › "},
+              {"type":"ui","text":"Cancel Subscription"}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "unsubscribeandroid",
+      "category": "cancel",
+      "popular": false,
+      "th": {
+        "question": "ยกเลิกแพ็กเกจที่สมัครผ่าน Android",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"ui","text":"Google Play"},
+              {"type":"text","text":" › รูปโปรไฟล์ › "},
+              {"type":"ui","text":"การชำระเงินและการสมัครใช้บริการ"},
+              {"type":"text","text":" › "},
+              {"type":"ui","text":"การสมัครใช้บริการ"},
+              {"type":"text","text":" › oneD › "},
+              {"type":"ui","text":"ยกเลิก"}
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "Cancel a package bought on Android",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"ui","text":"Google Play"},
+              {"type":"text","text":" › your profile picture › "},
+              {"type":"ui","text":"Payments & Subscriptions"},
+              {"type":"text","text":" › "},
+              {"type":"ui","text":"Subscriptions"},
+              {"type":"text","text":" › oneD › "},
+              {"type":"ui","text":"Cancel Subscription"}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "unsubscribeais",
+      "category": "cancel",
+      "popular": false,
+      "th": {
+        "question": "ยกเลิกแพ็กเกจที่สมัครผ่าน AIS",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"แอป myAIS:","bold":true},
+              {"type":"text","text":" "},
+              {"type":"ui","text":"แพ็กเกจ"},
+              {"type":"text","text":" › "},
+              {"type":"ui","text":"แพ็กเกจเสริม"},
+              {"type":"text","text":" หรือ "},
+              {"type":"ui","text":"บริการเสริม"},
+              {"type":"text","text":" › oneD › "},
+              {"type":"ui","text":"ยกเลิกแพ็กเกจ"}
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"หรือโทร AIS Call Center 1175","bold":true},
+              {"type":"text","text":" แจ้งยกเลิกบริการ oneD ที่ชำระผ่านบิล AIS"}
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "Cancel a package bought through AIS",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"myAIS app:","bold":true},
+              {"type":"text","text":" "},
+              {"type":"ui","text":"Package"},
+              {"type":"text","text":" › "},
+              {"type":"ui","text":"Add-on Packages"},
+              {"type":"text","text":" or "},
+              {"type":"ui","text":"Additional Services"},
+              {"type":"text","text":" › oneD › "},
+              {"type":"ui","text":"Cancel Package"}
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": [
+              {"type":"text","text":"Or call AIS Call Center 1175","bold":true},
+              {"type":"text","text":" and ask to cancel the oneD service billed to AIS."}
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "unsubscribedaypass",
+      "category": "cancel",
+      "popular": false,
+      "th": {
+        "question": "ยกเลิกแบบเติมวันได้ไหม",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "ไม่ต้องยกเลิก แบบเติมวันไม่ตัดเงินอัตโนมัติ เมื่อครบวันจะกลับเป็นแบบมีโฆษณาเอง (ยกเลิกก่อนครบกำหนดไม่ได้)"
+              }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "Can I cancel top-up days?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "There's nothing to cancel: top-up days are never charged automatically. When they run out, you go back to watching with ads. (You can't cancel before they expire.)"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "servicearea",
+      "category": "general",
+      "popular": false,
+      "th": {
+        "question": "ใช้ oneD ในต่างประเทศได้ไหม",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "ใช้ได้ในไทยและบางประเทศตามลิขสิทธิ์ เรื่องที่ดูได้อาจต่างกันในแต่ละประเทศ ส่วน Live ดูได้เฉพาะในไทย"
+              }
+            ]
+          }
+        ]
+      },
+      "en": {
+        "question": "Can I use oneD outside Thailand?",
+        "answer": [
+          {
+            "type": "paragraph",
+            "content": [
+              {
+                "type": "text",
+                "text": "oneD works in Thailand and in some other countries, depending on licensing. What you can watch may differ by country. Live TV is only available in Thailand."
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

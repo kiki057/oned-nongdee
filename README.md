@@ -14,9 +14,13 @@ FAQ page (assets.oned.net)  --POST /chat-->  API Gateway  -->  Lambda  -->  Clau
 | Path | What it is |
 | --- | --- |
 | `template.yaml` | AWS SAM template: Lambda, HTTP API (CORS + throttling), secret for the API key, 90-day log retention |
-| `src/handler.mjs` | The chat API: `POST /chat` and `POST /feedback` |
+| `src/handler.mjs` | The API: `GET /faq`, `POST /chat` and `POST /feedback` |
 | `src/prompt.mjs` | น้องดี's rules and the support-form issue list. **Edit her behaviour here** |
-| `src/faq.mjs` | Reads the FAQ entries from the FAQ page (cached 10 minutes) |
+| `src/faq.json` | **The FAQ itself** (Thai + English, ids, categories, popular set, answers as blocks). Edit the FAQ here |
+| `src/faq.mjs` | Serves the FAQ: `GET /faq` for the page and apps, and the Thai text น้องดี answers from |
+| `src/faq-format.mjs` | The answer block format: blocks → page HTML, page HTML → blocks, plain text |
+| `scripts/build-faq.mjs` | Writes the questions from `src/faq.json` into the FAQ page |
+| `openapi.yaml` | API spec for `GET /faq`, `POST /chat`, `POST /feedback` (for the iOS and Android apps) |
 | `src/grounding.mjs` | The FAQ-only guardrail (see below) |
 | `web/nongdee.js` | The chat widget the FAQ page loads |
 | `web/faq-th-beta.html` | The new FAQ page (Thai + English with a TH \| EN switch) with the widget included |
@@ -104,7 +108,6 @@ Answer the prompts:
 | Stack name | `nongdee-chat` |
 | AWS Region | `ap-southeast-1` (Singapore), or the region your team uses |
 | Model | `claude-haiku-5-5` to start; switch to `claude-sonnet-5-5` to compare |
-| FaqUrl | `https://assets.oned.net/doc/faq-th-beta.html` |
 | AllowedOrigins | `https://assets.oned.net` |
 | Allow SAM CLI IAM role creation | `Y` |
 | ChatFunction has no authentication. Is this okay? | `y` (the FAQ page is public; CORS, throttling and the origin check limit use) |
@@ -136,6 +139,12 @@ You should get JSON back with `answer`, `sources` (e.g. `["Activateonetimecode"]
 sam logs --stack-name nongdee-chat --tail
 ```
 
+Check the FAQ endpoint (used by the iOS and Android apps, see `openapi.yaml`):
+
+```bash
+curl -s '<ApiUrl>/faq?lang=en' | head -c 400
+```
+
 ## 5. Turn on the widget
 
 1. In `web/faq-th-beta.html`, near the end, set `data-endpoint` to the **ApiUrl**:
@@ -162,7 +171,7 @@ To try it inside the oneD app, point a test build's FAQ link at `faq-th-beta.htm
 | Task | How |
 | --- | --- |
 | Change น้องดี's rules or voice | Edit `src/prompt.mjs`, run `npm test`, then `sam build && sam deploy` |
-| Update an answer | Edit the FAQ page. น้องดี picks it up within 10 minutes |
+| Update an answer | Edit `src/faq.json` (Thai first, then the English), run `node scripts/build-faq.mjs`, `node scripts/build-preview.mjs` and `npm test`, then upload the page **and** `sam build && sam deploy` (น้องดี and `GET /faq` read the copy bundled with the Lambda) |
 | Switch model | `sam deploy --parameter-overrides Model=claude-sonnet-5-5` (keep the other parameters) |
 | Read conversations | CloudWatch log group in the stack outputs. Each turn is one `chat_turn` line; thumbs are `feedback` lines |
 | Find blocked answers | CloudWatch Logs Insights: `filter guardrail = "blocked" \| fields user, blocked_reasons, blocked_answer` |
@@ -174,7 +183,7 @@ To try it inside the oneD app, point a test build's FAQ link at `faq-th-beta.htm
 - **Throttling.** API Gateway allows 5 requests/second with bursts of 20 across all users by default. The Lambda also limits each IP to 20 messages per 10 minutes, per warm instance. Add an AWS WAF rate rule if you see abuse.
 - **Logs** keep masked chat text, FAQ ids, status, model, latency and token usage for 90 days. Emails, phone numbers and card-like numbers are masked in the browser and again in the Lambda before Claude or the logs see them. No user id is stored.
 - **Costs** depend on traffic and model. The FAQ is sent to Claude with prompt caching to keep repeat calls cheap. Watch usage in the Claude Console and set a spend limit there.
-- **The FAQ page layout matters.** The parser reads `<details class="q" id="…">` blocks. The old live FAQ page doesn't use them, so keep `FaqUrl` on the new layout.
+- **One FAQ, three readers.** `src/faq.json` feeds the web page (via `scripts/build-faq.mjs`), the apps (`GET /faq`) and น้องดี. Don't edit the question lists in `web/faq-*-beta.html` by hand: `npm test` fails if the page and the JSON differ.
 - **In-app detection.** Logs mark a chat as `app` when the user agent contains "oneD". Adjust in `handler.mjs` if the app's web view uses a different user agent.
 
 ## Test locally
@@ -187,7 +196,7 @@ npm test            # fake Claude API, checks parsing, masking, validation, CORS
 ### Test locally with a real key
 
 ```bash
-ANTHROPIC_API_KEY=sk-ant-... FAQ_URL=https://assets.oned.net/doc/faq-th-beta.html node -e "
+ANTHROPIC_API_KEY=sk-ant-... node -e "
 import('./src/handler.mjs').then(async ({ handler }) => {
   const r = await handler({ rawPath: '/chat', requestContext: { http: { method: 'POST', sourceIp: '127.0.0.1' } },
     headers: {}, body: JSON.stringify({ messages: [{ role: 'user', content: 'ยกเลิก PREMIUM ยังไง' }] }) });
