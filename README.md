@@ -23,6 +23,7 @@ FAQ page (assets.oned.net)  --POST /chat-->  API Gateway  -->  Lambda  -->  Clau
 | `web/faq-en-beta.html` | The same file. Named `-en`, it opens in English (so does `?lang=en`) |
 | `web/support-index.html` | The new support form (reads `?issue=` from น้องดี's handoff) |
 | `test/local-test.mjs` | Local tests with a fake Claude API (`npm test`) |
+| `CLAUDE.md`, `HANDOFF.md` | Instructions and handoff notes for Claude Code |
 | `index.html`, `preview/`, `scripts/build-preview.mjs` | GitHub Pages preview (see below) |
 
 ## Languages
