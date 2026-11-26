@@ -1,4 +1,4 @@
-# oneD FAQ + น้องดี — instructions for Claude Code
+# oneD FAQ + น้องวันดี — instructions for Claude Code
 
 Read `HANDOFF.md` first: it has the history, decisions, open questions and the next steps.
 
@@ -7,17 +7,17 @@ Read `HANDOFF.md` first: it has the history, decisions, open questions and the n
 - **oneD** is a Thai video streaming service (GMM Grammy / one31). Product owner: Komsith (Tong), PM.
 - **FAQ page**: one bilingual file (Thai + English, TH | EN switch). Deployed as both `faq-th.html` and `faq-en.html` on `assets.oned.net/doc/`.
 - **Support form**: `support.oned.net`, posts to `/submit` (backend not in this repo).
-- **น้องดี (Nong Dee)**: AI assistant on the FAQ page. Chat API = AWS Lambda + API Gateway (SAM), calling the Claude API. Answers **only** from the FAQ.
+- **น้องวันดี (Nong Wandee)**: AI assistant on the FAQ page. Chat API = AWS Lambda + API Gateway (SAM), calling the Claude API. Answers **only** from the FAQ. (Renamed from น้องดี on 26 Nov 2026. Code names like `nongdee.js`, `nd-` CSS classes and the repo name stay as they are.)
 
 ## Layout
 
 | Path | What |
 | --- | --- |
-| `src/faq.json` | **The FAQ** (source of truth for the page, `GET /faq` and น้องดี): TH + EN, ids, categories, popular, answers as blocks |
+| `src/faq.json` | **The FAQ** (source of truth for the page, `GET /faq` and น้องวันดี): TH + EN, ids, categories, popular, answers as blocks |
 | `src/handler.mjs` | API: `GET /faq`, `POST /chat`, `POST /feedback` |
-| `src/prompt.mjs` | น้องดี's rules + `ISSUES` (support-form issue values) + verifier rules |
+| `src/prompt.mjs` | น้องวันดี's rules + `ISSUES` (support-form issue values) + verifier rules |
 | `src/grounding.mjs` | FAQ-only guardrail (runs on every reply) |
-| `src/faq.mjs` | Loads `faq.json`: `faqDocument(lang)` for `GET /faq`, `loadFaq()` = Thai plain text for น้องดี |
+| `src/faq.mjs` | Loads `faq.json`: `faqDocument(lang)` for `GET /faq`, `loadFaq()` = Thai plain text for น้องวันดี |
 | `src/faq-format.mjs` | Answer block format (blocks ↔ page HTML, plain text) and `validate()` |
 | `src/match.mjs` | Typo-tolerant "did you mean" matching (Thai + English questions), used for `related` on `not_in_faq` replies |
 | `scripts/build-faq.mjs` | Writes `faq.json` into the page's question lists (`--check` to verify) |
@@ -50,9 +50,9 @@ GitHub Pages serves `main` from the repo root: https://kiki057.github.io/oned-no
 - Use the app's real button names as `{"type":"ui"}` inlines (rendered as `<span class="ui">`). English labels for new 2.0 screens are unconfirmed (see HANDOFF).
 - No facts that aren't in the source document (no invented prices, numbers, steps).
 
-**น้องดี**
+**น้องวันดี**
 - Answers only from the FAQ. Never weaken `src/grounding.mjs` or the prompt rules to make an answer pass; fix the FAQ or the test instead.
-- Thai voice: warm, polite young woman, ends statements with ค่ะ and questions with คะ, never ครับ, calls herself น้องดี, user = คุณ. English: "Nong Dee", friendly and brief.
+- Thai voice: warm, polite young woman, ends statements with ค่ะ and questions with คะ, never ครับ, calls herself น้องวันดี, user = คุณ. English: "Nong Wandee", friendly and brief.
 - Replies follow the user's language; the widget's interface follows `<html lang>`.
 - `ISSUES` in `src/prompt.mjs` must match the support form's `<option value>`s exactly (they're the backend contract), and `SupportIssue` in `openapi.yaml` (tested).
 - The Anthropic API key lives only in Secrets Manager / the Lambda. Never in the page, the app, or the repo. Repo is **public**.

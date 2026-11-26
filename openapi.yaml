@@ -1,13 +1,13 @@
 openapi: 3.1.0
 info:
-  title: oneD FAQ and น้องดี (Nong Dee) API
+  title: oneD FAQ and น้องวันดี (Nong Wandee) API
   version: 1.0.0
   summary: The oneD FAQ as data, and the FAQ-only help assistant, for the web FAQ page and the iOS (Swift) and Android (Kotlin) apps.
   description: |
     Three endpoints, all served by one AWS Lambda behind API Gateway (see `template.yaml`):
 
     - `GET /faq` returns the FAQ in Thai or English, as structured blocks the apps can render natively.
-    - `POST /chat` asks น้องดี a question. She answers **only** from the FAQ; every reply is checked in code
+    - `POST /chat` asks น้องวันดี a question. She answers **only** from the FAQ; every reply is checked in code
       before it is returned (see README, "FAQ-only guardrail").
     - `POST /feedback` records a thumbs up or down on one of her replies.
 
@@ -67,7 +67,7 @@ paths:
     post:
       tags: [Assistant]
       operationId: chat
-      summary: Ask น้องดี a question
+      summary: Ask น้องวันดี a question
       description: |
         Send the conversation so far (the app keeps it; the server keeps no chat state) and get her next reply.
         She replies in the language the user writes in. Personal data (emails, phone and card numbers) is masked
@@ -196,7 +196,7 @@ components:
         id:
           type: string
           pattern: '^[A-Za-z][A-Za-z0-9_-]*$'
-          description: Stable id, used for deep links (`#Register`) and by น้องดี in `sources`.
+          description: Stable id, used for deep links (`#Register`) and by น้องวันดี in `sources`.
           example: Activateonetimecode
         category: { type: string, description: A `FaqCategory` id. }
         popular: { type: boolean, description: Also shown in the popular tab. }

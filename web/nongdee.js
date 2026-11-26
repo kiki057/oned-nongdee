@@ -1,5 +1,5 @@
 /*!
- * น้องดี — oneD FAQ assistant widget (production)
+ * น้องวันดี — oneD FAQ assistant widget (production)
  * Include on the FAQ page, after its content:
  *   <script src="nongdee.js" data-endpoint="https://xxxx.execute-api.ap-southeast-1.amazonaws.com" defer></script>
  * Optional: data-support-url="https://support.oned.net/"
@@ -19,37 +19,37 @@
   // Replies follow the language the user writes in.
   var I18N = {
     th: {
-      fab: 'ถามน้องดี', title: 'น้องดี', sub: 'ผู้ช่วย oneD · ตอบจากคำถามที่พบบ่อย',
-      hello: 'สวัสดีค่ะ น้องดีเองค่ะ ถามเรื่องการใช้งาน oneD ได้เลยนะคะ เช่น สมัคร PREMIUM แลกโค้ด ดูบนทีวี หรือยกเลิกแพ็กเกจ',
+      fab: 'ถามน้องวันดี', title: 'น้องวันดี', sub: 'ผู้ช่วย oneD · ตอบจากคำถามที่พบบ่อย',
+      hello: 'สวัสดีค่ะ น้องวันดีเองค่ะ ถามเรื่องการใช้งาน oneD ได้เลยนะคะ เช่น สมัคร PREMIUM แลกโค้ด ดูบนทีวี หรือยกเลิกแพ็กเกจ',
       suggest: ['แลกโค้ดในแอปได้ไหม', 'ยกเลิก PREMIUM ยังไง', 'จ่ายเงินแล้วแต่ยังเห็นโฆษณา', 'ดูบนทีวี Samsung ได้ไหม'],
-      placeholder: 'พิมพ์คำถามถึงน้องดี...', note: 'ห้ามพิมพ์รหัสผ่าน OTP หรือเลขบัตร · บทสนทนาถูกบันทึกเพื่อปรับปรุงบริการ',
-      contact: 'ติดต่อทีมงาน', handoff: 'ให้ทีมงานช่วยต่อได้นะคะ น้องดีเลือกหัวข้อในแบบฟอร์มไว้ให้แล้วค่ะ',
+      placeholder: 'พิมพ์คำถามถึงน้องวันดี...', note: 'ห้ามพิมพ์รหัสผ่าน OTP หรือเลขบัตร · บทสนทนาถูกบันทึกเพื่อปรับปรุงบริการ',
+      contact: 'ติดต่อทีมงาน', handoff: 'ให้ทีมงานช่วยต่อได้นะคะ น้องวันดีเลือกหัวข้อในแบบฟอร์มไว้ให้แล้วค่ะ',
       handoffBtn: 'ส่งเรื่องให้ทีมงาน', sorry: 'ขออภัยที่ยังช่วยไม่ได้นะคะ ให้ทีมงานช่วยต่อไหมคะ?',
-      busy: 'ตอนนี้มีคนถามเยอะอยู่ ลองใหม่อีกสักครู่นะคะ', error: 'ขออภัยค่ะ ตอนนี้น้องดีตอบไม่ได้',
-      offline: 'ดูเหมือนอินเทอร์เน็ตจะหลุดอยู่นะคะ ลองใหม่อีกครั้งค่ะ', askInstead: 'ถามน้องดีแทน',
+      busy: 'ตอนนี้มีคนถามเยอะอยู่ ลองใหม่อีกสักครู่นะคะ', error: 'ขออภัยค่ะ ตอนนี้น้องวันดีตอบไม่ได้',
+      offline: 'ดูเหมือนอินเทอร์เน็ตจะหลุดอยู่นะคะ ลองใหม่อีกครั้งค่ะ', askInstead: 'ถามน้องวันดีแทน',
       close: 'ปิด', send: 'ส่ง', up: 'มีประโยชน์', down: 'ไม่มีประโยชน์',
       demoSub: 'โหมดสาธิต · ค้นจาก FAQ ยังไม่ใช่ AI',
       demoNote: 'โหมดสาธิต: ข้อความไม่ถูกส่งหรือบันทึกที่ไหน · ห้ามพิมพ์รหัสผ่าน OTP หรือเลขบัตร',
-      demoHello: 'สวัสดีค่ะ น้องดีเองค่ะ ตอนนี้เป็นโหมดสาธิต น้องดีจะค้นคำตอบที่ใกล้ที่สุดจาก FAQ ให้นะคะ (เวอร์ชัน AI จะตอบได้เป็นธรรมชาติกว่านี้ค่ะ)',
+      demoHello: 'สวัสดีค่ะ น้องวันดีเองค่ะ ตอนนี้เป็นโหมดสาธิต น้องวันดีจะค้นคำตอบที่ใกล้ที่สุดจาก FAQ ให้นะคะ (เวอร์ชัน AI จะตอบได้เป็นธรรมชาติกว่านี้ค่ะ)',
       related: 'หรือคุณหมายถึงเรื่องนี้คะ',
-      dFound: 'น้องดีเจอคำตอบนี้ใน FAQ ค่ะ', dNone: 'ขออภัยค่ะ น้องดียังหาคำตอบเรื่องนี้ใน FAQ ไม่เจอ ลองถามด้วยคำอื่น หรือให้ทีมงานช่วยต่อได้นะคะ',
-      dRefund: 'เรื่องคืนเงิน น้องดีช่วยเองไม่ได้ค่ะ ถ้าสมัครผ่าน App Store หรือ Google Play การคืนเงินเป็นของ Apple หรือ Google นะคะ ให้ทีมงานช่วยดูให้ได้ค่ะ',
+      dFound: 'น้องวันดีเจอคำตอบนี้ใน FAQ ค่ะ', dNone: 'ขออภัยค่ะ น้องวันดียังหาคำตอบเรื่องนี้ใน FAQ ไม่เจอ ลองถามด้วยคำอื่น หรือให้ทีมงานช่วยต่อได้นะคะ',
+      dRefund: 'เรื่องคืนเงิน น้องวันดีช่วยเองไม่ได้ค่ะ ถ้าสมัครผ่าน App Store หรือ Google Play การคืนเงินเป็นของ Apple หรือ Google นะคะ ให้ทีมงานช่วยดูให้ได้ค่ะ',
       dCancel: 'คุณสมัครผ่านช่องทางไหนคะ? กดหัวข้อด้านล่างเพื่อดูวิธียกเลิกได้เลยค่ะ',
-      dPrivate: 'ไม่ต้องพิมพ์ข้อมูลส่วนตัวในแชตนะคะ น้องดีซ่อนไว้ให้แล้วค่ะ ถามต่อได้เลยนะคะ'
+      dPrivate: 'ไม่ต้องพิมพ์ข้อมูลส่วนตัวในแชตนะคะ น้องวันดีซ่อนไว้ให้แล้วค่ะ ถามต่อได้เลยนะคะ'
     },
     en: {
-      fab: 'Ask Nong Dee', title: 'Nong Dee', sub: 'oneD assistant · answers from the FAQ',
-      hello: "Hi, I'm Nong Dee! Ask me anything about using oneD, like subscribing to PREMIUM, redeeming a code, watching on TV or cancelling a package.",
+      fab: 'Ask Nong Wandee', title: 'Nong Wandee', sub: 'oneD assistant · answers from the FAQ',
+      hello: "Hi, I'm Nong Wandee! Ask me anything about using oneD, like subscribing to PREMIUM, redeeming a code, watching on TV or cancelling a package.",
       suggest: ['Can I redeem a code in the app?', 'How do I cancel PREMIUM?', "I paid but still see ads", 'Can I watch on a Samsung TV?'],
-      placeholder: 'Ask Nong Dee a question...', note: "Don't type passwords, OTPs or card numbers · Chats are recorded to improve the service",
+      placeholder: 'Ask Nong Wandee a question...', note: "Don't type passwords, OTPs or card numbers · Chats are recorded to improve the service",
       contact: 'Contact us', handoff: "Our support team can take it from here. I've picked the topic in the form for you.",
       handoffBtn: 'Contact support', sorry: "Sorry I couldn't help. Would you like our support team to help?",
       busy: "Lots of people are asking right now. Please try again in a moment.", error: "Sorry, I can't answer right now.",
-      offline: 'You seem to be offline. Please try again.', askInstead: 'Ask Nong Dee instead',
+      offline: 'You seem to be offline. Please try again.', askInstead: 'Ask Nong Wandee instead',
       close: 'Close', send: 'Send', up: 'Helpful', down: 'Not helpful',
       demoSub: 'Demo mode · searches the FAQ, not AI yet',
       demoNote: "Demo mode: nothing you type is sent or saved · Don't type passwords, OTPs or card numbers",
-      demoHello: "Hi, I'm Nong Dee! This is a demo: I'll find the closest answer in the FAQ for you. (The AI version answers more naturally.)",
+      demoHello: "Hi, I'm Nong Wandee! This is a demo: I'll find the closest answer in the FAQ for you. (The AI version answers more naturally.)",
       related: 'Or did you mean:',
       dFound: "Here's what the FAQ says:", dNone: "Sorry, I couldn't find this in the FAQ. Try asking another way, or our support team can help.",
       dRefund: "I can't handle refunds myself. If you subscribed through the App Store or Google Play, refunds are handled by Apple or Google. Our support team can look into it for you.",
@@ -338,7 +338,7 @@
       e.preventDefault(); var v = input.value; input.value = ''; input.style.height = ''; send.disabled = true; ask(v);
     });
 
-    // "Ask น้องดี instead" when the FAQ search finds nothing
+    // "Ask น้องวันดี instead" when the FAQ search finds nothing
     var empty = document.getElementById('empty'), search = document.getElementById('search');
     if (empty) {
       var askBtn = el('button', 'nd-ask-empty'); askBtn.type = 'button';

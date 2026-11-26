@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: น้องดี — oneD FAQ and chat API (Lambda + API Gateway HTTP API + Secrets Manager)
+Description: น้องวันดี — oneD FAQ and chat API (Lambda + API Gateway HTTP API + Secrets Manager)
 
 Parameters:
   Model:
@@ -41,7 +41,7 @@ Resources:
     Type: AWS::SecretsManager::Secret
     Properties:
       Name: !Sub '${AWS::StackName}/anthropic-api-key'
-      Description: Anthropic API key for น้องดี. Set the value after deploy (see README).
+      Description: Anthropic API key for น้องวันดี. Set the value after deploy (see README).
       SecretString: REPLACE_ME
 
   ChatApi:
@@ -61,7 +61,7 @@ Resources:
     Properties:
       CodeUri: src/
       Handler: handler.handler
-      Description: น้องดี chat API
+      Description: น้องวันดี chat API
       Environment:
         Variables:
           MODEL: !Ref Model

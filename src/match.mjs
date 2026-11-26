@@ -1,5 +1,5 @@
 // "Did you mean": finds the FAQ questions closest to what the user typed, even with typos.
-// Used when น้องดี can't answer (status not_in_faq), so a misspelled question still ends one tap from the
+// Used when น้องวันดี can't answer (status not_in_faq), so a misspelled question still ends one tap from the
 // right answer. It only suggests FAQ entries to open; it never adds words to her answer.
 //
 // How: both the question and every FAQ question (Thai and English) are normalised (lower case, no spaces,

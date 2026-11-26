@@ -1,5 +1,5 @@
 // The FAQ, from src/faq.json (the source of truth, bundled with the Lambda).
-//   loadFaq()          Thai entries as plain text: what น้องดี answers from and the guardrail checks against
+//   loadFaq()          Thai entries as plain text: what น้องวันดี answers from and the guardrail checks against
 //   faqDocument(lang)  one language's FAQ for GET /faq (web page and the iOS / Android apps)
 // To change the FAQ: edit src/faq.json, run `node scripts/build-faq.mjs` (updates the web page), then deploy.
 

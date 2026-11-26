@@ -76,7 +76,7 @@ await test('page -> JSON -> page round trip loses nothing', async () => {
   assert.equal(renderList(faqJson, 'th').trim(), th.trim());
 });
 
-await test('น้องดี reads the same Thai text from faq.json as from the page', async () => {
+await test('น้องวันดี reads the same Thai text from faq.json as from the page', async () => {
   assert.deepEqual(await loadFaq(), parseFaq(faqHtml));
 });
 
@@ -147,7 +147,7 @@ await test('not_in_faq replies carry "did you mean" FAQ ids; answered replies do
   assert.equal(b.status, 'answered'); assert.deepEqual(b.related, []);
 });
 
-await test('the prompt tells น้องดี to read through typos', async () => {
+await test('the prompt tells น้องวันดี to read through typos', async () => {
   const { RULES } = await import('../src/prompt.mjs');
   assert.match(RULES, /typos/); assert.match(RULES, /closest FAQ question/);
 });
@@ -222,7 +222,7 @@ const ask = async (reply, text = 'ถามหน่อย', ip) => {
   fakeReply = JSON.stringify(reply);
   return JSON.parse((await handler(ev({ messages: [{ role: 'user', content: text }] }, { ip: ip || 'g' + Math.random() }))).body);
 };
-const UNSURE = 'ขออภัยค่ะ น้องดีไม่แน่ใจคำตอบนี้';
+const UNSURE = 'ขออภัยค่ะ น้องวันดีไม่แน่ใจคำตอบนี้';
 fakeVerdict = '{"supported": true, "unsupported": []}';
 
 await test('guardrail: a correct answer with a real number passes', async () => {

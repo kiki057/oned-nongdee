@@ -1,4 +1,4 @@
-# Handoff: oneD FAQ, support form and น้องดี
+# Handoff: oneD FAQ, support form and น้องวันดี
 
 Written 25 Nov 2026 at the end of the design work in Claude (claude.ai), for Claude Code to continue.
 
@@ -8,16 +8,16 @@ Written 25 Nov 2026 at the end of the design work in Claude (claude.ai), for Cla
 | --- | --- |
 | FAQ page (TH + EN, one file) | Done, content v2.0. Not yet deployed to `assets.oned.net` |
 | Support form | Redesigned, same `/submit` contract. Not yet deployed to `support.oned.net` |
-| น้องดี chat API (AWS) | Built and tested locally (24 tests). **Not deployed** (needs AWS access + Anthropic API key) |
-| น้องดี widget | Done (TH/EN, demo mode). Live in demo mode on GitHub Pages |
+| น้องวันดี chat API (AWS) | Built and tested locally (24 tests). **Not deployed** (needs AWS access + Anthropic API key) |
+| น้องวันดี widget | Done (TH/EN, demo mode). Live in demo mode on GitHub Pages |
 | Guardrail | Done: evidence quotes, fact checks (links / numbers / quoted names), fixed refusals, second-opinion verifier (fails closed) |
 | Design doc | "oneD FAQ Chatbot – Design (v1)" in the user's Claude account: https://claude.ai/artifact/4X23yDBtvKP5kcJGNJ1Qpf |
-| Claude prototypes (real AI) | FAQ + น้องดี: https://claude.ai/artifact/TUPWBT7dxjxSJAww8awwfa · Support: https://claude.ai/artifact/UMs7YeRG6dzhUPHSYRYW24 |
+| Claude prototypes (real AI) | FAQ + น้องวันดี: https://claude.ai/artifact/TUPWBT7dxjxSJAww8awwfa · Support: https://claude.ai/artifact/UMs7YeRG6dzhUPHSYRYW24 |
 | GitHub Pages preview | https://kiki057.github.io/oned-nongdee/ |
 
 ## Decisions made (by Tong)
 
-- Bot name **น้องดี** ("Nong Dee" in English), Thai voice **ค่ะ / คะ**.
+- Bot name **น้องวันดี** ("Nong Wandee" in English; renamed from น้องดี on 26 Nov 2026), Thai voice **ค่ะ / คะ**.
 - Model: **Claude via Anthropic's API** for testing. Compare Claude Haiku 5.5 vs Claude Sonnet 5.5 on a test set; ship the cheapest that passes. Default `claude-haiku-5-5`.
 - v1 scope: answer **only from the FAQ** + hand off to the support form. No account lookups, no actions.
 - Strict FAQ-only guardrail in code, second-opinion check on by default.
@@ -45,7 +45,7 @@ Suggested order:
 
 Answered (25 Nov): the apps are native **Swift and Kotlin**, only the mobile apps are in scope (no TV), and users sign in with **Firebase Auth**. Still needed: the Firebase project id (to verify tokens), and whether guests may use the chat in the apps.
 
-1. **FAQ as data** — done. `src/faq.json` is the source of truth; `scripts/build-faq.mjs` writes it into the page (same HTML, same ids); `GET /faq?lang=th|en` serves it with ETag caching; น้องดี reads the same file (text proven identical to before).
+1. **FAQ as data** — done. `src/faq.json` is the source of truth; `scripts/build-faq.mjs` writes it into the page (same HTML, same ids); `GET /faq?lang=th|en` serves it with ETag caching; น้องวันดี reads the same file (text proven identical to before).
 2. **OpenAPI spec** — done for `/faq`, `/chat`, `/feedback` (`openapi.yaml`). Firebase ID token bearer auth is in the spec but marked planned. `/tickets` still to add.
 3. **Chat API for apps**
    - Authentication: verify the Firebase ID token (`Authorization: Bearer`) in the Lambda; optionally add App Check. The web version uses the Origin allowlist, which apps don't send, so today the apps get 403 on `/chat`.

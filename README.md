@@ -1,6 +1,6 @@
-# น้องดี on AWS: deploy guide
+# น้องวันดี on AWS: deploy guide
 
-This puts the น้องดี assistant on a **test copy** of the FAQ page (`faq-th-beta.html`). The live FAQ stays untouched until you decide to switch.
+This puts the น้องวันดี assistant on a **test copy** of the FAQ page (`faq-th-beta.html`). The live FAQ stays untouched until you decide to switch.
 
 ```
 FAQ page (assets.oned.net)  --POST /chat-->  API Gateway  -->  Lambda  -->  Claude API
@@ -15,9 +15,9 @@ FAQ page (assets.oned.net)  --POST /chat-->  API Gateway  -->  Lambda  -->  Clau
 | --- | --- |
 | `template.yaml` | AWS SAM template: Lambda, HTTP API (CORS + throttling), secret for the API key, 90-day log retention |
 | `src/handler.mjs` | The API: `GET /faq`, `POST /chat` and `POST /feedback` |
-| `src/prompt.mjs` | น้องดี's rules and the support-form issue list. **Edit her behaviour here** |
+| `src/prompt.mjs` | น้องวันดี's rules and the support-form issue list. **Edit her behaviour here** |
 | `src/faq.json` | **The FAQ itself** (Thai + English, ids, categories, popular set, answers as blocks). Edit the FAQ here |
-| `src/faq.mjs` | Serves the FAQ: `GET /faq` for the page and apps, and the Thai text น้องดี answers from |
+| `src/faq.mjs` | Serves the FAQ: `GET /faq` for the page and apps, and the Thai text น้องวันดี answers from |
 | `src/faq-format.mjs` | The answer block format: blocks → page HTML, page HTML → blocks, plain text |
 | `scripts/build-faq.mjs` | Writes the questions from `src/faq.json` into the FAQ page |
 | `openapi.yaml` | API spec for `GET /faq`, `POST /chat`, `POST /feedback` (for the iOS and Android apps) |
@@ -26,23 +26,23 @@ FAQ page (assets.oned.net)  --POST /chat-->  API Gateway  -->  Lambda  -->  Clau
 | `web/nongdee.js` | The chat widget the FAQ page loads |
 | `web/faq-th-beta.html` | The new FAQ page (Thai + English with a TH \| EN switch) with the widget included |
 | `web/faq-en-beta.html` | The same file. Named `-en`, it opens in English (so does `?lang=en`) |
-| `web/support-index.html` | The new support form (reads `?issue=` from น้องดี's handoff) |
+| `web/support-index.html` | The new support form (reads `?issue=` from น้องวันดี's handoff) |
 | `test/local-test.mjs` | Local tests with a fake Claude API (`npm test`) |
 | `CLAUDE.md`, `HANDOFF.md` | Instructions and handoff notes for Claude Code |
 | `index.html`, `preview/`, `scripts/build-preview.mjs` | GitHub Pages preview (see below) |
 
 ## Languages
 
-น้องดี speaks Thai and English:
+น้องวันดี speaks Thai and English:
 
 - **Her screen** (button, title, hints, greeting, suggestions) follows the page's language, i.e. `<html lang>`. On the FAQ page that's the TH | EN switch, and she follows it live.
-- **Her replies** follow the language the user writes in. In English she's "Nong Dee" and uses the app's English button names.
+- **Her replies** follow the language the user writes in. In English she's "Nong Wandee" and uses the app's English button names.
 - **The FAQ she answers from** stays the Thai questions (the source of truth). The AI translates the steps for English questions and the guardrail still checks every fact against the Thai entries. The fixed refusals have English versions.
 - **Handoff** opens the support form in English when the page is in English.
 
 ## FAQ-only guardrail
 
-น้องดี may only say what the FAQ says. Her instructions ask for that, but instructions alone aren't a guarantee, so every reply is also checked **in code** before it reaches the user:
+น้องวันดี may only say what the FAQ says. Her instructions ask for that, but instructions alone aren't a guarantee, so every reply is also checked **in code** before it reaches the user:
 
 | Check | What fails it |
 | --- | --- |
@@ -52,7 +52,7 @@ FAQ page (assets.oned.net)  --POST /chat-->  API Gateway  -->  Lambda  -->  Clau
 | Fixed refusals | "Not in the FAQ" and off-topic replies always use fixed wording, so nothing can slip in there |
 | Second opinion (`Verify=on`, the default) | A separate Claude call reads only the cited entries and the answer, and finds a statement they don't support. If this check can't run, the answer is blocked |
 
-A reply that fails is replaced with: "ขออภัยค่ะ น้องดีไม่แน่ใจคำตอบนี้…", plus links to the related FAQ entries and the handoff button. In CloudWatch the turn is logged with `"guardrail": "blocked"`, the reasons, and what the model tried to say, so CS can spot gaps in the FAQ.
+A reply that fails is replaced with: "ขออภัยค่ะ น้องวันดีไม่แน่ใจคำตอบนี้…", plus links to the related FAQ entries and the handoff button. In CloudWatch the turn is logged with `"guardrail": "blocked"`, the reasons, and what the model tried to say, so CS can spot gaps in the FAQ.
 
 The second opinion adds one short, cheap call (Haiku) per answer. To turn it off: `sam deploy --parameter-overrides Verify=off`.
 
@@ -73,7 +73,7 @@ The preview pages are generated from `web/`. After changing anything in `web/`, 
 node scripts/build-preview.mjs
 ```
 
-On the preview, น้องดี runs in **demo mode**: she finds the closest FAQ answer by text matching. No AI, no server, nothing sent anywhere. It shows the chat design and flow only. To switch the preview to the real AI:
+On the preview, น้องวันดี runs in **demo mode**: she finds the closest FAQ answer by text matching. No AI, no server, nothing sent anywhere. It shows the chat design and flow only. To switch the preview to the real AI:
 
 1. Add `https://kiki057.github.io` to the stack's `AllowedOrigins` (e.g. `sam deploy --parameter-overrides AllowedOrigins=https://assets.oned.net,https://kiki057.github.io`).
 2. Rebuild with the API address: `NONGDEE_ENDPOINT=<ApiUrl> node scripts/build-preview.mjs`, then commit and push.
@@ -159,20 +159,20 @@ curl -s '<ApiUrl>/faq?lang=en' | head -c 400
    ```
 3. If CloudFront sits in front of the bucket, invalidate `/doc/faq-th-beta.html` and `/doc/nongdee.js`.
    Whenever `nongdee.js` changes, also change its address in the page, e.g. `nongdee.js?v=2`, so phones and the app's web view don't keep using an old copy.
-4. Open the beta page on your phone and tap **ถามน้องดี**.
+4. Open the beta page on your phone and tap **ถามน้องวันดี**.
 
 To try it inside the oneD app, point a test build's FAQ link at `faq-th-beta.html`.
 
 ## 6. Handoff to the support form
 
-น้องดี's "ส่งเรื่องให้ทีมงาน" button opens `support.oned.net/?issue=…&chat=…`. Deploy `web/support-index.html` as the support form's `index.html` (or to a test path first) so the topic gets preselected. The `chat` value is ignored for now. Attaching the transcript to the OCS ticket needs the `/submit` and OCS changes listed in the design doc.
+น้องวันดี's "ส่งเรื่องให้ทีมงาน" button opens `support.oned.net/?issue=…&chat=…`. Deploy `web/support-index.html` as the support form's `index.html` (or to a test path first) so the topic gets preselected. The `chat` value is ignored for now. Attaching the transcript to the OCS ticket needs the `/submit` and OCS changes listed in the design doc.
 
 ## Day-to-day
 
 | Task | How |
 | --- | --- |
-| Change น้องดี's rules or voice | Edit `src/prompt.mjs`, run `npm test`, then `sam build && sam deploy` |
-| Update an answer | Edit `src/faq.json` (Thai first, then the English), run `node scripts/build-faq.mjs`, `node scripts/build-preview.mjs` and `npm test`, then upload the page **and** `sam build && sam deploy` (น้องดี and `GET /faq` read the copy bundled with the Lambda) |
+| Change น้องวันดี's rules or voice | Edit `src/prompt.mjs`, run `npm test`, then `sam build && sam deploy` |
+| Update an answer | Edit `src/faq.json` (Thai first, then the English), run `node scripts/build-faq.mjs`, `node scripts/build-preview.mjs` and `npm test`, then upload the page **and** `sam build && sam deploy` (น้องวันดี and `GET /faq` read the copy bundled with the Lambda) |
 | Switch model | `sam deploy --parameter-overrides Model=claude-sonnet-5-5` (keep the other parameters) |
 | Read conversations | CloudWatch log group in the stack outputs. Each turn is one `chat_turn` line; thumbs are `feedback` lines |
 | Find blocked answers | CloudWatch Logs Insights: `filter guardrail = "blocked" \| fields user, blocked_reasons, blocked_answer` |
@@ -184,7 +184,7 @@ To try it inside the oneD app, point a test build's FAQ link at `faq-th-beta.htm
 - **Throttling.** API Gateway allows 5 requests/second with bursts of 20 across all users by default. The Lambda also limits each IP to 20 messages per 10 minutes, per warm instance. Add an AWS WAF rate rule if you see abuse.
 - **Logs** keep masked chat text, FAQ ids, status, model, latency and token usage for 90 days. Emails, phone numbers and card-like numbers are masked in the browser and again in the Lambda before Claude or the logs see them. No user id is stored.
 - **Costs** depend on traffic and model. The FAQ is sent to Claude with prompt caching to keep repeat calls cheap. Watch usage in the Claude Console and set a spend limit there.
-- **One FAQ, three readers.** `src/faq.json` feeds the web page (via `scripts/build-faq.mjs`), the apps (`GET /faq`) and น้องดี. Don't edit the question lists in `web/faq-*-beta.html` by hand: `npm test` fails if the page and the JSON differ.
+- **One FAQ, three readers.** `src/faq.json` feeds the web page (via `scripts/build-faq.mjs`), the apps (`GET /faq`) and น้องวันดี. Don't edit the question lists in `web/faq-*-beta.html` by hand: `npm test` fails if the page and the JSON differ.
 - **In-app detection.** Logs mark a chat as `app` when the user agent contains "oneD". Adjust in `handler.mjs` if the app's web view uses a different user agent.
 
 ## Test locally

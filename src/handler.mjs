@@ -1,4 +1,4 @@
-// น้องดี chat API — AWS Lambda (Node.js 22) behind API Gateway HTTP API.
+// น้องวันดี chat API — AWS Lambda (Node.js 22) behind API Gateway HTTP API.
 //   POST /chat      { chatId?, messages: [{ role: "user"|"assistant", content }] }  -> reply JSON
 //   POST /feedback  { chatId, turn, rating: "up"|"down" }                           -> 204
 //   GET  /faq?lang=th|en                                                            -> the FAQ (see openapi.yaml)
@@ -82,7 +82,7 @@ export function clean(v, faqIds) {
   v = v && typeof v === 'object' ? v : {};
   let status = STATUSES.includes(v.status) ? v.status : 'not_in_faq';
   const sources = (Array.isArray(v.sources) ? v.sources : []).filter((id) => faqIds.has(id)).slice(0, 3);
-  const answer = typeof v.answer === 'string' && v.answer.trim() ? v.answer.trim().slice(0, 1200) : 'ขออภัยค่ะ ตอนนี้น้องดียังตอบคำถามนี้ไม่ได้';
+  const answer = typeof v.answer === 'string' && v.answer.trim() ? v.answer.trim().slice(0, 1200) : 'ขออภัยค่ะ ตอนนี้น้องวันดียังตอบคำถามนี้ไม่ได้';
   let handoff_issue = ISSUES.includes(v.handoff_issue) ? v.handoff_issue : null;
   if (status === 'not_in_faq' && !handoff_issue) handoff_issue = ISSUES[ISSUES.length - 1];
   const suggestions = (Array.isArray(v.suggestions) ? v.suggestions : []).filter((x) => typeof x === 'string' && x.length < 60).slice(0, 2);

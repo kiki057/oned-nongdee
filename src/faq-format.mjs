@@ -1,4 +1,4 @@
-// The FAQ's data format, shared by the Lambda (GET /faq, น้องดี) and scripts/build-faq.mjs.
+// The FAQ's data format, shared by the Lambda (GET /faq, น้องวันดี) and scripts/build-faq.mjs.
 //
 // src/faq.json is the source of truth. Each answer is a list of blocks, so the web page, the
 // iOS app (SwiftUI) and the Android app (Jetpack Compose) can all render it natively:
@@ -228,7 +228,7 @@ export function questionsFromHtml(html) {
   return out;
 }
 
-// ---------------- Plain text (what น้องดี reads) ----------------
+// ---------------- Plain text (what น้องวันดี reads) ----------------
 
 // Unchanged from the original page parser, so the bot sees exactly the same text as before.
 export function parseFaq(html) {

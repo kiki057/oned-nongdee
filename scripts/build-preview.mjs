@@ -8,7 +8,7 @@ import { createHash } from 'node:crypto';
 
 const root = new URL('../', import.meta.url);
 const read = (p) => readFile(new URL(p, root), 'utf8');
-// Without NONGDEE_ENDPOINT the preview runs น้องดี in demo mode (FAQ text matching, no AI, no server).
+// Without NONGDEE_ENDPOINT the preview runs น้องวันดี in demo mode (FAQ text matching, no AI, no server).
 const endpoint = process.env.NONGDEE_ENDPOINT || 'demo';
 // Version the widget URL by its content, so phones and the app's web view never keep an old copy
 const widgetVersion = createHash('sha1').update(await read('web/nongdee.js')).digest('hex').slice(0, 8);
@@ -59,4 +59,4 @@ await mkdir(new URL('preview/', root), { recursive: true });
 await writeFile(new URL('preview/faq.html', root), faq);
 await writeFile(new URL('preview/support.html', root), support);
 await writeFile(new URL('preview/faq-en.html', root), faqEn);
-console.log(`preview/faq.html, preview/faq-en.html and preview/support.html written (น้องดี: ${endpoint === 'demo' ? 'demo mode, no AI' : endpoint})`);
+console.log(`preview/faq.html, preview/faq-en.html and preview/support.html written (น้องวันดี: ${endpoint === 'demo' ? 'demo mode, no AI' : endpoint})`);
