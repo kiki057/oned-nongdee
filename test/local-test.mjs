@@ -114,6 +114,44 @@ await test('GET /faq: 304 for a matching ETag, 400 for an unknown language, 405 
   assert.equal((await handler(ev({}, { path: '/faq', method: 'POST' }))).statusCode, 405);
 });
 
+// ---------------- Typos: "did you mean" ----------------
+const { relatedFaq } = await import('../src/faq.mjs');
+const { normaliseText } = await import('../src/match.mjs');
+
+await test('typo matching: misspelled Thai and English questions find the right FAQ entry', async () => {
+  const cases = [
+    ['แลกโคดในแอบได้มั้ย', 'Activateonetimecode'], ['แลกโค๊ดไม่ได้', 'codefailed'], ['ยกเลิกแพ็คเก็ดไอโฟน', 'unsubscribe'],
+    ['จ่ายตังแล้วไม่เป็นพรีเมี่ยม', 'premiumnotreceived'], ['ดูบนทีวีซัมซุงได้ป่าว', 'watchontv'], ['วีดีโอกระตุก', 'technicalissue'],
+    ['ใช้ต่างประเทสได้ไหม', 'servicearea'], ['สมัคพรีเมียมยังไง', 'subscription'], ['แก้ไขโปรไฟล', 'editprofile'],
+    ['cansel subscribtion iphone', 'unsubscribe'], ['how to redem code', 'Activateonetimecode'], ['wach on tv', 'watchontv'],
+    ['chromcast', 'ChromecastAirplay'], ['use oned abroad', 'servicearea'], ['cancel ais', 'unsubscribeais'],
+  ];
+  const misses = cases.filter(([q, id]) => !relatedFaq(q).includes(id));
+  assert.deepEqual(misses, []);
+});
+
+await test('typo matching: ignores tone marks, repeated letters and spacing; nothing for off-topic', async () => {
+  assert.equal(normaliseText('ค่าาาา  โค๊ด!'), normaliseText('คา โคด'));
+  assert.deepEqual(relatedFaq('แนะนำละครสนุกๆ'), []);
+  assert.deepEqual(relatedFaq('สวัสดี'), []);
+  assert.deepEqual(relatedFaq('ยกเลิกแพคเกจ android', ['unsubscribeandroid']).includes('unsubscribeandroid'), false, 'excludes ids already cited');
+});
+
+await test('not_in_faq replies carry "did you mean" FAQ ids; answered replies do not', async () => {
+  fakeReply = '{"answer":"x","sources":[],"evidence":[],"status":"not_in_faq","handoff_issue":null,"suggestions":[]}';
+  let b = JSON.parse((await handler(ev({ messages: [{ role: 'user', content: 'แลกโคดในแอบได้มั้ย' }] }, { ip: 'typo1' }))).body);
+  assert.equal(b.status, 'not_in_faq');
+  assert.ok(b.related.includes('Activateonetimecode'), JSON.stringify(b.related));
+  fakeReply = '{"answer":"แลกในแอปไม่ได้ค่ะ","sources":["Activateonetimecode"],"evidence":["แลกในแอปไม่ได้"],"status":"answered","handoff_issue":null,"suggestions":[]}';
+  b = JSON.parse((await handler(ev({ messages: [{ role: 'user', content: 'แลกโคดในแอบได้มั้ย' }] }, { ip: 'typo2' }))).body);
+  assert.equal(b.status, 'answered'); assert.deepEqual(b.related, []);
+});
+
+await test('the prompt tells น้องดี to read through typos', async () => {
+  const { RULES } = await import('../src/prompt.mjs');
+  assert.match(RULES, /typos/); assert.match(RULES, /closest FAQ question/);
+});
+
 await test('answers, keeps only real FAQ ids, returns a chat id', async () => {
   fakeReply = 'Sure! {"answer":"แลกในแอปไม่ได้ค่ะ","sources":["Activateonetimecode","made-up-id"],"evidence":["แลกในแอปไม่ได้"],"status":"answered","handoff_issue":null,"suggestions":["แลกโค้ดไม่สำเร็จ"]}';
   const r = await handler(ev({ messages: [{ role: 'user', content: 'แลกโค้ดในแอปได้ไหม' }] }));

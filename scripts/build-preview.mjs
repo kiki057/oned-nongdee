@@ -24,7 +24,7 @@ const banner = (text) =>
 faq = faq
   .replaceAll('https://support.oned.net/?lang=en', 'support.html?lang=en')
   .replaceAll('https://support.oned.net/', 'support.html')
-  .replace('src="nongdee.js"', `src="../web/nongdee.js?v=${widgetVersion}"`)
+  .replace(/src="nongdee\.js(?:\?v=[^"]*)?"/, `src="../web/nongdee.js?v=${widgetVersion}"`)
   .replace(/data-support-url="[^"]*"/, 'data-support-url="support.html"')
   .replace(/<body>/, '<body>\n' + banner('ตัวอย่างสำหรับทดสอบ · Preview only — not the live oneD FAQ'));
 faq = faq.replace(/data-endpoint="[^"]*"/, `data-endpoint="${endpoint}"`);
@@ -33,7 +33,7 @@ faq = faq.replace(/data-endpoint="[^"]*"/, `data-endpoint="${endpoint}"`);
 faqEn = faqEn
   .replaceAll('https://support.oned.net/?lang=en', 'support.html?lang=en')
   .replaceAll('https://support.oned.net/', 'support.html')
-  .replace('src="nongdee.js"', `src="../web/nongdee.js?v=${widgetVersion}"`)
+  .replace(/src="nongdee\.js(?:\?v=[^"]*)?"/, `src="../web/nongdee.js?v=${widgetVersion}"`)
   .replace(/data-support-url="[^"]*"/, 'data-support-url="support.html"')
   .replace(/data-endpoint="[^"]*"/, `data-endpoint="${endpoint}"`)
   .replace(/<body>/, '<body>\n' + banner('ตัวอย่างสำหรับทดสอบ · Preview only — not the live oneD FAQ'));

@@ -73,7 +73,9 @@ paths:
         She replies in the language the user writes in. Personal data (emails, phone and card numbers) is masked
         before the question reaches the model or the logs, but the app should still tell users not to type it.
 
-        Show `answer`, then link the `sources` (FAQ ids, open them in the native FAQ screen), offer the
+        Show `answer`, then link the `sources` (FAQ ids, open them in the native FAQ screen). When she couldn't
+        answer, `related` holds the closest FAQ questions to what was typed (typo-tolerant): show them as
+        "Did you mean…" links. Offer the
         `suggestions` as tappable chips, and when `handoff_issue` is set, show a "contact support" button that
         opens the support form with that issue preselected.
 
@@ -100,6 +102,7 @@ paths:
                 chatId: c_3f9a1c0e7b2d4a61
                 answer: แลกโค้ดได้บนเว็บเบราว์เซอร์เท่านั้นค่ะ ไปที่ redeem.oned.net แล้วเข้าสู่ระบบ กรอกโค้ดเป็นตัวพิมพ์ใหญ่ แล้วกด "แลกโค้ด" ได้เลยค่ะ
                 sources: [Activateonetimecode]
+                related: []
                 status: answered
                 handoff_issue: null
                 suggestions: [แลกโค้ดไม่สำเร็จ]
@@ -322,7 +325,7 @@ components:
 
     ChatReply:
       type: object
-      required: [chatId, answer, sources, status, handoff_issue, suggestions]
+      required: [chatId, answer, sources, related, status, handoff_issue, suggestions]
       properties:
         chatId: { type: string, pattern: '^c_[a-z0-9]{8,32}$' }
         answer: { type: string, description: 'Plain text, up to 1,200 characters. May contain line breaks.' }
@@ -330,6 +333,14 @@ components:
           type: array
           maxItems: 3
           description: FAQ entry ids the answer comes from. Always real ids from `GET /faq`.
+          items: { type: string }
+        related:
+          type: array
+          maxItems: 2
+          description: |
+            Only when `status` is `not_in_faq`: up to 2 FAQ entry ids whose question is closest to what the user typed,
+            found by fuzzy matching that tolerates typos and missing Thai tone marks. Show as "Did you mean…" links.
+            Empty otherwise.
           items: { type: string }
         status:
           type: string

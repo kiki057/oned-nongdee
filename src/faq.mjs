@@ -6,6 +6,7 @@
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { answerText, validate } from './faq-format.mjs';
+import { buildIndex, closest } from './match.mjs';
 
 export const LANGS = ['th', 'en'];
 
@@ -30,6 +31,13 @@ export async function loadFaq() {
     botEntries = faqData().entries.map((e) => ({ id: e.id, category: e.category, question: e.th.question, answer: answerText(e.th.answer) }));
   }
   return botEntries;
+}
+
+// "Did you mean": up to 2 FAQ ids whose Thai or English question is closest to what the user typed (typo-tolerant).
+let matchIndex = null;
+export function relatedFaq(text, exclude = []) {
+  if (!matchIndex) matchIndex = buildIndex(faqData().entries.map((e) => ({ id: e.id, texts: [e.th.question, e.en.question] })));
+  return closest(matchIndex, text, { exclude }).map((x) => x.id);
 }
 
 const docs = {};

@@ -6,7 +6,7 @@
 
 import { randomUUID } from 'node:crypto';
 import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
-import { loadFaq, faqDocument } from './faq.mjs';
+import { loadFaq, faqDocument, relatedFaq } from './faq.mjs';
 import { RULES, VERIFY_RULES, ISSUES, STATUSES } from './prompt.mjs';
 import { ground, unsure, lang } from './grounding.mjs';
 
@@ -201,9 +201,12 @@ export async function handler(event) {
       }
     }
 
+    // Couldn't answer (often a typo or unusual wording): offer the closest FAQ questions to open.
+    out.related = out.status === 'not_in_faq' ? relatedFaq(userText, out.sources) : [];
+
     console.log(JSON.stringify({
       type: 'chat_turn', chatId, platform, model: MODEL, turn: messages.filter((m) => m.role === 'user').length,
-      user: userText, answer: out.answer, status: out.status, sources: out.sources, handoff_issue: out.handoff_issue,
+      user: userText, answer: out.answer, status: out.status, sources: out.sources, related: out.related, handoff_issue: out.handoff_issue,
       guardrail: check.ok ? (check.fixed ? 'fixed_text' : 'pass') : 'blocked', blocked_reasons: check.reasons,
       blocked_answer: check.ok ? undefined : modelReply.answer, verify: VERIFY,
       parsed_ok: !!parsed, stop, latency_ms: Date.now() - started, usage,

@@ -31,6 +31,7 @@
       demoSub: 'โหมดสาธิต · ค้นจาก FAQ ยังไม่ใช่ AI',
       demoNote: 'โหมดสาธิต: ข้อความไม่ถูกส่งหรือบันทึกที่ไหน · ห้ามพิมพ์รหัสผ่าน OTP หรือเลขบัตร',
       demoHello: 'สวัสดีค่ะ น้องดีเองค่ะ ตอนนี้เป็นโหมดสาธิต น้องดีจะค้นคำตอบที่ใกล้ที่สุดจาก FAQ ให้นะคะ (เวอร์ชัน AI จะตอบได้เป็นธรรมชาติกว่านี้ค่ะ)',
+      related: 'หรือคุณหมายถึงเรื่องนี้คะ',
       dFound: 'น้องดีเจอคำตอบนี้ใน FAQ ค่ะ', dNone: 'ขออภัยค่ะ น้องดียังหาคำตอบเรื่องนี้ใน FAQ ไม่เจอ ลองถามด้วยคำอื่น หรือให้ทีมงานช่วยต่อได้นะคะ',
       dRefund: 'เรื่องคืนเงิน น้องดีช่วยเองไม่ได้ค่ะ ถ้าสมัครผ่าน App Store หรือ Google Play การคืนเงินเป็นของ Apple หรือ Google นะคะ ให้ทีมงานช่วยดูให้ได้ค่ะ',
       dCancel: 'คุณสมัครผ่านช่องทางไหนคะ? กดหัวข้อด้านล่างเพื่อดูวิธียกเลิกได้เลยค่ะ',
@@ -49,6 +50,7 @@
       demoSub: 'Demo mode · searches the FAQ, not AI yet',
       demoNote: "Demo mode: nothing you type is sent or saved · Don't type passwords, OTPs or card numbers",
       demoHello: "Hi, I'm Nong Dee! This is a demo: I'll find the closest answer in the FAQ for you. (The AI version answers more naturally.)",
+      related: 'Or did you mean:',
       dFound: "Here's what the FAQ says:", dNone: "Sorry, I couldn't find this in the FAQ. Try asking another way, or our support team can help.",
       dRefund: "I can't handle refunds myself. If you subscribed through the App Store or Google Play, refunds are handled by Apple or Google. Our support team can look into it for you.",
       dCancel: 'How did you subscribe? Tap your option below to see how to cancel.',
@@ -77,6 +79,7 @@
     '.nd-me .nd-bubble{max-width:86%;background:var(--pink,#f20b7e);color:#fff;border-bottom-right-radius:4px}',
     '.nd-bot .nd-bubble{background:var(--surface,#16161a);border:1px solid var(--line,#26262e);border-bottom-left-radius:4px}',
     '.nd-srcs{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}',
+    '.nd-rel{margin-top:10px;font-size:13px;color:var(--text-2,#b9b9c3)}',
     '.nd-src{display:inline-flex;align-items:center;gap:4px;max-width:100%;font:inherit;font-size:13px;padding:5px 10px;border-radius:99px;border:1px solid var(--line,#26262e);background:var(--surface-2,#202027);color:var(--text-2,#b9b9c3);cursor:pointer;text-align:left}',
     '.nd-src:before{content:"FAQ";font-size:10.5px;font-weight:500;color:var(--pink,#f20b7e)}',
     '.nd-rate{display:flex;gap:4px;margin-top:6px}.nd-rate button{width:34px;height:30px;border-radius:8px;border:1px solid transparent;background:none;color:var(--text-3,#80808c);cursor:pointer;font-size:15px}',
@@ -187,7 +190,9 @@
         r = { answer: D.dCancel, sources: ['unsubscribe', 'unsubscribeandroid', 'unsubscribeais'],
               status: 'partial', handoff_issue: null, suggestions: [] };
       } else if (!best || best.s < 0.85) {
-        r = { answer: D.dNone, sources: [], status: 'not_in_faq',
+        var near = [];
+        ranked.forEach(function (x) { if (near.length < 2 && x.s >= 0.3 && near.indexOf(x.f.id) < 0) near.push(x.f.id); });
+        r = { answer: D.dNone, sources: [], related: near, status: 'not_in_faq',
               handoff_issue: OTHER, suggestions: [] };
       } else {
         var want = textLang(text), same = FAQ.filter(function (f) { return f.id === best.f.id && f.lang === want; })[0] || best.f;
@@ -241,6 +246,17 @@
           s.appendChild(c);
         });
         w.appendChild(s);
+      }
+      var rel = (r.related || []).filter(function (id) { return title(id) && srcs.indexOf(id) < 0; });
+      if (rel.length) {
+        w.appendChild(el('div', 'nd-rel', I18N[convLang].related));
+        var rs = el('div', 'nd-srcs');
+        rel.forEach(function (id) {
+          var c = el('button', 'nd-src', title(id)); c.type = 'button';
+          c.onclick = function () { close(); location.hash = ''; location.hash = id; };
+          rs.appendChild(c);
+        });
+        w.appendChild(rs);
       }
       if (r.handoff_issue) w.appendChild(handoffCard(r.handoff_issue));
       if (r.status === 'answered' || r.status === 'partial') {

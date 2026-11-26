@@ -22,6 +22,7 @@ FAQ page (assets.oned.net)  --POST /chat-->  API Gateway  -->  Lambda  -->  Clau
 | `scripts/build-faq.mjs` | Writes the questions from `src/faq.json` into the FAQ page |
 | `openapi.yaml` | API spec for `GET /faq`, `POST /chat`, `POST /feedback` (for the iOS and Android apps) |
 | `src/grounding.mjs` | The FAQ-only guardrail (see below) |
+| `src/match.mjs` | "Did you mean": typo-tolerant matching of the user's question to FAQ questions |
 | `web/nongdee.js` | The chat widget the FAQ page loads |
 | `web/faq-th-beta.html` | The new FAQ page (Thai + English with a TH \| EN switch) with the widget included |
 | `web/faq-en-beta.html` | The same file. Named `-en`, it opens in English (so does `?lang=en`) |
